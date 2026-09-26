@@ -29,7 +29,11 @@ import time
 import traceback
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-WEIGHTS = os.path.join(ROOT, "models", "yolov8n.pt")
+sys.path.insert(0, ROOT)
+
+import config  # noqa: E402  (after sys.path setup)
+
+WEIGHTS = config.YOLO_MODEL  # same path the app and scripts/download_model.py use
 SMOKE_DIR = os.path.join(ROOT, "training", "datasets", "smoke")
 RUNS_DIR = os.path.join(ROOT, "training", "runs")
 EVIDENCE_DIR = os.path.join(ROOT, "docs", "acceptance", "stage-0")
@@ -78,18 +82,19 @@ def check_torch(ctx):
     log("== 0.8/0.9 torch ==")
     import torch
     cuda_ok = torch.cuda.is_available()
-    name = torch.cuda.get_device_name(0) if cuda_ok else None
+    index = int(ctx["device"]) if ctx["device"].isdigit() else 0  # the GPU that --device selects
+    name = torch.cuda.get_device_name(index) if cuda_ok else None
     log(f"torch.__version__       = {torch.__version__}")
     log(f"torch.version.cuda      = {torch.version.cuda}")
     log(f"torch.cuda.is_available = {cuda_ok}")
-    log(f"device 0 name           = {name}")
+    log(f"device {index} name           = {name}")
     if ctx["cpu_mode"]:
         record("0.8/0.9 torch", "SKIP", f"torch {torch.__version__}; CUDA not required in --device cpu dry run")
     elif not (cuda_ok and torch.version.cuda is not None):
         record("0.8/0.9 torch", "FAIL",
                "CUDA build of torch not usable; reinstall torch from the CUDA index (plan 02 section 1)")
     elif EXPECTED_GPU not in name:
-        record("0.8/0.9 torch", "FAIL", f"device 0 is '{name}', expected an RTX {EXPECTED_GPU}")
+        record("0.8/0.9 torch", "FAIL", f"device {index} is '{name}', expected an RTX {EXPECTED_GPU}")
     else:
         record("0.8/0.9 torch", "PASS", f"CUDA {torch.version.cuda}, device '{name}'")
 
@@ -173,8 +178,12 @@ def check_git(ctx):
     code, head = run_cmd(["git", "log", "-1", "--format=%H %ad", "--date=iso"])
     _, porcelain = run_cmd(["git", "status", "--porcelain"])
     # The evidence file of a previous run is the only change this script itself may leave behind.
-    own = os.path.relpath(ctx["report_path"], ROOT).replace(os.sep, "/")
-    dirty = [line for line in porcelain.splitlines() if line.strip() and not line.endswith(own)]
+    # A report outside the repo (e.g. --out on another drive) can never show up in git status.
+    try:
+        own = os.path.relpath(ctx["report_path"], ROOT).replace(os.sep, "/")
+    except ValueError:  # different drive on Windows
+        own = None
+    dirty = [line for line in porcelain.splitlines() if line.strip() and not (own and line.endswith(own))]
     log(f"branch = {branch}")
     log(f"HEAD   = {head}")
     log("git status --porcelain (excluding this script's own report):")
