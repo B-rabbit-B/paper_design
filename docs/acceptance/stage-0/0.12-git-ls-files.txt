@@ -1,0 +1,4 @@
+0.12 检查时间: 2026-09-26 18:36:11  分支: stage-0-env（已 git add -A）
+命令: git ls-files "*.pt" "*.onnx" "*.pth" "training/datasets/*"
+输出（空表示通过）:
+--- 输出结束 ---

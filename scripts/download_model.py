@@ -5,6 +5,7 @@
     但底层 Azure Blob（releaseassetproduction.blob.core.windows.net）可达。
 做法：走 api.github.com 拿到 302 重定向的签名 URL，把主机换成 Azure Blob 直连下载。
 """
+import os
 import sys
 
 import requests
@@ -13,7 +14,8 @@ import requests
 ASSET_URL = "https://api.github.com/repos/ultralytics/assets/releases/assets/340060940"
 CDN_HOST = "release-assets.githubusercontent.com"
 BLOB_HOST = "releaseassetproduction.blob.core.windows.net"
-OUT = "yolov8n.pt"
+# 输出到 <项目根>/models/，与运行时从哪个目录启动脚本无关
+OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "models", "yolov8n.pt")
 
 
 def main():
@@ -35,6 +37,7 @@ def main():
     print("下载源已切换为 Azure Blob 直连…")
 
     # 3. 流式下载
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with requests.get(loc, stream=True, timeout=120) as r:
         r.raise_for_status()
         total = int(r.headers.get("Content-Length", 0))

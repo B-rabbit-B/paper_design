@@ -1,0 +1,20 @@
+test_bad_unit (test_food_classes.LoadClassesErrorTest.test_bad_unit) ... ok
+test_duplicate_id (test_food_classes.LoadClassesErrorTest.test_duplicate_id) ... ok
+test_duplicate_name (test_food_classes.LoadClassesErrorTest.test_duplicate_name) ... ok
+test_empty_class_list (test_food_classes.LoadClassesErrorTest.test_empty_class_list) ... ok
+test_list_sorted_by_id (test_food_classes.LoadClassesErrorTest.test_list_sorted_by_id) ... ok
+test_missing_required_field (test_food_classes.LoadClassesErrorTest.test_missing_required_field) ... ok
+test_non_contiguous_ids (test_food_classes.LoadClassesErrorTest.test_non_contiguous_ids) ... ok
+test_non_positive_weight (test_food_classes.LoadClassesErrorTest.test_non_positive_weight) ... ok
+test_valid_minimal_file_loads (test_food_classes.LoadClassesErrorTest.test_valid_minimal_file_loads) ... ok
+test_every_ingredient_resolves (test_food_classes.RealClassesTest.test_every_ingredient_resolves) ... ok
+test_has_33_contiguous_ids (test_food_classes.RealClassesTest.test_has_33_contiguous_ids) ... ok
+test_names_follow_id_order (test_food_classes.RealClassesTest.test_names_follow_id_order) ... ok
+test_source_map (test_food_classes.ValidateAndSourceMapTest.test_source_map) ... ok
+test_source_map_conflict (test_food_classes.ValidateAndSourceMapTest.test_source_map_conflict) ... ok
+test_validate_reports_missing_ingredient (test_food_classes.ValidateAndSourceMapTest.test_validate_reports_missing_ingredient) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.094s
+
+OK

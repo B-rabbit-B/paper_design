@@ -1,0 +1,20 @@
+0.7 页面回归检查  2026-09-26 18:32:54
+启动命令: .venv/Scripts/python -c "from app import app; app.run(host='127.0.0.1', port=5000, use_reloader=False)"
+
+GET / -> HTTP 200, title="知食分子", 8554 字节
+GET /recipes -> HTTP 200, title="知食分子", 13322 字节
+GET /daily -> HTTP 200, title="一日饮食规划 · 知食分子", 26239 字节
+
+服务端访问日志:
+127.0.0.1 - - [26/Sep/2026 18:32:40] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 18:32:41] "GET /recipes HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 18:32:41] "GET /daily HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 18:32:54] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 18:32:54] "GET /recipes HTTP/1.1" 200 -
+127.0.0.1 - - [26/Sep/2026 18:32:55] "GET /daily HTTP/1.1" 200 -
+
+服务端日志中的 Traceback 数量: 0
+
+浏览器检查（Playwright）：三个页面均正常渲染，截图见 0.7-home.png、0.7-recipes.png、0.7-daily.png。
+浏览器控制台唯一的错误是 GET /favicon.ico 返回 404。原项目本来就没有提供网站图标，与阶段 0 的改动无关，本阶段不处理。
+验收结束后已停止服务进程，5000 端口已释放，无残留 python 进程。

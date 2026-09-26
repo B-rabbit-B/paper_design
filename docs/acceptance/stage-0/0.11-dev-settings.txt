@@ -1,0 +1,21 @@
+JSONDict("C:\Users\Administrator\AppData\Roaming\Ultralytics\settings.json"):
+{
+  "settings_version": "0.0.8",
+  "datasets_dir": "E:\\datasets",
+  "weights_dir": "E:\\paperdesign\\weights",
+  "runs_dir": "E:\\paperdesign\\runs",
+  "uuid": "9ade855b4c4301f8eaa384feac2f9569544f5441c073baf87b9558aa9aaefbb9",
+  "sync": false,
+  "api_key": "",
+  "openai_api_key": "",
+  "clearml": true,
+  "comet": true,
+  "dvc": true,
+  "mlflow": true,
+  "raytune": true,
+  "tensorboard": false,
+  "wandb": false,
+  "vscode_msg": true,
+  "openvino_msg": true
+}
+ Learn more about Ultralytics Settings at https://docs.ultralytics.com/usage/settings

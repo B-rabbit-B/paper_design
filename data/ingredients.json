@@ -1461,7 +1461,9 @@
   },
   {
     "name": "草鱼",
-    "aliases": [],
+    "aliases": [
+      "鱼"
+    ],
     "category": "水产",
     "calories": 113,
     "protein": 16.6,
@@ -9796,7 +9798,9 @@
   },
   {
     "name": "鸡",
-    "aliases": [],
+    "aliases": [
+      "鸡肉"
+    ],
     "category": "肉类",
     "calories": 145.0,
     "protein": 20.3,

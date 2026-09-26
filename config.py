@@ -65,6 +65,9 @@ TABOO_OPTIONS = {
 # 图片识别模型（参考 ANFridge：自训练冰箱物品模型可替换此处路径）
 YOLO_MODEL = "yolov8n.pt"  # 默认 COCO 预训练兜底；可换成 fridge.pt / fridge.onnx 提升精度
 
+# 检测类别定义的唯一真源（训练侧与运行侧共用），见 docs/plan/01 §6
+YOLO_CLASSES_YAML = os.path.join(_BASE_DIR, "training", "classes.yaml")
+
 # 模型类别名 -> 营养库中文名映射（COCO 兜底覆盖常见果蔬；定制模型时同步替换此表）
 CLASS_TO_INGREDIENT = {
     "banana": "香蕉",
