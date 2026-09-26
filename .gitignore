@@ -1,0 +1,47 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ---- 本地机密（API Key 等，绝不入库）----
+_local_secrets.py
+.env
+
+# ---- 运行时生成物 ----
+database/nutrition.db
+app.log
+*.log
+
+# ---- 大模型权重（首次运行自动下载，体积大不入库）----
+yolov8n.pt
+*.pt
+*.onnx
+*.pth
+
+# ---- 系统 / 编辑器 ----
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ---- 文档 / PPT（含个人信息，不入库）----
+PROJECT_CHARTER.md
+项目介绍.md
+演示脚本.md
+ppt_preview/
+scripts/generate_ppt.py
+scripts/gen_ppt_content.py
+scripts/export_preview.py
+scripts/ppt_content.json
+
+# ---- 训练工程运行时产物（体积大，不入库；training/reports 例外，见下）----
+training/datasets/
+training/runs/
+
+# ---- 识别上传原图/结果图（体积大，不入库）----
+static/uploads/
+
+# ---- 模型权重目录：权重本身已被上面的 *.pt/*.onnx 规则忽略，但保留模型卡 ----
+!models/model_card.json
