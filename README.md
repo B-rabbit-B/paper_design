@@ -21,7 +21,7 @@ nutrition_system/
 ├── app.py            # Flask 入口（/ 食谱推荐、/market 买菜推荐）
 ├── config.py         # 配置（DeepSeek / 视觉大模型 / YOLO 可选）
 ├── requirements.txt
-├── yolov8n.pt        # YOLO 本地兜底模型（首次运行自动下载）
+├── models/yolov8n.pt # YOLO 本地兜底模型（运行 python scripts/download_model.py 下载）
 ├── core/             # 业务模块
 │   ├── health_goal.py    # 健康目标 + 禁忌映射
 │   ├── health_profile.py # 健康画像（BMI / BMR / 理想体重）
@@ -68,7 +68,7 @@ DEEPSEEK_MODEL = "deepseek-chat"
 ## 图片识别
 
 - **视觉大模型（优先）**：调用 DeepSeek 官方视觉模型 `deepseek-v4-flash-vision-exp`（复用 `DEEPSEEK_API_KEY`，无需额外充值），可识别任意果蔬/食材，约 2~3 秒返回；失败自动降级到 YOLO。
-- **本地兜底**：YOLO（默认 COCO 预训练 `yolov8n.pt`，仅覆盖香蕉/苹果/橙子/西兰花/胡萝卜/面包/香肠 7 类）。首次运行会自动下载模型（约 6MB，需联网）。
+- **本地兜底**：YOLO（默认 COCO 预训练 `yolov8n.pt`，仅覆盖香蕉/苹果/橙子/西兰花/胡萝卜/面包/香肠 7 类）。模型需先运行 `python scripts/download_model.py` 下载到 `models/yolov8n.pt`（约 6MB，需联网）。
 - **可替换模型**：参考 [ANFridge](https://github.com/stmxmv/ANFridge)（自训练冰箱物品 YOLOv8 模型）——把 `config.YOLO_MODEL` 指向定制模型 `fridge.pt/.onnx`，并同步更新 `config.CLASS_TO_INGREDIENT` 即可提升本地识别精度。
 
 ## 营养数据来源

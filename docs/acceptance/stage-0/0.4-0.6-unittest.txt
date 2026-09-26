@@ -13,8 +13,10 @@ test_names_follow_id_order (test_food_classes.RealClassesTest.test_names_follow_
 test_source_map (test_food_classes.ValidateAndSourceMapTest.test_source_map) ... ok
 test_source_map_conflict (test_food_classes.ValidateAndSourceMapTest.test_source_map_conflict) ... ok
 test_validate_reports_missing_ingredient (test_food_classes.ValidateAndSourceMapTest.test_validate_reports_missing_ingredient) ... ok
+test_download_target_matches_config (test_model_path.ModelPathTest.test_download_target_matches_config) ... ok
+test_yolo_model_is_absolute (test_model_path.ModelPathTest.test_yolo_model_is_absolute) ... ok
 
 ----------------------------------------------------------------------
-Ran 15 tests in 0.094s
+Ran 17 tests in 0.147s
 
 OK

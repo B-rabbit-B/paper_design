@@ -63,7 +63,8 @@ TABOO_OPTIONS = {
 }
 
 # 图片识别模型（参考 ANFridge：自训练冰箱物品模型可替换此处路径）
-YOLO_MODEL = "yolov8n.pt"  # 默认 COCO 预训练兜底；可换成 fridge.pt / fridge.onnx 提升精度
+# 默认 COCO 预训练兜底，由 scripts/download_model.py 下载到 models/；绝对路径，与启动目录无关
+YOLO_MODEL = os.path.join(_BASE_DIR, "models", "yolov8n.pt")
 
 # 检测类别定义的唯一真源（训练侧与运行侧共用），见 docs/plan/01 §6
 YOLO_CLASSES_YAML = os.path.join(_BASE_DIR, "training", "classes.yaml")
