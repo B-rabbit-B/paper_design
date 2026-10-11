@@ -8,48 +8,91 @@
 #                    （鸡肉 → "鸡" 条目的别名，鱼 → "草鱼" 条目的别名）
 #   unit             piece = 按个计数 × 单重；bulk = 整份取默认重量
 #   default_weight_g 参考单重/份重（克），用户可在页面上修改
-#   sources          各数据源里对应的原始类名，供 prepare_dataset.py 做类别映射
+#   sources          各数据源里对应的原始类名，供 prepare_dataset.py 做类别映射。
+#                    键名就是 training/datasets/raw/ 下的子目录名，类名区分大小写。
 #
 # 注意：修改 id 顺序或增删类别后，数据集要重建、模型要重训（总纲 §1.4 回溯重验规则）。
 #
-# sources 目前只填了 custom（自采数据，标注时直接使用本文件的 name）。
-# lvis / zenodo / openimages / mendeley / roboflow 等来源的类名，
-# 要在阶段 1 下载数据、查看各数据集真实的类别表之后再填写，不凭记忆猜测。
+# 来源类名的核实情况（2026-10-12）
+#   lvis       ：LVIS 果蔬子集 data.yaml 的 names，已逐个核对
+#   mendeley   ：Mendeley 孟加拉蔬菜 VOC 标注中实际出现的类名，已统计核对；该来源只进训练集
+#   openimages ：Open Images V7 class-descriptions-boxable.csv 中的显示名，已核对
+#   custom     ：自采数据，标注时直接使用本文件的 name
+#   zenodo     ：待数据下载解压、查看真实类名后再填
+#
+# 暂未映射、等待用户决定的情况（见阶段 1 验收记录）
+#   cabbage(白菜)：mendeley 和 openimages 的 "Cabbage" 都是卷心菜（圆白菜），不是大白菜
+#   egg(鸡蛋)    ：openimages 的 "Egg" 抽样 6 张中 3 张是彩绘复活节蛋
+#   chicken、fish：openimages 的 "Chicken"、"Fish" 抽样几乎都是活鸡、活鱼，不采用
+#   pork、beef、spinach：已核实的公开来源中都没有
 version: 1
 classes:
   # ---------------- 蔬菜（id 0–16） ----------------
-  - {id: 0,  name: tomato,      zh: 西红柿, ingredient: 西红柿, unit: piece, default_weight_g: 150,  sources: {custom: [tomato]}}
-  - {id: 1,  name: cucumber,    zh: 黄瓜,   ingredient: 黄瓜,   unit: piece, default_weight_g: 200,  sources: {custom: [cucumber]}}
-  - {id: 2,  name: eggplant,    zh: 茄子,   ingredient: 茄子,   unit: piece, default_weight_g: 250,  sources: {custom: [eggplant]}}
-  - {id: 3,  name: potato,      zh: 土豆,   ingredient: 土豆,   unit: piece, default_weight_g: 150,  sources: {custom: [potato]}}
-  - {id: 4,  name: carrot,      zh: 胡萝卜, ingredient: 胡萝卜, unit: piece, default_weight_g: 120,  sources: {custom: [carrot]}}
-  - {id: 5,  name: bell_pepper, zh: 青椒,   ingredient: 青椒,   unit: piece, default_weight_g: 60,   sources: {custom: [bell_pepper]}}
-  - {id: 6,  name: broccoli,    zh: 西兰花, ingredient: 西兰花, unit: bulk,  default_weight_g: 300,  sources: {custom: [broccoli]}}
-  - {id: 7,  name: cabbage,     zh: 白菜,   ingredient: 白菜,   unit: bulk,  default_weight_g: 1000, sources: {custom: [cabbage]}}
-  - {id: 8,  name: onion,       zh: 洋葱,   ingredient: 洋葱,   unit: piece, default_weight_g: 150,  sources: {custom: [onion]}}
-  - {id: 9,  name: garlic,      zh: 大蒜,   ingredient: 大蒜,   unit: piece, default_weight_g: 30,   sources: {custom: [garlic]}}
-  - {id: 10, name: ginger,      zh: 生姜,   ingredient: 生姜,   unit: bulk,  default_weight_g: 50,   sources: {custom: [ginger]}}
-  - {id: 11, name: corn,        zh: 玉米,   ingredient: 玉米,   unit: piece, default_weight_g: 250,  sources: {custom: [corn]}}
-  - {id: 12, name: pumpkin,     zh: 南瓜,   ingredient: 南瓜,   unit: bulk,  default_weight_g: 1000, sources: {custom: [pumpkin]}}
-  - {id: 13, name: mushroom,    zh: 蘑菇,   ingredient: 蘑菇,   unit: piece, default_weight_g: 20,   sources: {custom: [mushroom]}}
-  - {id: 14, name: lettuce,     zh: 生菜,   ingredient: 生菜,   unit: bulk,  default_weight_g: 300,  sources: {custom: [lettuce]}}
-  - {id: 15, name: spinach,     zh: 菠菜,   ingredient: 菠菜,   unit: bulk,  default_weight_g: 250,  sources: {custom: [spinach]}}
-  - {id: 16, name: cauliflower, zh: 菜花,   ingredient: 菜花,   unit: piece, default_weight_g: 500,  sources: {custom: [cauliflower]}}
+  - {id: 0,  name: tomato,      zh: 西红柿, ingredient: 西红柿, unit: piece, default_weight_g: 150,
+     sources: {lvis: [Tomato, tomato], mendeley: [Tomato], openimages: [Tomato], custom: [tomato]}}
+  - {id: 1,  name: cucumber,    zh: 黄瓜,   ingredient: 黄瓜,   unit: piece, default_weight_g: 200,
+     sources: {lvis: [cucumber/cuke], mendeley: [Cucumber], openimages: [Cucumber], custom: [cucumber]}}
+  - {id: 2,  name: eggplant,    zh: 茄子,   ingredient: 茄子,   unit: piece, default_weight_g: 250,
+     sources: {lvis: [eggplant/aubergine], mendeley: [Eggplant], custom: [eggplant]}}
+  - {id: 3,  name: potato,      zh: 土豆,   ingredient: 土豆,   unit: piece, default_weight_g: 150,
+     sources: {lvis: [potato], mendeley: [Potato], openimages: [Potato], custom: [potato]}}
+  - {id: 4,  name: carrot,      zh: 胡萝卜, ingredient: 胡萝卜, unit: piece, default_weight_g: 120,
+     sources: {lvis: [carrot], mendeley: [Carrots], openimages: [Carrot], custom: [carrot]}}
+  - {id: 5,  name: bell_pepper, zh: 青椒,   ingredient: 青椒,   unit: piece, default_weight_g: 60,
+     sources: {lvis: [bell pepper/capsicum], mendeley: [Capsicum], openimages: [Bell pepper], custom: [bell_pepper]}}
+  - {id: 6,  name: broccoli,    zh: 西兰花, ingredient: 西兰花, unit: bulk,  default_weight_g: 300,
+     sources: {lvis: [broccoli], openimages: [Broccoli], custom: [broccoli]}}
+  - {id: 7,  name: cabbage,     zh: 白菜,   ingredient: 白菜,   unit: bulk,  default_weight_g: 1000,
+     sources: {custom: [cabbage]}}
+  - {id: 8,  name: onion,       zh: 洋葱,   ingredient: 洋葱,   unit: piece, default_weight_g: 150,
+     sources: {lvis: [onion], custom: [onion]}}
+  - {id: 9,  name: garlic,      zh: 大蒜,   ingredient: 大蒜,   unit: piece, default_weight_g: 30,
+     sources: {lvis: [garlic/ail], custom: [garlic]}}
+  - {id: 10, name: ginger,      zh: 生姜,   ingredient: 生姜,   unit: bulk,  default_weight_g: 50,
+     sources: {lvis: [ginger/gingerroot], custom: [ginger]}}
+  - {id: 11, name: corn,        zh: 玉米,   ingredient: 玉米,   unit: piece, default_weight_g: 250,
+     sources: {lvis: [edible corn/corn/maize], custom: [corn]}}
+  - {id: 12, name: pumpkin,     zh: 南瓜,   ingredient: 南瓜,   unit: bulk,  default_weight_g: 1000,
+     sources: {lvis: [pumpkin], mendeley: [Pumpkin], openimages: [Pumpkin], custom: [pumpkin]}}
+  - {id: 13, name: mushroom,    zh: 蘑菇,   ingredient: 蘑菇,   unit: piece, default_weight_g: 20,
+     sources: {lvis: [mushroom], openimages: [Mushroom], custom: [mushroom]}}
+  - {id: 14, name: lettuce,     zh: 生菜,   ingredient: 生菜,   unit: bulk,  default_weight_g: 300,
+     sources: {lvis: [lettuce], custom: [lettuce]}}
+  - {id: 15, name: spinach,     zh: 菠菜,   ingredient: 菠菜,   unit: bulk,  default_weight_g: 250,
+     sources: {custom: [spinach]}}
+  - {id: 16, name: cauliflower, zh: 菜花,   ingredient: 菜花,   unit: piece, default_weight_g: 500,
+     sources: {lvis: [cauliflower], mendeley: [Cauliflower], custom: [cauliflower]}}
   # ---------------- 水果（id 17–24） ----------------
-  - {id: 17, name: apple,       zh: 苹果,   ingredient: 苹果,   unit: piece, default_weight_g: 200,  sources: {custom: [apple]}}
-  - {id: 18, name: banana,      zh: 香蕉,   ingredient: 香蕉,   unit: piece, default_weight_g: 120,  sources: {custom: [banana]}}
-  - {id: 19, name: orange,      zh: 橙子,   ingredient: 橙子,   unit: piece, default_weight_g: 150,  sources: {custom: [orange]}}
-  - {id: 20, name: pear,        zh: 梨,     ingredient: 梨,     unit: piece, default_weight_g: 200,  sources: {custom: [pear]}}
-  - {id: 21, name: grape,       zh: 葡萄,   ingredient: 葡萄,   unit: bulk,  default_weight_g: 300,  sources: {custom: [grape]}}
-  - {id: 22, name: strawberry,  zh: 草莓,   ingredient: 草莓,   unit: piece, default_weight_g: 15,   sources: {custom: [strawberry]}}
-  - {id: 23, name: lemon,       zh: 柠檬,   ingredient: 柠檬,   unit: piece, default_weight_g: 80,   sources: {custom: [lemon]}}
-  - {id: 24, name: mango,       zh: 芒果,   ingredient: 芒果,   unit: piece, default_weight_g: 250,  sources: {custom: [mango]}}
+  - {id: 17, name: apple,       zh: 苹果,   ingredient: 苹果,   unit: piece, default_weight_g: 200,
+     sources: {lvis: [apple], openimages: [Apple], custom: [apple]}}
+  - {id: 18, name: banana,      zh: 香蕉,   ingredient: 香蕉,   unit: piece, default_weight_g: 120,
+     sources: {lvis: [banana], openimages: [Banana], custom: [banana]}}
+  - {id: 19, name: orange,      zh: 橙子,   ingredient: 橙子,   unit: piece, default_weight_g: 150,
+     sources: {lvis: [orange/orange fruit], openimages: [Orange (fruit)], custom: [orange]}}
+  - {id: 20, name: pear,        zh: 梨,     ingredient: 梨,     unit: piece, default_weight_g: 200,
+     sources: {lvis: [pear], openimages: [Pear], custom: [pear]}}
+  - {id: 21, name: grape,       zh: 葡萄,   ingredient: 葡萄,   unit: bulk,  default_weight_g: 300,
+     sources: {lvis: [grape], openimages: [Grape], custom: [grape]}}
+  - {id: 22, name: strawberry,  zh: 草莓,   ingredient: 草莓,   unit: piece, default_weight_g: 15,
+     sources: {lvis: [Strawberry, strawberry], openimages: [Strawberry], custom: [strawberry]}}
+  - {id: 23, name: lemon,       zh: 柠檬,   ingredient: 柠檬,   unit: piece, default_weight_g: 80,
+     sources: {lvis: [lemon], mendeley: [Lemon], openimages: [Lemon (plant)], custom: [lemon]}}
+  - {id: 24, name: mango,       zh: 芒果,   ingredient: 芒果,   unit: piece, default_weight_g: 250,
+     sources: {openimages: [Mango], custom: [mango]}}
   # ---------------- 蛋肉水产豆乳（id 25–32） ----------------
-  - {id: 25, name: egg,         zh: 鸡蛋,   ingredient: 鸡蛋,   unit: piece, default_weight_g: 50,   sources: {custom: [egg]}}
-  - {id: 26, name: chicken,     zh: 鸡肉,   ingredient: 鸡肉,   unit: bulk,  default_weight_g: 500,  sources: {custom: [chicken]}}
-  - {id: 27, name: pork,        zh: 猪肉,   ingredient: 猪肉,   unit: bulk,  default_weight_g: 250,  sources: {custom: [pork]}}
-  - {id: 28, name: beef,        zh: 牛肉,   ingredient: 牛肉,   unit: bulk,  default_weight_g: 250,  sources: {custom: [beef]}}
-  - {id: 29, name: fish,        zh: 鱼,     ingredient: 鱼,     unit: bulk,  default_weight_g: 500,  sources: {custom: [fish]}}
-  - {id: 30, name: shrimp,      zh: 虾,     ingredient: 虾,     unit: piece, default_weight_g: 15,   sources: {custom: [shrimp]}}
-  - {id: 31, name: tofu,        zh: 豆腐,   ingredient: 豆腐,   unit: bulk,  default_weight_g: 300,  sources: {custom: [tofu]}}
-  - {id: 32, name: milk,        zh: 牛奶,   ingredient: 牛奶,   unit: piece, default_weight_g: 250,  sources: {custom: [milk]}}
+  - {id: 25, name: egg,         zh: 鸡蛋,   ingredient: 鸡蛋,   unit: piece, default_weight_g: 50,
+     sources: {custom: [egg]}}
+  - {id: 26, name: chicken,     zh: 鸡肉,   ingredient: 鸡肉,   unit: bulk,  default_weight_g: 500,
+     sources: {custom: [chicken]}}
+  - {id: 27, name: pork,        zh: 猪肉,   ingredient: 猪肉,   unit: bulk,  default_weight_g: 250,
+     sources: {custom: [pork]}}
+  - {id: 28, name: beef,        zh: 牛肉,   ingredient: 牛肉,   unit: bulk,  default_weight_g: 250,
+     sources: {custom: [beef]}}
+  - {id: 29, name: fish,        zh: 鱼,     ingredient: 鱼,     unit: bulk,  default_weight_g: 500,
+     sources: {custom: [fish]}}
+  - {id: 30, name: shrimp,      zh: 虾,     ingredient: 虾,     unit: piece, default_weight_g: 15,
+     sources: {openimages: [Shrimp], custom: [shrimp]}}
+  - {id: 31, name: tofu,        zh: 豆腐,   ingredient: 豆腐,   unit: bulk,  default_weight_g: 300,
+     sources: {lvis: [bean curd/tofu], custom: [tofu]}}
+  - {id: 32, name: milk,        zh: 牛奶,   ingredient: 牛奶,   unit: piece, default_weight_g: 250,
+     sources: {openimages: [Milk], custom: [milk]}}

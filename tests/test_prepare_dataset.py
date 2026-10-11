@@ -1,0 +1,219 @@
+# -*- coding: utf-8 -*-
+"""training/prepare_dataset.py 与 training/sources 的单元测试。
+
+用临时目录造出很小的 YOLO 源和 VOC 源，验证类别映射、坏标签统计、去重、
+近重复分组、划分、输出文件与 summary.json 字段。
+
+用法：在项目根目录执行  python -m unittest discover -s tests -v
+"""
+import json
+import os
+import random
+import shutil
+import sys
+import tempfile
+import unittest
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+sys.path.insert(0, os.path.join(ROOT, "training"))
+
+import yaml  # noqa: E402
+from PIL import Image, ImageDraw  # noqa: E402
+
+import prepare_dataset as pd  # noqa: E402
+from sources import voc, yolo  # noqa: E402
+
+CLASSES_YAML = {
+    "version": 1,
+    "classes": [
+        {"id": 0, "name": "tomato", "zh": "西红柿", "ingredient": "西红柿", "unit": "piece",
+         "default_weight_g": 150, "sources": {"src_yolo": ["Tomato", "tomato"], "src_voc": ["tomato"]}},
+        {"id": 1, "name": "carrot", "zh": "胡萝卜", "ingredient": "胡萝卜", "unit": "piece",
+         "default_weight_g": 120, "sources": {"src_yolo": ["carrot"], "src_voc": ["carrot"]}},
+    ],
+}
+
+
+def _image(path, seed, size=(64, 48)):
+    """生成内容互不相同的小图（seed 不同 → 像素不同 → md5 与平均哈希都不同）。"""
+    rng = random.Random(seed)
+    img = Image.new("RGB", size, (rng.randint(0, 255), rng.randint(0, 255), rng.randint(0, 255)))
+    draw = ImageDraw.Draw(img)
+    for _ in range(6):
+        x, y = rng.randint(0, size[0] - 10), rng.randint(0, size[1] - 10)
+        draw.rectangle([x, y, x + rng.randint(4, 30), y + rng.randint(4, 20)],
+                       fill=(rng.randint(0, 255), rng.randint(0, 255), rng.randint(0, 255)))
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    img.save(path)
+
+
+def _write(path, text):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text)
+
+
+class Fixture(unittest.TestCase):
+    """临时目录：raw/src_yolo（YOLO 格式）、raw/src_voc（VOC 格式）、classes.yaml。"""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.raw = os.path.join(self.tmp, "raw")
+        self.classes_path = os.path.join(self.tmp, "classes.yaml")
+        with open(self.classes_path, "w", encoding="utf-8") as f:
+            yaml.safe_dump(CLASSES_YAML, f, allow_unicode=True)
+
+        # --- YOLO 源：names 0=Tomato 1=carrot 2=watermelon（未映射）
+        y = os.path.join(self.raw, "src_yolo")
+        _write(os.path.join(y, "data.yaml"), "names:\n  0: Tomato\n  1: carrot\n  2: watermelon\n")
+        for i in range(20):
+            _image(os.path.join(y, "images", "train", f"y{i}.jpg"), seed=i)
+            _write(os.path.join(y, "labels", "train", f"y{i}.txt"), "0 0.5 0.5 0.2 0.2\n1 0.3 0.3 0.1 0.1\n")
+        # 只含未映射类别的图 → 映射后没有框，应被丢弃
+        _image(os.path.join(y, "images", "train", "only_watermelon.jpg"), seed=100)
+        _write(os.path.join(y, "labels", "train", "only_watermelon.txt"), "2 0.5 0.5 0.2 0.2\n")
+        # 坏标签：坐标越界、宽高为 0、类别越界、字段数不对 → 4 个坏框，好框保留
+        _image(os.path.join(y, "images", "train", "bad.jpg"), seed=101)
+        _write(os.path.join(y, "labels", "train", "bad.txt"),
+               "0 1.5 0.5 0.2 0.2\n0 0.5 0.5 0 0.2\n9 0.5 0.5 0.2 0.2\n0 0.5\n1 0.5 0.5 0.2 0.2\n")
+        # 与 y0 字节完全相同的副本 → md5 去重
+        shutil.copy(os.path.join(y, "images", "train", "y0.jpg"), os.path.join(y, "images", "train", "dup.jpg"))
+        shutil.copy(os.path.join(y, "labels", "train", "y0.txt"), os.path.join(y, "labels", "train", "dup.txt"))
+
+        # --- VOC 源：两张图，像素坐标
+        v = os.path.join(self.raw, "src_voc")
+        for i in range(2):
+            _image(os.path.join(v, f"v{i}.jpg"), seed=200 + i, size=(100, 50))
+            _write(os.path.join(v, f"v{i}.xml"),
+                   "<annotation><filename>v%d.jpg</filename><size><width>100</width><height>50</height></size>"
+                   "<object><name>tomato</name><bndbox><xmin>10</xmin><ymin>5</ymin><xmax>30</xmax><ymax>25</ymax></bndbox></object>"
+                   "<object><name>pumpkin</name><bndbox><xmin>1</xmin><ymin>1</ymin><xmax>9</xmax><ymax>9</ymax></bndbox></object>"
+                   "</annotation>" % i)
+
+        self.out = os.path.join(self.tmp, "out")
+        self.reports = os.path.join(self.tmp, "reports")
+
+    def build(self, **kw):
+        args = dict(sources=["src_yolo", "src_voc"], raw_root=self.raw, out=self.out,
+                    classes_path=self.classes_path, split=(0.8, 0.1, 0.1), seed=42,
+                    yaml_path=os.path.join(self.tmp, "data.yaml"), reports_dir=self.reports)
+        args.update(kw)
+        return pd.build_dataset(**args)
+
+
+class AdapterTest(Fixture):
+    def test_yolo_adapter_returns_pixel_boxes(self):
+        samples = {os.path.basename(s.image): s for s in yolo.iter_samples(os.path.join(self.raw, "src_yolo"))}
+        s = samples["y1.jpg"]
+        self.assertEqual((s.width, s.height), (64, 48))
+        name, x1, y1, x2, y2 = s.boxes[0]
+        self.assertEqual(name, "Tomato")
+        self.assertAlmostEqual(x1, 0.4 * 64)
+        self.assertAlmostEqual(y2, 0.6 * 48)
+
+    def test_yolo_adapter_counts_bad_lines(self):
+        s = next(s for s in yolo.iter_samples(os.path.join(self.raw, "src_yolo")) if s.image.endswith("bad.jpg"))
+        self.assertEqual(len(s.boxes), 1)
+        self.assertEqual(s.corrupt, 4)
+
+    def test_voc_adapter(self):
+        samples = list(voc.iter_samples(os.path.join(self.raw, "src_voc")))
+        self.assertEqual(len(samples), 2)
+        self.assertEqual(samples[0].boxes[0], ("tomato", 10.0, 5.0, 30.0, 25.0))
+
+
+class BuildTest(Fixture):
+    def test_summary_fields_and_counts(self):
+        summary = self.build()
+        for key in ("images", "per_class", "per_class_images", "sources", "corrupt",
+                    "duplicates_removed", "cross_split_duplicates"):
+            self.assertIn(key, summary)
+        # 20 张 y* + bad + 2 张 voc = 23；dup 被 md5 去重，only_watermelon 映射后无框被丢弃
+        self.assertEqual(sum(summary["images"].values()), 23)
+        self.assertEqual(summary["duplicates_removed"], 1)
+        self.assertEqual(summary["dropped_no_boxes"], 1)
+        self.assertEqual(summary["corrupt"], 4)
+        self.assertEqual(summary["cross_split_duplicates"], 0)
+        total_tomato = sum(summary["per_class"][s].get("tomato", 0) for s in ("train", "val", "test"))
+        self.assertEqual(total_tomato, 20 + 2)  # 每张 y* 1 个，voc 每张 1 个；bad.jpg 只剩 carrot
+
+    def test_outputs_are_valid_yolo(self):
+        self.build()
+        for split in ("train", "val", "test"):
+            imgs = sorted(os.path.splitext(f)[0] for f in os.listdir(os.path.join(self.out, "images", split)))
+            lbls = sorted(os.path.splitext(f)[0] for f in os.listdir(os.path.join(self.out, "labels", split)))
+            self.assertEqual(imgs, lbls)
+            for name in lbls:
+                with open(os.path.join(self.out, "labels", split, name + ".txt"), encoding="utf-8") as f:
+                    for line in f:
+                        cls, *xywh = line.split()
+                        self.assertIn(int(cls), (0, 1))
+                        self.assertTrue(all(0 <= float(v) <= 1 for v in xywh))
+
+    def test_data_yaml_names_match_classes(self):
+        self.build()
+        with open(os.path.join(self.tmp, "data.yaml"), encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+        self.assertEqual(data["names"], ["tomato", "carrot"])
+        self.assertEqual(os.path.normcase(data["path"]), os.path.normcase(os.path.abspath(self.out)))
+
+    def test_split_is_deterministic(self):
+        first = self.build()
+        shutil.rmtree(self.out)
+        second = self.build()
+        self.assertEqual(first["split_files"], second["split_files"])
+
+    def test_near_duplicates_stay_in_same_split(self):
+        # 同一张图另存为 png：md5 不同、平均哈希相同 → 必须落在同一个 split
+        y = os.path.join(self.raw, "src_yolo")
+        Image.open(os.path.join(y, "images", "train", "y3.jpg")).save(os.path.join(y, "images", "train", "y3copy.png"))
+        shutil.copy(os.path.join(y, "labels", "train", "y3.txt"), os.path.join(y, "labels", "train", "y3copy.txt"))
+        summary = self.build()
+        where = {f: s for s, files in summary["split_files"].items() for f in files}
+        self.assertEqual(where["src_yolo_y3.jpg"], where["src_yolo_y3copy.png"])
+
+    def test_no_split_puts_everything_in_val_and_freezes_halves(self):
+        split_json = os.path.join(self.reports, "fridge_split.json")
+        summary = self.build(sources=["src_yolo"], no_split=True, split_json=split_json)
+        self.assertEqual(set(summary["images"]), {"val"})
+        with open(split_json, encoding="utf-8") as f:
+            halves = json.load(f)
+        self.assertEqual(len(set(halves["ft"]) & set(halves["eval"])), 0)
+        self.assertEqual(len(halves["ft"]) + len(halves["eval"]), summary["images"]["val"])
+        # 已存在的划分文件不允许被覆盖
+        shutil.rmtree(self.out)
+        with self.assertRaises(SystemExit):
+            self.build(sources=["src_yolo"], no_split=True, split_json=split_json)
+
+    def test_unknown_source_is_rejected(self):
+        with self.assertRaises(SystemExit):
+            self.build(sources=["not_a_source"])
+
+    def test_train_only_source_never_reaches_val_or_test(self):
+        summary = self.build(train_only=["src_voc"])
+        for split in ("val", "test"):
+            self.assertFalse(any(f.startswith("src_voc_") for f in summary["split_files"][split]))
+        self.assertEqual(summary["sources"]["train"].get("src_voc"), 2)
+
+
+class GroupKeyTest(unittest.TestCase):
+    def test_roboflow_augmented_copies_share_a_group(self):
+        a = pd.group_key("src", "apple_1_png.rf.0a1b.jpg")
+        b = pd.group_key("src", "apple_1_png.rf.9f8e.jpg")
+        self.assertEqual(a, b)
+        self.assertNotEqual(a, pd.group_key("src", "apple_2_png.rf.0a1b.jpg"))
+
+    def test_frames_of_one_video_share_a_group(self):
+        a = pd.group_key("src", "VID_20250228_124329_mp4-0010_jpg.rf.eefb.jpg")
+        b = pd.group_key("src", "VID_20250228_124329_mp4-0057_jpg.rf.97a9.jpg")
+        self.assertEqual(a, b)
+        self.assertNotEqual(a, pd.group_key("src", "VID_20250301_090000_mp4-0010_jpg.rf.eefb.jpg"))
+
+    def test_groups_are_per_source(self):
+        self.assertNotEqual(pd.group_key("a", "x.jpg"), pd.group_key("b", "x.jpg"))
+
+
+if __name__ == "__main__":
+    unittest.main()
