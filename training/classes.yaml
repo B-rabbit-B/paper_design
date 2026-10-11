@@ -20,11 +20,12 @@
 #   custom     ：自采数据，标注时直接使用本文件的 name
 #   zenodo     ：Zenodo 数据集 data.yaml 的 30 个类名，已核对；Pepper 抽样为甜椒，Salad 抽样为生菜等叶菜
 #
-# 暂未映射、等待用户决定的情况（见阶段 1 验收记录）
-#   cabbage(白菜)：mendeley 和 openimages 的 "Cabbage" 都是卷心菜（圆白菜），不是大白菜
-#   egg(鸡蛋)    ：openimages 的 "Egg" 抽样 6 张中 3 张是彩绘复活节蛋
-#   chicken、fish：openimages 的 "Chicken"、"Fish" 抽样几乎都是活鸡、活鱼，不采用
-#   pork、beef、spinach：已核实的公开来源中都没有
+# 用户决定（2026-10-12）
+#   cabbage(白菜)：保持"大白菜"。mendeley、openimages 的 "Cabbage" 是卷心菜，不映射；数据取自 Roboflow
+#   egg(鸡蛋)    ：只用 Roboflow 的生鸡蛋。openimages 的 "Egg" 抽样一半是彩绘复活节蛋，不采用
+#   chicken、fish：openimages 的 "Chicken"、"Fish" 几乎都是活鸡、活鱼，不采用；数据取自 Roboflow
+#   pork、beef、spinach：已核实的公开来源中都没有；数据取自 Roboflow
+#   Roboflow 各数据集（rf_*）的类名，要等用户下载后查看真实类名再填写
 version: 1
 classes:
   # ---------------- 蔬菜（id 0–16） ----------------

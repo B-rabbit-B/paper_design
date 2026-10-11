@@ -5,8 +5,8 @@
 Settings → API Keys 中查看，只通过环境变量传给本脚本，不要写进任何文件或提交到仓库：
 
     PowerShell:  $env:ROBOFLOW_API_KEY = "你的key"
-    运行:        uv run --with roboflow python training/download_roboflow.py
-    只下其中几个: uv run --with roboflow python training/download_roboflow.py --only rf_ingredients rf_chicken
+    运行:        uv run --no-project --with roboflow python training/download_roboflow.py
+    只下其中几个: uv run --no-project --with roboflow python training/download_roboflow.py --only rf_ingredients rf_chicken
 
 每个数据集下载到 training/datasets/raw/<目录名>/，目录名就是 classes.yaml 中 sources 的键名；
 已存在的目录会跳过。也可以在网页上手动选 "YOLOv8" 导出 zip，解压到同名目录，效果相同。

@@ -80,7 +80,7 @@
   - 覆盖面最广的是 `yolov5-rznzw/food-ingredients-7txer`，一次覆盖猪、牛、鸡、鱼、大白菜、蛋、虾、豆腐。
   - 真正的冰箱场景只有 `gracelearning/hien_fridge-tathx`，标注了鸡蛋和牛奶盒。
   - 菠菜只有网络图，最弱，建议另外补拍。
-- **获取方式**：导出必须登录 Roboflow 账号，需要用户用自己的账号下载。可以把 API Key 设到环境变量后运行 `uv run --with roboflow python training/download_roboflow.py`，也可以在网页上选 YOLOv8 格式导出，解压到同名目录。
+- **获取方式**：导出必须登录 Roboflow 账号，需要用户用自己的账号下载。可以把 API Key 设到环境变量后运行 `uv run --no-project --with roboflow python training/download_roboflow.py`，也可以在网页上选 YOLOv8 格式导出，解压到同名目录。
 - **注意**：很多版本做过 2～3 倍增强。增强副本的文件名是 `原名_jpg.rf.<hash>`，由 `prepare_dataset.py` 按原名分组，保证不会跨子集。但它们会让框数虚高，论文中需要说明。
 - **未采用**：
   - `halal-*` 系列（pork-only、beef-only、chicken-only）：标为 Public Domain，但图上有图库水印，版权声明不可信。
