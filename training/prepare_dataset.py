@@ -215,9 +215,14 @@ def _plot_distribution(per_class, names, title, path):
         values = [per_class[split].get(n, 0) for n in names]
         ax.barh(names, values, left=left, color=color, label=split)
         left = [a + b for a, b in zip(left, values)]
-    ax.axvline(200, color="#999999", linestyle="--", linewidth=1)
+    for y, (name, total) in enumerate(zip(names, left)):  # 标出训练集框数，0 框类别标红
+        train = per_class["train"].get(name, 0)
+        ax.text(max(total, 1) * 1.05, y, str(train), va="center", fontsize=7,
+                color="#D62728" if train < 200 else "#333333")
+    ax.axvline(200, color="#D62728", linestyle="--", linewidth=1, label="200 (train threshold)")
+    ax.set_xscale("symlog", linthresh=10)  # 对数刻度：类别间相差几百倍时，少数类也看得清
     ax.invert_yaxis()
-    ax.set_xlabel("boxes")
+    ax.set_xlabel("boxes (symlog scale; number = train boxes)")
     ax.set_title(title)
     ax.legend(loc="lower right")
     fig.tight_layout()
