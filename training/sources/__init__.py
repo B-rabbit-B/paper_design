@@ -3,6 +3,7 @@
 
 - yolo.py：images/ 与 labels/ 平行目录（LVIS 子集、Zenodo、Roboflow 导出、labelImg 自采、Open Images 下载结果）
 - voc.py：Pascal VOC XML（Mendeley 孟加拉蔬菜）
+- coco.py：COCO JSON（RF100 fish-market 等 Roboflow 的 COCO 导出）
 """
 import os
 from dataclasses import dataclass, field
@@ -23,11 +24,15 @@ class Sample:
 
 
 def detect_format(raw_dir):
-    """按目录内容判断格式：有 .xml → voc；有 labels/ 下的 .txt → yolo；否则返回 None。"""
-    has_yolo = False
+    """按目录内容判断格式：有 .xml → voc；有 labels/ 下的 .txt → yolo；有 COCO JSON → coco；否则返回 None。"""
+    from .coco import is_coco_json
+
+    has_yolo, has_coco = False, False
     for dirpath, _, files in os.walk(raw_dir):
         if any(f.lower().endswith(".xml") for f in files):
             return "voc"
         if "labels" in os.path.normpath(dirpath).split(os.sep) and any(f.endswith(".txt") for f in files):
             has_yolo = True
-    return "yolo" if has_yolo else None
+        if not has_coco:
+            has_coco = any(f.lower().endswith(".json") and is_coco_json(os.path.join(dirpath, f)) for f in files)
+    return "yolo" if has_yolo else "coco" if has_coco else None

@@ -13,87 +13,100 @@
 #
 # 注意：修改 id 顺序或增删类别后，数据集要重建、模型要重训（总纲 §1.4 回溯重验规则）。
 #
-# 来源类名的核实情况（2026-10-12）
-#   lvis       ：LVIS 果蔬子集 data.yaml 的 names，已逐个核对
-#   mendeley   ：Mendeley 孟加拉蔬菜 VOC 标注中实际出现的类名，已统计核对；该来源只进训练集
-#   openimages ：Open Images V7 class-descriptions-boxable.csv 中的显示名，已核对
-#   custom     ：自采数据，标注时直接使用本文件的 name
-#   zenodo     ：Zenodo 数据集 data.yaml 的 30 个类名，已核对；Pepper 抽样为甜椒，Salad 抽样为生菜等叶菜
+# 来源类名的核实情况（2026-10-12，均已对照原始标注核对）
+#   lvis       ：LVIS 果蔬子集 data.yaml 的 names
+#   zenodo     ：Zenodo 数据集 data.yaml 的 30 个类名；Pepper 抽样为甜椒，Salad 抽样为生菜等叶菜
+#   mendeley   ：Mendeley 孟加拉蔬菜 VOC 标注中的类名；该来源只进训练集
+#   openimages ：Open Images V7 class-descriptions-boxable.csv 中的显示名
+#   vvrh5      ：Roboflow ingredient-vvrh5 的 GitHub 副本，40 类，CC BY 4.0；cabbage 是卷心菜
+#   eggdet     ：HF afshin-dini/Egg-Detection，白壳、褐壳生鸡蛋，MIT
+#   fishmarket ：RF100 fish-market（HF Francesco/fish-market-ggjso），19 种鱼加总类 fish，全部是离水的生鱼，CC BY 4.0
+#   hyunahko   ：HF HYUNAHKO/ingredients_dataset 中的五花肉、鸡肉、鸡胸、菠菜，**许可未声明**（用户已知晓，论文注明）
+#   lvis_full  ：LVIS v1 全量标注中的牛肉、牛奶（COCO 图片），CC BY 4.0
+#   aicook     ：AICook（比利时一台冰箱），MIT；**只作真实场景测试集**，不进训练集（用户决定）
+#   custom     ：用户自拍的生姜、豆腐补充照片，标注时直接使用本文件的 name
 #
 # 用户决定（2026-10-12）
-#   cabbage(白菜)：保持"大白菜"。mendeley、openimages 的 "Cabbage" 是卷心菜，不映射；数据取自 Roboflow
-#   egg(鸡蛋)    ：只用 Roboflow 的生鸡蛋。openimages 的 "Egg" 抽样一半是彩绘复活节蛋，不采用
-#   chicken、fish：openimages 的 "Chicken"、"Fish" 几乎都是活鸡、活鱼，不采用；数据取自 Roboflow
-#   pork、beef、spinach：已核实的公开来源中都没有；数据取自 Roboflow
-#   Roboflow 各数据集（rf_*）的类名，要等用户下载后查看真实类名再填写
+#   cabbage    ：由"大白菜"改为"卷心菜"。免登录来源中大白菜不足 200 框，卷心菜在 mendeley、openimages、vvrh5 中充足
+#   egg        ：不用 openimages 的 "Egg"（抽样一半是彩绘复活节蛋），改用 eggdet、vvrh5
+#   chicken、fish：不用 openimages 的 "Chicken"、"Fish"（几乎都是活鸡、活鱼）
+#   pork、chicken、spinach：用 hyunahko，许可风险在论文中注明
+#   beef、milk ：beef 用 lvis_full（排除熟食场景后抽检）；milk 用 openimages 加 lvis_full
+#   ginger、tofu：用户自拍补充（custom）
 version: 1
 classes:
   # ---------------- 蔬菜（id 0–16） ----------------
   - {id: 0,  name: tomato,      zh: 西红柿, ingredient: 西红柿, unit: piece, default_weight_g: 150,
-     sources: {lvis: [Tomato, tomato], zenodo: [Tomato], mendeley: [Tomato], openimages: [Tomato], custom: [tomato]}}
+     sources: {lvis: [Tomato, tomato], zenodo: [Tomato], mendeley: [Tomato], openimages: [Tomato], vvrh5: [tomato],
+               aicook: [tomato], custom: [tomato]}}
   - {id: 1,  name: cucumber,    zh: 黄瓜,   ingredient: 黄瓜,   unit: piece, default_weight_g: 200,
-     sources: {lvis: [cucumber/cuke], mendeley: [Cucumber], openimages: [Cucumber], custom: [cucumber]}}
+     sources: {lvis: [cucumber/cuke], mendeley: [Cucumber], openimages: [Cucumber], vvrh5: [cucumber], custom: [cucumber]}}
   - {id: 2,  name: eggplant,    zh: 茄子,   ingredient: 茄子,   unit: piece, default_weight_g: 250,
-     sources: {lvis: [eggplant/aubergine], zenodo: [Aubegine], mendeley: [Eggplant], custom: [eggplant]}}
+     sources: {lvis: [eggplant/aubergine], zenodo: [Aubegine], mendeley: [Eggplant], vvrh5: [eggplant], custom: [eggplant]}}
   - {id: 3,  name: potato,      zh: 土豆,   ingredient: 土豆,   unit: piece, default_weight_g: 150,
-     sources: {lvis: [potato], mendeley: [Potato], openimages: [Potato], custom: [potato]}}
+     sources: {lvis: [potato], mendeley: [Potato], openimages: [Potato], vvrh5: [potato], aicook: [potato], custom: [potato]}}
   - {id: 4,  name: carrot,      zh: 胡萝卜, ingredient: 胡萝卜, unit: piece, default_weight_g: 120,
-     sources: {lvis: [carrot], zenodo: [Carrot], mendeley: [Carrots], openimages: [Carrot], custom: [carrot]}}
+     sources: {lvis: [carrot], zenodo: [Carrot], mendeley: [Carrots], openimages: [Carrot], vvrh5: [carrot],
+               aicook: [carrot], custom: [carrot]}}
   - {id: 5,  name: bell_pepper, zh: 青椒,   ingredient: 青椒,   unit: piece, default_weight_g: 60,
-     sources: {lvis: [bell pepper/capsicum], zenodo: [Pepper], mendeley: [Capsicum], openimages: [Bell pepper], custom: [bell_pepper]}}
+     sources: {lvis: [bell pepper/capsicum], zenodo: [Pepper], mendeley: [Capsicum], openimages: [Bell pepper],
+               vvrh5: [bell_pepper], custom: [bell_pepper]}}
   - {id: 6,  name: broccoli,    zh: 西兰花, ingredient: 西兰花, unit: bulk,  default_weight_g: 300,
      sources: {lvis: [broccoli], openimages: [Broccoli], custom: [broccoli]}}
-  - {id: 7,  name: cabbage,     zh: 白菜,   ingredient: 白菜,   unit: bulk,  default_weight_g: 1000,
-     sources: {custom: [cabbage]}}
+  - {id: 7,  name: cabbage,     zh: 卷心菜, ingredient: 卷心菜, unit: bulk,  default_weight_g: 1000,
+     sources: {mendeley: [Cabbage], openimages: [Cabbage], vvrh5: [cabbage], custom: [cabbage]}}
   - {id: 8,  name: onion,       zh: 洋葱,   ingredient: 洋葱,   unit: piece, default_weight_g: 150,
-     sources: {lvis: [onion], custom: [onion]}}
+     sources: {lvis: [onion], vvrh5: [onion], aicook: [onion], custom: [onion]}}
   - {id: 9,  name: garlic,      zh: 大蒜,   ingredient: 大蒜,   unit: piece, default_weight_g: 30,
-     sources: {lvis: [garlic/ail], custom: [garlic]}}
+     sources: {lvis: [garlic/ail], vvrh5: [garlic], custom: [garlic]}}
   - {id: 10, name: ginger,      zh: 生姜,   ingredient: 生姜,   unit: bulk,  default_weight_g: 50,
      sources: {lvis: [ginger/gingerroot], custom: [ginger]}}
   - {id: 11, name: corn,        zh: 玉米,   ingredient: 玉米,   unit: piece, default_weight_g: 250,
-     sources: {lvis: [edible corn/corn/maize], custom: [corn]}}
+     sources: {lvis: [edible corn/corn/maize], vvrh5: [corn], aicook: [corn], custom: [corn]}}
   - {id: 12, name: pumpkin,     zh: 南瓜,   ingredient: 南瓜,   unit: bulk,  default_weight_g: 1000,
      sources: {lvis: [pumpkin], mendeley: [Pumpkin], openimages: [Pumpkin], custom: [pumpkin]}}
   - {id: 13, name: mushroom,    zh: 蘑菇,   ingredient: 蘑菇,   unit: piece, default_weight_g: 20,
-     sources: {lvis: [mushroom], openimages: [Mushroom], custom: [mushroom]}}
+     sources: {lvis: [mushroom], openimages: [Mushroom], aicook: [mushrooms], custom: [mushroom]}}
   - {id: 14, name: lettuce,     zh: 生菜,   ingredient: 生菜,   unit: bulk,  default_weight_g: 300,
      sources: {lvis: [lettuce], zenodo: [Salad], custom: [lettuce]}}
   - {id: 15, name: spinach,     zh: 菠菜,   ingredient: 菠菜,   unit: bulk,  default_weight_g: 250,
-     sources: {custom: [spinach]}}
+     sources: {hyunahko: [spinach], aicook: [spinach], custom: [spinach]}}
   - {id: 16, name: cauliflower, zh: 菜花,   ingredient: 菜花,   unit: piece, default_weight_g: 500,
      sources: {lvis: [cauliflower], mendeley: [Cauliflower], custom: [cauliflower]}}
   # ---------------- 水果（id 17–24） ----------------
   - {id: 17, name: apple,       zh: 苹果,   ingredient: 苹果,   unit: piece, default_weight_g: 200,
-     sources: {lvis: [apple], zenodo: [Apple], openimages: [Apple], custom: [apple]}}
+     sources: {lvis: [apple], zenodo: [Apple], openimages: [Apple], vvrh5: [apple], aicook: [apple], custom: [apple]}}
   - {id: 18, name: banana,      zh: 香蕉,   ingredient: 香蕉,   unit: piece, default_weight_g: 120,
-     sources: {lvis: [banana], zenodo: [Banana], openimages: [Banana], custom: [banana]}}
+     sources: {lvis: [banana], zenodo: [Banana], openimages: [Banana], vvrh5: [banana], aicook: [banana], custom: [banana]}}
   - {id: 19, name: orange,      zh: 橙子,   ingredient: 橙子,   unit: piece, default_weight_g: 150,
-     sources: {lvis: [orange/orange fruit], zenodo: [Orange], openimages: [Orange (fruit)], custom: [orange]}}
+     sources: {lvis: [orange/orange fruit], zenodo: [Orange], openimages: [Orange (fruit)], vvrh5: [orange], custom: [orange]}}
   - {id: 20, name: pear,        zh: 梨,     ingredient: 梨,     unit: piece, default_weight_g: 200,
-     sources: {lvis: [pear], zenodo: [Pear], openimages: [Pear], custom: [pear]}}
+     sources: {lvis: [pear], zenodo: [Pear], openimages: [Pear], vvrh5: [pear], custom: [pear]}}
   - {id: 21, name: grape,       zh: 葡萄,   ingredient: 葡萄,   unit: bulk,  default_weight_g: 300,
-     sources: {lvis: [grape], zenodo: [Grape], openimages: [Grape], custom: [grape]}}
+     sources: {lvis: [grape], zenodo: [Grape], openimages: [Grape], vvrh5: [grape, grapes], custom: [grape]}}
   - {id: 22, name: strawberry,  zh: 草莓,   ingredient: 草莓,   unit: piece, default_weight_g: 15,
-     sources: {lvis: [Strawberry, strawberry], zenodo: [Strawberry], openimages: [Strawberry], custom: [strawberry]}}
+     sources: {lvis: [Strawberry, strawberry], zenodo: [Strawberry], openimages: [Strawberry], vvrh5: [strawberry],
+               aicook: [strawberries], custom: [strawberry]}}
   - {id: 23, name: lemon,       zh: 柠檬,   ingredient: 柠檬,   unit: piece, default_weight_g: 80,
-     sources: {lvis: [lemon], zenodo: [Lemon], mendeley: [Lemon], openimages: [Lemon (plant)], custom: [lemon]}}
+     sources: {lvis: [lemon], zenodo: [Lemon], mendeley: [Lemon], openimages: [Lemon (plant)], vvrh5: [lemon], custom: [lemon]}}
   - {id: 24, name: mango,       zh: 芒果,   ingredient: 芒果,   unit: piece, default_weight_g: 250,
-     sources: {zenodo: [Mango], openimages: [Mango], custom: [mango]}}
+     sources: {zenodo: [Mango], openimages: [Mango], vvrh5: [mango], custom: [mango]}}
   # ---------------- 蛋肉水产豆乳（id 25–32） ----------------
   - {id: 25, name: egg,         zh: 鸡蛋,   ingredient: 鸡蛋,   unit: piece, default_weight_g: 50,
-     sources: {custom: [egg]}}
+     sources: {eggdet: [white-egg, brown-egg], vvrh5: [egg], aicook: [eggs], custom: [egg]}}
   - {id: 26, name: chicken,     zh: 鸡肉,   ingredient: 鸡肉,   unit: bulk,  default_weight_g: 500,
-     sources: {custom: [chicken]}}
+     sources: {hyunahko: [chicken, chicken_breast], aicook: [chicken, chicken_breast], custom: [chicken]}}
   - {id: 27, name: pork,        zh: 猪肉,   ingredient: 猪肉,   unit: bulk,  default_weight_g: 250,
-     sources: {custom: [pork]}}
+     sources: {hyunahko: [pork_belly], custom: [pork]}}
   - {id: 28, name: beef,        zh: 牛肉,   ingredient: 牛肉,   unit: bulk,  default_weight_g: 250,
-     sources: {custom: [beef]}}
+     sources: {lvis_full: [beef_(food)], aicook: [beef, ground_beef], custom: [beef]}}
   - {id: 29, name: fish,        zh: 鱼,     ingredient: 鱼,     unit: bulk,  default_weight_g: 500,
-     sources: {custom: [fish]}}
+     sources: {fishmarket: [fish, aair, boal, chapila, deshi puti, foli, ilish, kal baush, katla, koi, magur, mrigel,
+                            pabda, pangas, puti, rui, shol, taki, tara baim, telapiya],
+               custom: [fish]}}
   - {id: 30, name: shrimp,      zh: 虾,     ingredient: 虾,     unit: piece, default_weight_g: 15,
-     sources: {openimages: [Shrimp], custom: [shrimp]}}
+     sources: {openimages: [Shrimp], aicook: [shrimp], custom: [shrimp]}}
   - {id: 31, name: tofu,        zh: 豆腐,   ingredient: 豆腐,   unit: bulk,  default_weight_g: 300,
      sources: {lvis: [bean curd/tofu], custom: [tofu]}}
   - {id: 32, name: milk,        zh: 牛奶,   ingredient: 牛奶,   unit: piece, default_weight_g: 250,
-     sources: {openimages: [Milk], custom: [milk]}}
+     sources: {openimages: [Milk], lvis_full: [milk], aicook: [milk], custom: [milk]}}

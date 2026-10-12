@@ -37,9 +37,9 @@ from PIL import Image, ImageDraw  # noqa: E402
 
 import config  # noqa: E402
 from core import food_classes  # noqa: E402
-from sources import detect_format, voc, yolo  # noqa: E402
+from sources import coco, detect_format, voc, yolo  # noqa: E402
 
-ADAPTERS = {"yolo": yolo.iter_samples, "voc": voc.iter_samples}
+ADAPTERS = {"yolo": yolo.iter_samples, "voc": voc.iter_samples, "coco": coco.iter_samples}
 SPLITS = ("train", "val", "test")
 MARKER = ".prepare_dataset"  # 本脚本生成的目录里才有这个文件；没有它的非空目录拒绝清空
 DEGENERATE_HASHES = {0, (1 << 64) - 1}  # 纯色图的平均哈希，不能用来判定近重复
@@ -454,8 +454,11 @@ def main():
     print(json.dumps({k: summary[k] for k in ("images", "corrupt", "duplicates_removed", "dropped_no_boxes", "filtered",
                                              "cross_split_duplicates", "cross_split_near_duplicates", "groups",
                                              "elapsed_seconds")}, ensure_ascii=False, indent=2))
-    low = {n: c for n, c in summary["per_class"]["train"].items() if c < 200}
-    print(f"train 框数 < 200 的类别（{len(low)} 个）：{low}")
+    if args.no_split:  # 测试集不进训练，200 框门槛不适用，只报告各类框数
+        print(f"各类框数：{ {n: c for n, c in summary['per_class']['val'].items() if c} }")
+    else:
+        low = {n: c for n, c in summary["per_class"]["train"].items() if c < 200}
+        print(f"train 框数 < 200 的类别（{len(low)} 个）：{low}")
 
 
 if __name__ == "__main__":

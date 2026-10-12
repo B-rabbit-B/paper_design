@@ -22,7 +22,8 @@ import yaml  # noqa: E402
 from PIL import Image, ImageDraw  # noqa: E402
 
 import prepare_dataset as pd  # noqa: E402
-from sources import voc, yolo  # noqa: E402
+from sources import coco as coco_adapter  # noqa: E402
+from sources import detect_format, voc, yolo  # noqa: E402
 
 CLASSES_YAML = {
     "version": 1,
@@ -117,6 +118,31 @@ class AdapterTest(Fixture):
         s = next(s for s in yolo.iter_samples(os.path.join(self.raw, "src_yolo")) if s.image.endswith("bad.jpg"))
         self.assertEqual(len(s.boxes), 1)
         self.assertEqual(s.corrupt, 4)
+
+    def test_yolo_adapter_handles_utf8_bom(self):
+        # 有的数据集（如 HF afshin-dini/Egg-Detection）标注文件带 BOM，首行类别号会读成 '﻿0'
+        d = os.path.join(self.tmp, "bom")
+        _image(os.path.join(d, "images", "a.jpg"), seed=500)
+        _write(os.path.join(d, "data.yaml"), "names: [egg]\n")
+        os.makedirs(os.path.join(d, "labels"), exist_ok=True)
+        with open(os.path.join(d, "labels", "a.txt"), "w", encoding="utf-8-sig") as f:  # 写入时带 BOM
+            f.write("0 0.5 0.5 0.2 0.2\n0 0.3 0.3 0.1 0.1\n")
+        s = next(yolo.iter_samples(d))
+        self.assertEqual((len(s.boxes), s.corrupt), (2, 0))
+
+    def test_coco_adapter_and_format_detection(self):
+        d = os.path.join(self.tmp, "coco_src", "train")
+        _image(os.path.join(d, "c0.jpg"), seed=600, size=(100, 50))
+        coco = {"images": [{"id": 7, "file_name": "c0.jpg", "width": 100, "height": 50}],
+                "categories": [{"id": 1, "name": "rui"}, {"id": 2, "name": "katla"}],
+                "annotations": [{"image_id": 7, "category_id": 1, "bbox": [10, 5, 20, 20]},
+                                {"image_id": 7, "category_id": 2, "bbox": [50, 10, 0, 5]}]}  # 第二个框宽度为 0
+        _write(os.path.join(d, "_annotations.coco.json"), json.dumps(coco))
+        root = os.path.join(self.tmp, "coco_src")
+        self.assertEqual(detect_format(root), "coco")
+        s = next(coco_adapter.iter_samples(root))
+        self.assertEqual(s.boxes, [("rui", 10.0, 5.0, 30.0, 25.0)])
+        self.assertEqual(s.corrupt, 1)
 
     def test_voc_adapter(self):
         samples = list(voc.iter_samples(os.path.join(self.raw, "src_voc")))

@@ -19,7 +19,7 @@ _EPS = 1e-6
 def _read_names(directory):
     y = os.path.join(directory, "data.yaml")
     if os.path.exists(y):
-        with open(y, encoding="utf-8") as f:
+        with open(y, encoding="utf-8-sig") as f:
             names = (yaml.safe_load(f) or {}).get("names")
         if isinstance(names, dict):
             return {int(k): str(v) for k, v in names.items()}
@@ -27,7 +27,7 @@ def _read_names(directory):
             return {i: str(v) for i, v in enumerate(names)}
     t = os.path.join(directory, "classes.txt")
     if os.path.exists(t):
-        with open(t, encoding="utf-8") as f:
+        with open(t, encoding="utf-8-sig") as f:
             return {i: line.strip() for i, line in enumerate(f.read().splitlines()) if line.strip()}
     return None
 
@@ -103,7 +103,7 @@ def iter_samples(raw_dir):
             with Image.open(image) as im:
                 width, height = im.size
             sample = Sample(image=image, width=width, height=height)
-            with open(label_path, encoding="utf-8") as f:
+            with open(label_path, encoding="utf-8-sig") as f:  # utf-8-sig：兼容带 BOM 的标注文件
                 for line in f:
                     if not line.strip():
                         continue
