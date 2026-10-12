@@ -191,6 +191,44 @@ class BuildTest(Fixture):
         with self.assertRaises(SystemExit):
             self.build(sources=["not_a_source"])
 
+    def _add_dense_and_pile_images(self):
+        """dense：5 个极小的番茄框（每个面积占比 0.0004）；pile：5 个大框（每个 0.09）。"""
+        y = os.path.join(self.raw, "src_yolo")
+        _image(os.path.join(y, "images", "train", "dense.jpg"), seed=300)
+        _write(os.path.join(y, "labels", "train", "dense.txt"),
+               "".join(f"0 {0.1 + i * 0.15:.2f} 0.5 0.02 0.02\n" for i in range(5)))
+        _image(os.path.join(y, "images", "train", "pile.jpg"), seed=301)
+        _write(os.path.join(y, "labels", "train", "pile.txt"),
+               "".join(f"0 {0.2 + i * 0.15:.2f} 0.5 0.3 0.3\n" for i in range(5)))
+
+    def test_dense_small_filter_drops_only_dense_small_images(self):
+        self._add_dense_and_pile_images()
+        summary = self.build(dense_sources=["src_yolo"], dense_min_boxes=5, dense_max_median_area=0.002)
+        files = {f for fs in summary["split_files"].values() for f in fs}
+        self.assertNotIn("src_yolo_dense.jpg", files)
+        self.assertIn("src_yolo_pile.jpg", files)
+        self.assertEqual(summary["filtered"]["dense"], {"src_yolo": 1})
+
+    def test_dense_filter_only_applies_to_listed_sources(self):
+        self._add_dense_and_pile_images()
+        summary = self.build(dense_sources=["src_voc"], dense_min_boxes=5, dense_max_median_area=0.002)
+        files = {f for fs in summary["split_files"].values() for f in fs}
+        self.assertIn("src_yolo_dense.jpg", files)
+
+    def test_exclude_list_drops_listed_images(self):
+        listing = os.path.join(self.tmp, "exclude.txt")
+        _write(listing, "# 注释行\ny1\ny2\n\n")
+        summary = self.build(exclude_lists={"src_yolo": listing})
+        files = {f for fs in summary["split_files"].values() for f in fs}
+        self.assertNotIn("src_yolo_y1.jpg", files)
+        self.assertNotIn("src_yolo_y2.jpg", files)
+        self.assertIn("src_yolo_y5.jpg", files)
+        self.assertEqual(summary["filtered"]["excluded_list"], {"src_yolo": 2})
+
+    def test_missing_exclude_list_is_an_error(self):
+        with self.assertRaises(SystemExit):
+            self.build(exclude_lists={"src_yolo": os.path.join(self.tmp, "nope.txt")})
+
     def test_train_only_source_never_reaches_val_or_test(self):
         summary = self.build(train_only=["src_voc"])
         for split in ("val", "test"):
