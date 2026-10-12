@@ -119,6 +119,21 @@ class AdapterTest(Fixture):
         self.assertEqual(len(s.boxes), 1)
         self.assertEqual(s.corrupt, 4)
 
+    def test_yolo_adapter_keeps_boxes_with_rounding_overshoot(self):
+        # LVIS 的标注里有 cy - h/2 = -2.6e-6 这样的浮点误差，框本身是合法的，应裁剪到边界后保留
+        d = os.path.join(self.tmp, "overshoot")
+        _image(os.path.join(d, "images", "a.jpg"), seed=501)
+        _write(os.path.join(d, "data.yaml"), "names: [onion]\n")
+        _write(os.path.join(d, "labels", "a.txt"),
+               "0 0.38580555555555557 0.10069270833333334 0.3271574074074074 0.20139062500000002\n"
+               "0 0.5198333333333333 0.952234375 0.14780555555555555 0.09553645833333334\n"
+               "0 0.5 0.5 0.2 0.2\n0 0.95 0.5 0.2 0.2\n")  # 最后一行越界 0.05，仍是坏框
+        s = next(yolo.iter_samples(d))
+        self.assertEqual((len(s.boxes), s.corrupt), (3, 1))
+        _, x1, y1, x2, y2 = s.boxes[0]
+        self.assertEqual(y1, 0.0)
+        self.assertEqual(s.boxes[1][4], s.height)
+
     def test_yolo_adapter_handles_utf8_bom(self):
         # 有的数据集（如 HF afshin-dini/Egg-Detection）标注文件带 BOM，首行类别号会读成 '﻿0'
         d = os.path.join(self.tmp, "bom")
@@ -161,6 +176,7 @@ class BuildTest(Fixture):
         self.assertEqual(summary["duplicates_removed"], 1)
         self.assertEqual(summary["dropped_no_boxes"], 1)
         self.assertEqual(summary["corrupt"], 4)
+        self.assertEqual(summary["corrupt_by_source"], {"src_yolo": 4})  # 原始标注中被丢弃的坏框出自哪个来源
         self.assertEqual(summary["cross_split_duplicates"], 0)
         total_tomato = sum(summary["per_class"][s].get("tomato", 0) for s in ("train", "val", "test"))
         self.assertEqual(total_tomato, 20 + 2)  # 每张 y* 1 个，voc 每张 1 个；bad.jpg 只剩 carrot
@@ -244,16 +260,36 @@ class BuildTest(Fixture):
     def test_exclude_list_drops_listed_images(self):
         listing = os.path.join(self.tmp, "exclude.txt")
         _write(listing, "# 注释行\ny1\ny2\n\n")
-        summary = self.build(exclude_lists={"src_yolo": listing})
+        summary = self.build(exclude_lists={"src_yolo": [listing]})
         files = {f for fs in summary["split_files"].values() for f in fs}
         self.assertNotIn("src_yolo_y1.jpg", files)
         self.assertNotIn("src_yolo_y2.jpg", files)
         self.assertIn("src_yolo_y5.jpg", files)
         self.assertEqual(summary["filtered"]["excluded_list"], {"src_yolo": 2})
 
+    def test_exclude_list_uses_first_column_only(self):
+        # clip_filter.py 写出的清单每行是"图片主干<TAB>概率"
+        listing = os.path.join(self.tmp, "cooked.txt")
+        _write(listing, "# 注释\ny3\t0.120\ny4\t0.300\n")
+        summary = self.build(exclude_lists={"src_yolo": [listing]})
+        files = {f for fs in summary["split_files"].values() for f in fs}
+        self.assertNotIn("src_yolo_y3.jpg", files)
+        self.assertNotIn("src_yolo_y4.jpg", files)
+
+    def test_multiple_exclude_lists_for_one_source_are_merged(self):
+        # 同一来源可有多份清单：CLIP 自动生成的一份，人工复核的一份（重跑 CLIP 不会覆盖人工结果）
+        auto, manual = os.path.join(self.tmp, "auto.txt"), os.path.join(self.tmp, "manual.txt")
+        _write(auto, "y1\t0.1\n")
+        _write(manual, "y2  熟肉\ny1  重复也没关系\n")
+        summary = self.build(exclude_lists={"src_yolo": [auto, manual]})
+        files = {f for fs in summary["split_files"].values() for f in fs}
+        self.assertNotIn("src_yolo_y1.jpg", files)
+        self.assertNotIn("src_yolo_y2.jpg", files)
+        self.assertEqual(summary["filtered"]["excluded_list"], {"src_yolo": 2})
+
     def test_missing_exclude_list_is_an_error(self):
         with self.assertRaises(SystemExit):
-            self.build(exclude_lists={"src_yolo": os.path.join(self.tmp, "nope.txt")})
+            self.build(exclude_lists={"src_yolo": [os.path.join(self.tmp, "nope.txt")]})
 
     def test_train_only_source_never_reaches_val_or_test(self):
         summary = self.build(train_only=["src_voc"])

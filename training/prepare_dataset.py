@@ -4,16 +4,19 @@
 设计见 docs/plan/01 §7 与总纲阶段 1。在项目根目录、venv 中运行：
 
     python training/prepare_dataset.py --check-classes
-    python training/prepare_dataset.py --sources lvis zenodo mendeley openimages
-    python training/prepare_dataset.py --sources custom --no-split --out training/datasets/fridge_test
+    python training/prepare_dataset.py --sources lvis zenodo mendeley openimages vvrh5 eggdet fishmarket hyunahko lvis_full web_raw_beef custom
+    python training/prepare_dataset.py --sources aicook --no-split --out training/datasets/fridge_test
     python training/prepare_dataset.py --preview 20 --out training/reports/dataset/samples
 
-数据源 = training/datasets/raw/ 下的一个子目录，格式（YOLO / VOC）自动识别；
+数据源 = training/datasets/raw/ 下的一个子目录，格式（YOLO / VOC / COCO）自动识别；
 它的类名在 training/classes.yaml 各类的 sources.<子目录名> 中声明。
 
 防止数据泄漏的做法：
 - 同一张原图的 Roboflow 增强副本、同一段视频抽出的帧、平均哈希相同的近重复图，归为一组，同组只进同一个子集；
 - --train-only 指定的来源（默认 mendeley：3534 张图只来自 10 段视频）全部放入训练集，不参与验证和测试。
+
+过滤（--no-filters 可全部关闭，用于对比实验）：LVIS 的密集小框规则，以及 DEFAULT_EXCLUDES 中各来源的排除清单
+（熟食场景、判为熟的肉菜），清单里的图片整张排除。
 """
 import argparse
 import hashlib
@@ -47,8 +50,15 @@ DEGENERATE_HASHES = {0, (1 << 64) - 1}  # 纯色图的平均哈希，不能用�
 DEFAULT_RAW = os.path.join(ROOT, "training", "datasets", "raw")
 DEFAULT_OUT = os.path.join(ROOT, "training", "datasets", "yolo")
 DEFAULT_REPORTS = os.path.join(ROOT, "training", "reports", "dataset")
-# LVIS 中含熟食场景的图片清单（由 training/lvis_processed_food.py 依据 COCO 标注生成）
-DEFAULT_LVIS_EXCLUDE = os.path.join(DEFAULT_REPORTS, "lvis_processed_food.txt")
+# 默认排除清单，只对本次参与合并的来源生效；同一来源可有多份，取并集：
+#   lvis         含熟食场景的图片（training/lvis_processed_food.py 依据 COCO 标注生成）
+#   hyunahko     CLIP 判为熟的肉和菜肴（training/clip_filter.py 生成）、人工复核挑出的熟食（*_manual.txt，手写）
+#   web_raw_beef 人工逐张复核排除的图（熟肉、菜肴、非牛肉、无关图、框不准等）；CLIP 预筛在画框之前已经做过
+# 人工清单单独存放，重跑 clip_filter.py 不会覆盖人工复核的结果
+DEFAULT_EXCLUDES = [(source, os.path.join(DEFAULT_REPORTS, name)) for source, name in (
+    ("lvis", "lvis_processed_food.txt"),
+    ("hyunahko", "hyunahko_cooked.txt"), ("hyunahko", "hyunahko_manual.txt"),
+    ("web_raw_beef", "web_raw_beef_manual.txt"))]
 
 _RF_SUFFIX = re.compile(r"\.rf\.[0-9a-fA-F]+$")
 _VIDEO_FRAME = re.compile(r"^(.*_(?:mp4|mov|avi))-\d+(?:_jpe?g|_png)?$", re.IGNORECASE)
@@ -99,8 +109,8 @@ def _display_path(path):
 def _read_exclude_list(path):
     if not os.path.exists(path):
         sys.exit(f"排除清单不存在：{path}")
-    with open(path, encoding="utf-8") as f:
-        return {line.strip() for line in f if line.strip() and not line.startswith("#")}
+    with open(path, encoding="utf-8") as f:  # 每行第一列是图片主干，其后的列（如概率）只供人查看
+        return {line.split()[0] for line in f if line.strip() and not line.startswith("#")}
 
 
 def _collect(sources, raw_root, classes, train_only, dense=None, excludes=None):
@@ -108,7 +118,7 @@ def _collect(sources, raw_root, classes, train_only, dense=None, excludes=None):
     dense = dense or {"sources": set()}
     excludes = excludes or {}
     records = []
-    stats = {"corrupt": 0, "dropped_no_boxes": 0, "unmapped_boxes": defaultdict(Counter),
+    stats = {"corrupt": 0, "corrupt_by_source": Counter(), "dropped_no_boxes": 0, "unmapped_boxes": defaultdict(Counter),
              "filtered_dense": Counter(), "filtered_excluded": Counter()}
     for source in sources:
         src_dir = os.path.join(raw_root, source)
@@ -123,6 +133,7 @@ def _collect(sources, raw_root, classes, train_only, dense=None, excludes=None):
         used = set()
         for sample in ADAPTERS[fmt](src_dir):
             stats["corrupt"] += sample.corrupt
+            stats["corrupt_by_source"][source] += sample.corrupt
             if os.path.splitext(os.path.basename(sample.image))[0] in excludes.get(source, ()):
                 stats["filtered_excluded"][source] += 1
                 continue
@@ -277,14 +288,14 @@ def build_dataset(sources, raw_root=DEFAULT_RAW, out=DEFAULT_OUT, classes_path=N
                   exclude_lists=None):
     """合并 sources 到 out，返回 summary 字典（同时写入 out/summary.json）。
 
-    dense_sources 中的来源启用"密集小框"过滤；exclude_lists = {来源: 清单文件}，清单中的图片整张排除。
+    dense_sources 中的来源启用"密集小框"过滤；exclude_lists = {来源: [清单文件, ...]}，清单中的图片整张排除。
     """
     if no_split and split_json and os.path.exists(split_json):
         sys.exit(f"{split_json} 已存在。自采集的 50/50 划分一旦生成就不得修改（总纲 1.12），如确需重建请手动处理")
     started = time.time()
     classes = food_classes.load_classes(classes_path)
     names = classes["names"]
-    excludes = {src: _read_exclude_list(path) for src, path in (exclude_lists or {}).items()}
+    excludes = {src: set().union(*map(_read_exclude_list, paths)) for src, paths in (exclude_lists or {}).items()}
     dense = {"sources": set(dense_sources), "min_boxes": dense_min_boxes, "max_median_area": dense_max_median_area}
 
     records, stats = _collect(sources, raw_root, classes, set(train_only), dense, excludes)
@@ -323,13 +334,14 @@ def build_dataset(sources, raw_root=DEFAULT_RAW, out=DEFAULT_OUT, classes_path=N
         "per_class": per_class,
         "per_class_images": per_class_images,
         "sources": {s: dict(by_source[s]) for s in SPLITS},
-        "corrupt": stats["corrupt"],
+        "corrupt": stats["corrupt"],  # 原始标注中被丢弃的坏框数（零面积、越界、类别越界、格式错误），输出中不含这些框
+        "corrupt_by_source": {s: c for s, c in stats["corrupt_by_source"].items() if c},
         "duplicates_removed": duplicates_removed,
         "dropped_no_boxes": stats["dropped_no_boxes"],
         "filtered": {"dense": dict(stats["filtered_dense"]), "excluded_list": dict(stats["filtered_excluded"])},
         "filter_params": {"dense_sources": sorted(dense_sources), "dense_min_boxes": dense_min_boxes,
                           "dense_max_median_area": dense_max_median_area,
-                          "exclude_lists": {s: _display_path(p) for s, p in (exclude_lists or {}).items()}},
+                          "exclude_lists": {s: [_display_path(p) for p in ps] for s, ps in (exclude_lists or {}).items()}},
         "cross_split_duplicates": sum(1 for v in split_of_md5.values() if len(v) > 1),
         "cross_split_near_duplicates": sum(1 for v in split_of_ahash.values() if len(v) > 1),
         "groups": len(groups),
@@ -415,7 +427,8 @@ def main():
     parser.add_argument("--dense-max-median-area", type=float, default=0.002,
                         help="同类框面积占比中位数低于此值才算小框（默认 0.002，即 0.2%%）")
     parser.add_argument("--exclude-list", action="append", metavar="SOURCE=PATH",
-                        help=f"排除清单，可多次指定；默认 lvis={os.path.relpath(DEFAULT_LVIS_EXCLUDE, ROOT)}")
+                        help="排除清单，可多次指定（同一来源可有多份），指定后替换全部默认清单；默认："
+                             + "、".join(f"{s}={_display_path(p)}" for s, p in DEFAULT_EXCLUDES))
     parser.add_argument("--no-filters", action="store_true", help="关闭密集小框过滤和排除清单（用于对比实验）")
     parser.add_argument("--preview", type=int, metavar="N", help="从 --dataset 抽 N 张画框，输出到 --out")
     parser.add_argument("--dataset", default=DEFAULT_OUT, help="--preview 读取的数据集目录")
@@ -438,12 +451,12 @@ def main():
         dense_sources, exclude_lists = [], {}
     else:
         dense_sources = [s for s in args.dense_sources if s in args.sources]
-        pairs = args.exclude_list or [f"lvis={DEFAULT_LVIS_EXCLUDE}"]
+        pairs = args.exclude_list or [f"{s}={p}" for s, p in DEFAULT_EXCLUDES]
         exclude_lists = {}
         for pair in pairs:
             source, _, path = pair.partition("=")
             if source in args.sources:
-                exclude_lists[source] = path if os.path.isabs(path) else os.path.join(ROOT, path)
+                exclude_lists.setdefault(source, []).append(path if os.path.isabs(path) else os.path.join(ROOT, path))
     summary = build_dataset(args.sources, raw_root=args.raw_root, out=out, classes_path=args.classes,
                             split=tuple(args.split), seed=args.seed, yaml_path=yaml_path,
                             reports_dir=args.reports_dir, no_split=args.no_split,
@@ -451,7 +464,7 @@ def main():
                             train_only=args.train_only, dense_sources=dense_sources,
                             dense_min_boxes=args.dense_min_boxes, dense_max_median_area=args.dense_max_median_area,
                             exclude_lists=exclude_lists)
-    print(json.dumps({k: summary[k] for k in ("images", "corrupt", "duplicates_removed", "dropped_no_boxes", "filtered",
+    print(json.dumps({k: summary[k] for k in ("images", "corrupt", "corrupt_by_source", "duplicates_removed", "dropped_no_boxes", "filtered",
                                              "cross_split_duplicates", "cross_split_near_duplicates", "groups",
                                              "elapsed_seconds")}, ensure_ascii=False, indent=2))
     if args.no_split:  # 测试集不进训练，200 框门槛不适用，只报告各类框数

@@ -22,7 +22,10 @@
 #   eggdet     ：HF afshin-dini/Egg-Detection，白壳、褐壳生鸡蛋，MIT
 #   fishmarket ：RF100 fish-market（HF Francesco/fish-market-ggjso），19 种鱼加总类 fish，全部是离水的生鱼，CC BY 4.0
 #   hyunahko   ：HF HYUNAHKO/ingredients_dataset 中的五花肉、鸡肉、鸡胸、菠菜，**许可未声明**（用户已知晓，论文注明）
-#   lvis_full  ：LVIS v1 全量标注中的牛肉、牛奶（COCO 图片），CC BY 4.0
+#   lvis_full  ：LVIS v1 全量标注中的牛奶（COCO 图片，多为冰箱里的奶盒奶桶），CC BY 4.0。
+#                其中的 beef_(food) 抽样 20 张只有 2 张是生牛肉，其余是炖菜、牛排等熟食，不采用
+#   web_raw_beef：从 Openverse 爬取的 CC 许可生牛肉照片（training/crawl_openverse.py，用户决定网上爬取），
+#                Grounding DINO 自动画框、CLIP 筛掉熟牛肉后人工逐张核对；每张图的作者与许可见候选目录的 manifest.csv
 #   aicook     ：AICook（比利时一台冰箱），MIT；**只作真实场景测试集**，不进训练集（用户决定）
 #   custom     ：用户自拍的生姜、豆腐补充照片，标注时直接使用本文件的 name
 #
@@ -31,7 +34,7 @@
 #   egg        ：不用 openimages 的 "Egg"（抽样一半是彩绘复活节蛋），改用 eggdet、vvrh5
 #   chicken、fish：不用 openimages 的 "Chicken"、"Fish"（几乎都是活鸡、活鱼）
 #   pork、chicken、spinach：用 hyunahko，许可风险在论文中注明
-#   beef、milk ：beef 用 lvis_full（排除熟食场景后抽检）；milk 用 openimages 加 lvis_full
+#   beef、milk ：milk 用 openimages 加 lvis_full；beef 用网上爬取的生牛肉（web_raw_beef，用户决定；LVIS 牛肉几乎都是熟的）
 #   ginger、tofu：用户自拍补充（custom）
 version: 1
 classes:
@@ -99,7 +102,7 @@ classes:
   - {id: 27, name: pork,        zh: 猪肉,   ingredient: 猪肉,   unit: bulk,  default_weight_g: 250,
      sources: {hyunahko: [pork_belly], custom: [pork]}}
   - {id: 28, name: beef,        zh: 牛肉,   ingredient: 牛肉,   unit: bulk,  default_weight_g: 250,
-     sources: {lvis_full: [beef_(food)], aicook: [beef, ground_beef], custom: [beef]}}
+     sources: {web_raw_beef: [raw_beef], aicook: [beef, ground_beef], custom: [beef]}}
   - {id: 29, name: fish,        zh: 鱼,     ingredient: 鱼,     unit: bulk,  default_weight_g: 500,
      sources: {fishmarket: [fish, aair, boal, chapila, deshi puti, foli, ilish, kal baush, katla, koi, magur, mrigel,
                             pabda, pangas, puti, rui, shol, taki, tara baim, telapiya],

@@ -5,7 +5,8 @@ LVIS 果蔬子集里没有牛肉和牛奶，而 LVIS v1 全量标注（CC BY 4.0
 这里用 ijson 流式解析，只保留需要的条目，内存占用很小。
 
 排除规则（与 lvis_processed_food.py 的思路一致）：
-- 熟食场景：图中标有 pizza、sandwich、hotdog、cake、doughnut、fork、spoon 任一类别的，整张排除；
+- 熟食场景：图中标有 PROCESSED 中任一类别（披萨、三明治、汉堡、香肠、各种蛋糕、甜甜圈、叉、勺、
+  熟牛排、牛排刀等）的，整张排除；
 - 漏标：LVIS 是联合标注，每张图会列出"没有标全"的类别（not_exhaustive_category_ids）。
   目标类别在其中的图整张排除，避免未标出的同类物体在训练时被当作背景。
 
@@ -26,7 +27,11 @@ from concurrent.futures import ThreadPoolExecutor
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "training", "datasets", "raw")
 META = os.path.join(RAW, "_lvis_full_meta")
-PROCESSED = ["pizza", "sandwich", "hotdog", "cake", "doughnut", "fork", "spoon"]
+# LVIS v1 的实际类名（与 COCO 不同：没有 hotdog，蛋糕、勺子分成多个类）。
+# steak_(food) 在 LVIS 中基本是熟牛排，steak_knife 也提示正在吃牛排，所以一并作为熟食场景排除。
+PROCESSED = ["pizza", "sandwich", "hamburger", "sausage", "burrito", "taco",
+             "cake", "birthday_cake", "chocolate_cake", "wedding_cake", "cupcake", "doughnut",
+             "fork", "spoon", "soupspoon", "steak_(food)", "steak_knife"]
 
 
 def stream(zip_path, prefix):

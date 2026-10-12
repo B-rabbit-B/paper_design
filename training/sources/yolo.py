@@ -13,7 +13,7 @@ from PIL import Image
 
 from . import IMAGE_EXTS, Sample
 
-_EPS = 1e-6
+_EPS = 1e-3  # 越界容差：约等于千像素宽图上的 1 个像素，容纳 LVIS 等标注中的浮点误差（越界部分随后裁剪）
 
 
 def _read_names(directory):
