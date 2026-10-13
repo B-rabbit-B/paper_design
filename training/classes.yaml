@@ -36,6 +36,9 @@
 #   pork、chicken、spinach：用 hyunahko，许可风险在论文中注明
 #   beef、milk ：milk 用 openimages 加 lvis_full；beef 用网上爬取的生牛肉（web_raw_beef，用户决定；LVIS 牛肉几乎都是熟的）
 #   ginger、tofu：用户自拍补充（custom）
+#   lemon、orange、banana：近义类并入（2026-10-13，中期审查指出同一外观在不同来源里有的标、有的不标）——
+#                青柠（lvis lime、zenodo Lime、vvrh5 lime）并入 lemon，mendeley 的 Lemon 本来就是青柠；
+#                橘子（lvis mandarin orange、clementine）并入 orange；青香蕉（mendeley Green Banana）并入 banana
 version: 1
 classes:
   # ---------------- 蔬菜（id 0–16） ----------------
@@ -80,9 +83,9 @@ classes:
   - {id: 17, name: apple,       zh: 苹果,   ingredient: 苹果,   unit: piece, default_weight_g: 200,
      sources: {lvis: [apple], zenodo: [Apple], openimages: [Apple], vvrh5: [apple], aicook: [apple], custom: [apple]}}
   - {id: 18, name: banana,      zh: 香蕉,   ingredient: 香蕉,   unit: piece, default_weight_g: 120,
-     sources: {lvis: [banana], zenodo: [Banana], openimages: [Banana], vvrh5: [banana], aicook: [banana], custom: [banana]}}
+     sources: {lvis: [banana], zenodo: [Banana], mendeley: [Green Banana], openimages: [Banana], vvrh5: [banana], aicook: [banana], custom: [banana]}}
   - {id: 19, name: orange,      zh: 橙子,   ingredient: 橙子,   unit: piece, default_weight_g: 150,
-     sources: {lvis: [orange/orange fruit], zenodo: [Orange], openimages: [Orange (fruit)], vvrh5: [orange], custom: [orange]}}
+     sources: {lvis: [orange/orange fruit, mandarin orange, clementine], zenodo: [Orange], openimages: [Orange (fruit)], vvrh5: [orange], custom: [orange]}}
   - {id: 20, name: pear,        zh: 梨,     ingredient: 梨,     unit: piece, default_weight_g: 200,
      sources: {lvis: [pear], zenodo: [Pear], openimages: [Pear], vvrh5: [pear], custom: [pear]}}
   - {id: 21, name: grape,       zh: 葡萄,   ingredient: 葡萄,   unit: bulk,  default_weight_g: 300,
@@ -91,7 +94,7 @@ classes:
      sources: {lvis: [Strawberry, strawberry], zenodo: [Strawberry], openimages: [Strawberry], vvrh5: [strawberry],
                aicook: [strawberries], custom: [strawberry]}}
   - {id: 23, name: lemon,       zh: 柠檬,   ingredient: 柠檬,   unit: piece, default_weight_g: 80,
-     sources: {lvis: [lemon], zenodo: [Lemon], mendeley: [Lemon], openimages: [Lemon (plant)], vvrh5: [lemon], custom: [lemon]}}
+     sources: {lvis: [lemon, lime], zenodo: [Lemon, Lime], mendeley: [Lemon], openimages: [Lemon (plant)], vvrh5: [lemon, lime], custom: [lemon]}}
   - {id: 24, name: mango,       zh: 芒果,   ingredient: 芒果,   unit: piece, default_weight_g: 250,
      sources: {zenodo: [Mango], openimages: [Mango], vvrh5: [mango], custom: [mango]}}
   # ---------------- 蛋肉水产豆乳（id 25–32） ----------------
