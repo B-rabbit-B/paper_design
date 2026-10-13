@@ -1,0 +1,749 @@
+# 人工复核排除清单（2026-10-13），与 CLIP 预筛清单 candidates_raw_ginger*_cooked.txt 配合使用
+# 复核对象：auto_label.py 画出框的 951 张。CLIP 整图'生'得分 >= 0.8 的逐张连同框一起检查；得分更低的在抽样中几乎都是无关图，不逐张复核，一律排除（原因写'未复核'）
+# 保留 207 张（219 框），排除 744 张
+# 保留标准：画面主体是该食材本身（整块、整根、切块、盒装），框与食材基本对齐，没有嵌套、重叠的多余框
+# 每行：图片主干 [制表符] 原因代码 [制表符] 说明（排除清单读取时只用第一列）
+commons_ginger_0006	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0015	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0050	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0087	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0093	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0094	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0095	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0098	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0179	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0182	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0185	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0193	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0213	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0222	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0224	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0228	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0255	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0265	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0272	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0274	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0275	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0277	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0278	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0280	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0288	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0289	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0292	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0294	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0296	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0297	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0298	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0299	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0306	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0312	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0313	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0314	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0315	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0316	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0317	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0318	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0319	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0320	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0321	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0323	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0325	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0326	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0329	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0332	uncertain	看不清是否为目标食材
+commons_ginger_0336	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0338	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0339	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0340	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0341	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0342	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0343	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0346	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0348	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0362	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0365	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0366	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0367	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0370	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0372	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0373	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0382	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0408	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0409	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0412	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0413	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0434	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0435	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0436	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0438	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0439	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0440	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0444	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0445	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0447	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0449	uncertain	看不清是否为目标食材
+commons_ginger_0453	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0456	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0457	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0458	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0462	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0466	uncertain	看不清是否为目标食材
+commons_ginger_0468	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0485	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0486	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0500	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0501	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0502	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0518	uncertain	看不清是否为目标食材
+commons_ginger_0519	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0520	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0522	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0525	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0526	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0527	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0528	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0529	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0530	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0531	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0532	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0533	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0535	uncertain	看不清是否为目标食材
+commons_ginger_0551	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0552	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0553	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0559	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0563	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0565	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0568	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0569	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0576	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0582	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0583	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0584	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0585	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0586	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0587	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0591	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0592	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0593	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0600	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0602	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0605	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0622	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0625	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0626	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0628	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0629	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0630	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0631	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0633	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0636	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0638	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0639	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0640	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0642	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0643	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0649	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0650	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0652	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0654	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0655	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0658	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0660	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0662	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0666	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0668	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0684	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0686	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0687	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0688	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0690	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0704	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0705	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0707	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0711	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0712	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0719	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0724	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0725	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0726	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0737	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0740	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0741	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0742	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0743	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0746	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0747	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0750	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0751	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0752	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0753	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0767	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0769	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0771	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0786	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0788	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0793	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0803	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0809	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0812	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0818	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0819	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0826	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0829	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0830	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0836	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0851	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0852	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0853	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0862	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0867	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0873	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0875	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0876	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0877	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0892	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0904	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0906	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0907	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0908	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0928	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0929	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0930	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0941	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0943	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0944	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0946	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0952	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0966	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0978	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0989	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0990	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0994	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0995	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_1007	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_1013	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1014	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1016	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1038	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_1039	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1043	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_1062	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1082	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1088	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1089	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_1090	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_1091	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_1092	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_1093	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_1094	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1095	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_1098	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_1103	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_1109	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1111	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_1113	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_1117	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1125	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1128	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1135	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_1141	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1150	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_1151	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_1154	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1155	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_1156	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1157	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_1164	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1166	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1167	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_1168	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1169	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1171	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1194	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1206	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1211	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1212	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_1213	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger2_0002	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger2_0003	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger2_0005	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger2_0026	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger2_0028	uncertain	看不清是否为目标食材
+raw_ginger2_0029	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0030	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0031	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger2_0087	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0092	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0126	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0127	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0132	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger2_0137	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger2_0142	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0145	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0146	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger2_0160	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0169	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0172	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0176	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger2_0177	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0198	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger2_0258	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0272	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0292	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0307	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0322	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0325	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0328	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger2_0352	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0361	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger2_0363	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0365	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0366	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0416	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0446	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0449	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0484	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0506	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0513	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger2_0526	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0002	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0012	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0016	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0018	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0025	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0029	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0037	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0041	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0042	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0046	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0049	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0053	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0065	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0068	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0074	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0081	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0090	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0111	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0112	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0117	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0121	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0148	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger_0168	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0179	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0186	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0187	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0195	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0196	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0201	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0226	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0234	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0235	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger_0236	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0238	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger_0240	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0245	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0250	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0252	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0254	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0257	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0263	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0266	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0267	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0270	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0277	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0281	uncertain	看不清是否为目标食材
+raw_ginger_0288	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0290	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger_0294	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0316	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0317	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0318	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0319	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0322	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0325	uncertain	看不清是否为目标食材
+raw_ginger_0337	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0340	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0345	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0379	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0382	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0385	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0399	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0403	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0415	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0425	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0430	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0436	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0437	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0438	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0440	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0442	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0446	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0447	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0448	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0450	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0452	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0455	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0456	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0461	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0463	uncertain	看不清是否为目标食材
+raw_ginger_0466	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0467	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0468	duplicate	与保留的图近重复（同一物体连拍）
+raw_ginger_0469	duplicate	与保留的图近重复（同一物体连拍）
+raw_ginger_0471	duplicate	与保留的图近重复（同一物体连拍）
+raw_ginger_0473	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0474	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0475	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0476	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0480	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0484	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0485	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0498	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0503	duplicate	与保留的图近重复（同一物体连拍）
+raw_ginger_0504	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0516	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0517	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0518	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0522	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0524	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0528	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0530	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0531	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0536	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0537	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0540	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0542	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0544	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0550	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0553	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0560	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0561	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0564	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0565	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0581	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0585	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0588	uncertain	看不清是否为目标食材
+raw_ginger_0590	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0593	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0594	uncertain	看不清是否为目标食材
+raw_ginger_0610	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0616	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger_0620	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0621	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger_0622	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0623	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0624	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0626	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0627	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0630	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0631	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0633	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0635	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0645	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0653	duplicate	与保留的图近重复（同一物体连拍）
+raw_ginger_0654	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0656	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0664	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0670	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0671	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0680	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0681	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0686	uncertain	看不清是否为目标食材
+raw_ginger_0694	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0696	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0698	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0708	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0711	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0719	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0734	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0757	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0783	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0784	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0785	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0798	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0799	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0810	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0820	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0822	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0830	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0839	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0849	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0850	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0860	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0862	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0882	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0890	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0894	uncertain	看不清是否为目标食材
+raw_ginger_0897	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0901	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0907	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0908	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0909	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0921	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0924	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0925	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0929	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0941	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0942	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0961	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0963	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0972	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0978	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0989	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0991	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0994	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0996	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0997	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1000	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1008	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1009	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1017	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger_1018	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1021	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1025	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1026	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1027	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1028	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1031	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1033	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger_1034	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger_1036	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1038	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger_1040	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_ginger_1056	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1058	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1060	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1061	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1062	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1067	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1071	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1090	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1091	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1095	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1103	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1118	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1120	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1135	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1145	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1148	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1153	duplicate	与保留的图近重复（同一物体连拍）
+raw_ginger_1154	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1157	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1158	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1159	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1164	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1172	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1178	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1185	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1198	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1201	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1212	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1216	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1218	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1224	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1230	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1235	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1237	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1238	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1239	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1241	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1242	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1251	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1256	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1286	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1291	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1323	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1333	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1339	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1341	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1355	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1359	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1364	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1365	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1371	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1372	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1381	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1387	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1388	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1393	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1398	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1401	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1404	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1407	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1419	duplicate	与保留的图近重复（同一物体连拍）
+raw_ginger_1426	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1427	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1430	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1431	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1442	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1446	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1447	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1450	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1451	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1456	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1460	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1462	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1463	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1466	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1469	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1470	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1474	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1477	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1483	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1487	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1489	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1491	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1492	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1493	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1497	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1507	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1512	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1517	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1525	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1526	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1531	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1532	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1536	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1539	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1540	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1541	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1543	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1546	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1548	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1549	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1551	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1553	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1554	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1560	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1561	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1564	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1566	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1568	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1569	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1572	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1573	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1574	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1575	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1584	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1586	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1600	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1603	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1604	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1605	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1607	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1614	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1615	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1618	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1619	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1623	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1627	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1628	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1630	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1631	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1637	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1645	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1651	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1654	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1655	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1659	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1660	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1661	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1662	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1667	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1668	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1670	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1671	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1677	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1678	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1679	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1683	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1686	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1687	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1688	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1694	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1697	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1701	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1704	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1707	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1708	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1711	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1713	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1714	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1715	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1720	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1721	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1723	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1725	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1727	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1728	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1732	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1733	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1738	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1740	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1741	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1748	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1751	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1752	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1757	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1758	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1761	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1762	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1763	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1764	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1767	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1769	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1770	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1771	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1776	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1777	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1778	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1779	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1780	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1782	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1783	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1787	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1792	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1793	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1794	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1795	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1796	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1798	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1799	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1800	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1801	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1802	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1803	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1808	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1810	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1811	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1812	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1818	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1820	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1834	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1838	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1839	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1840	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1845	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1848	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1849	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1852	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1854	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1867	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1873	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1892	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1904	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1906	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1916	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1918	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1929	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1930	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1931	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1939	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1947	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1950	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1961	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1965	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1967	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1981	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1987	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）

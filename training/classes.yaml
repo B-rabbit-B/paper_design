@@ -26,6 +26,7 @@
 #                其中的 beef_(food) 抽样 20 张只有 2 张是生牛肉，其余是炖菜、牛排等熟食，不采用
 #   web_raw_beef：从 Openverse 爬取的 CC 许可生牛肉照片（training/crawl_openverse.py，用户决定网上爬取），
 #                Grounding DINO 自动画框、CLIP 筛掉熟牛肉后人工逐张核对；每张图的作者与许可见候选目录的 manifest.csv
+#   web_ginger、web_tofu：从 Openverse 爬取的 CC 许可生姜、豆腐照片，流程同 web_raw_beef（2026-10-13，用户让我自己去网上爬取，代替自拍）
 #   aicook     ：AICook（比利时一台冰箱），MIT；**只作真实场景测试集**，不进训练集（用户决定）
 #   custom     ：用户自拍的生姜、豆腐补充照片，标注时直接使用本文件的 name
 #
@@ -35,7 +36,7 @@
 #   chicken、fish：不用 openimages 的 "Chicken"、"Fish"（几乎都是活鸡、活鱼）
 #   pork、chicken、spinach：用 hyunahko，许可风险在论文中注明
 #   beef、milk ：milk 用 openimages 加 lvis_full；beef 用网上爬取的生牛肉（web_raw_beef，用户决定；LVIS 牛肉几乎都是熟的）
-#   ginger、tofu：用户自拍补充（custom）
+#   ginger、tofu：用户原先决定自拍补充（custom）；2026-10-13 用户改为让我自己从网上爬取（web_ginger、web_tofu），custom 保留，用户之后拍了照片仍可加入
 #   lemon、orange、banana：近义类并入（2026-10-13，中期审查指出同一外观在不同来源里有的标、有的不标）——
 #                青柠（lvis lime、zenodo Lime、vvrh5 lime）并入 lemon，mendeley 的 Lemon 本来就是青柠；
 #                橘子（lvis mandarin orange、clementine）并入 orange；青香蕉（mendeley Green Banana）并入 banana
@@ -66,7 +67,7 @@ classes:
   - {id: 9,  name: garlic,      zh: 大蒜,   ingredient: 大蒜,   unit: piece, default_weight_g: 30,
      sources: {lvis: [garlic/ail], vvrh5: [garlic], custom: [garlic]}}
   - {id: 10, name: ginger,      zh: 生姜,   ingredient: 生姜,   unit: bulk,  default_weight_g: 50,
-     sources: {lvis: [ginger/gingerroot], custom: [ginger]}}
+     sources: {lvis: [ginger/gingerroot], web_ginger: [ginger], custom: [ginger]}}
   - {id: 11, name: corn,        zh: 玉米,   ingredient: 玉米,   unit: piece, default_weight_g: 250,
      sources: {lvis: [edible corn/corn/maize], vvrh5: [corn], aicook: [corn], custom: [corn]}}
   - {id: 12, name: pumpkin,     zh: 南瓜,   ingredient: 南瓜,   unit: bulk,  default_weight_g: 1000,
@@ -113,6 +114,6 @@ classes:
   - {id: 30, name: shrimp,      zh: 虾,     ingredient: 虾,     unit: piece, default_weight_g: 15,
      sources: {openimages: [Shrimp], aicook: [shrimp], custom: [shrimp]}}
   - {id: 31, name: tofu,        zh: 豆腐,   ingredient: 豆腐,   unit: bulk,  default_weight_g: 300,
-     sources: {lvis: [bean curd/tofu], custom: [tofu]}}
+     sources: {lvis: [bean curd/tofu], web_tofu: [tofu], custom: [tofu]}}
   - {id: 32, name: milk,        zh: 牛奶,   ingredient: 牛奶,   unit: piece, default_weight_g: 250,
      sources: {openimages: [Milk], lvis_full: [milk], aicook: [milk], custom: [milk]}}

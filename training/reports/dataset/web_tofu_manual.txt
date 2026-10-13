@@ -1,0 +1,413 @@
+# 人工复核排除清单（2026-10-13），与 CLIP 预筛清单 candidates_raw_tofu*_cooked.txt 配合使用
+# 复核对象：auto_label.py 画出框的 487 张。CLIP 整图'生'得分 >= 0.8 的逐张连同框一起检查；得分更低的在抽样中几乎都是无关图，不逐张复核，一律排除（原因写'未复核'）
+# 保留 79 张（95 框），排除 408 张
+# 保留标准：画面主体是该食材本身（整块、整根、切块、盒装），框与食材基本对齐，没有嵌套、重叠的多余框
+# 每行：图片主干 [制表符] 原因代码 [制表符] 说明（排除清单读取时只用第一列）
+commons_tofu_0001	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_tofu_0004	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_tofu_0006	cooked	熟食（炸、烤、卤、煎）
+commons_tofu_0022	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0023	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0025	cooked	熟食（炸、烤、卤、煎）
+commons_tofu_0027	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0029	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0035	uncertain	看不清是否为目标食材
+commons_tofu_0049	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0051	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0052	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0053	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0055	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0058	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0061	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0086	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_tofu_0087	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_tofu_0100	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0106	uncertain	看不清是否为目标食材
+commons_tofu_0107	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0112	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0113	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0114	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0117	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0119	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0120	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0121	cooked	熟食（炸、烤、卤、煎）
+commons_tofu_0122	cooked	熟食（炸、烤、卤、煎）
+commons_tofu_0123	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0134	cooked	熟食（炸、烤、卤、煎）
+commons_tofu_0135	cooked	熟食（炸、烤、卤、煎）
+commons_tofu_0136	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0137	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_tofu_0161	cooked	熟食（炸、烤、卤、煎）
+commons_tofu_0170	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0173	cooked	熟食（炸、烤、卤、煎）
+commons_tofu_0174	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0189	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0192	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0193	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0202	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0203	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0205	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0211	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_tofu_0218	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0221	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0230	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0234	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0235	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0236	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0237	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0245	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0249	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0251	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0253	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0255	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_tofu_0256	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0270	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0273	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_tofu_0277	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_tofu_0286	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0317	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0318	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0332	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0336	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0337	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0342	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0349	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0352	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0354	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0355	uncertain	看不清是否为目标食材
+commons_tofu_0356	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0360	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0361	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0363	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0368	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0371	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0372	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0373	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0379	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0384	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0403	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0404	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0420	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0434	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0437	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0445	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0446	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0447	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_tofu_0452	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0453	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0454	duplicate	与保留的图近重复（同一物体连拍）
+commons_tofu_0455	duplicate	与保留的图近重复（同一物体连拍）
+commons_tofu_0462	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0464	uncertain	看不清是否为目标食材
+commons_tofu_0465	uncertain	看不清是否为目标食材
+commons_tofu_0466	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0467	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0486	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0490	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0503	uncertain	看不清是否为目标食材
+commons_tofu_0506	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0519	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0525	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0535	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0536	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0537	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0543	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0550	uncertain	看不清是否为目标食材
+commons_tofu_0553	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0562	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0563	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0568	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0570	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0571	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0578	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0595	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0599	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0606	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0611	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0618	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0623	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0628	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_tofu_0646	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_tofu_0664	uncertain	看不清是否为目标食材
+raw_tofu2_0003	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu2_0004	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu2_0005	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu2_0013	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu2_0018	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu2_0022	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu2_0023	cooked	熟食（炸、烤、卤、煎）
+raw_tofu2_0087	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu2_0124	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu2_0126	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu2_0219	uncertain	看不清是否为目标食材
+raw_tofu2_0238	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu2_0277	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu2_0284	uncertain	看不清是否为目标食材
+raw_tofu2_0286	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu2_0314	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu2_0352	cooked	熟食（炸、烤、卤、煎）
+raw_tofu2_0361	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu2_0371	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu2_0373	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu2_0386	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu2_0388	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu2_0393	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu2_0415	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu2_0417	duplicate	与保留的图近重复（同一物体连拍）
+raw_tofu2_0420	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu2_0454	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu2_0470	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu2_0478	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu2_0479	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu2_0497	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu2_0649	cooked	熟食（炸、烤、卤、煎）
+raw_tofu2_0656	cooked	熟食（炸、烤、卤、煎）
+raw_tofu2_0684	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu2_0690	cooked	熟食（炸、烤、卤、煎）
+raw_tofu2_0695	cooked	熟食（炸、烤、卤、煎）
+raw_tofu2_0699	cooked	熟食（炸、烤、卤、煎）
+raw_tofu3_0000	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0006	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0011	cooked	熟食（炸、烤、卤、煎）
+raw_tofu3_0012	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0013	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0020	cooked	熟食（炸、烤、卤、煎）
+raw_tofu3_0070	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0167	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0168	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0171	uncertain	看不清是否为目标食材
+raw_tofu3_0172	uncertain	看不清是否为目标食材
+raw_tofu3_0290	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0300	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0323	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0346	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0347	uncertain	看不清是否为目标食材
+raw_tofu3_0353	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0354	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu3_0355	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0356	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0357	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu3_0359	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0364	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0376	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0381	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0385	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0389	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0406	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0407	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0409	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0411	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu3_0412	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0414	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0418	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0420	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0421	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0422	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0433	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0443	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0444	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0445	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0448	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0449	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0458	cooked	熟食（炸、烤、卤、煎）
+raw_tofu3_0467	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0472	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0480	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0505	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu3_0510	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0590	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0651	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu4_0013	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu4_0014	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0000	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0002	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0004	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0012	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0014	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0015	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0021	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0024	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0037	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_0039	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0053	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0054	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0055	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0083	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0091	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_0092	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0104	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0113	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_0115	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_0118	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0125	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0147	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0155	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0171	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_0173	cooked	熟食（炸、烤、卤、煎）
+raw_tofu_0175	duplicate	与保留的图近重复（同一物体连拍）
+raw_tofu_0187	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0194	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0196	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0202	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0203	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0204	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_0219	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0234	uncertain	看不清是否为目标食材
+raw_tofu_0254	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0259	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0317	uncertain	看不清是否为目标食材
+raw_tofu_0319	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0338	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0343	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0344	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0345	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0346	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0349	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0350	cooked	熟食（炸、烤、卤、煎）
+raw_tofu_0351	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0358	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0359	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0364	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0366	uncertain	看不清是否为目标食材
+raw_tofu_0368	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0378	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0381	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0382	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0385	uncertain	看不清是否为目标食材
+raw_tofu_0388	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0391	uncertain	看不清是否为目标食材
+raw_tofu_0409	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0424	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0429	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0441	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0458	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0464	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0468	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0494	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0501	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0502	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0536	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0549	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0550	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0563	cooked	熟食（炸、烤、卤、煎）
+raw_tofu_0567	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0568	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0579	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0586	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0591	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0595	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0611	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0618	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0641	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0643	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0648	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0650	uncertain	看不清是否为目标食材
+raw_tofu_0655	uncertain	看不清是否为目标食材
+raw_tofu_0657	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0665	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0669	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0689	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0707	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_0738	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0753	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0754	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0769	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0785	uncertain	看不清是否为目标食材
+raw_tofu_0797	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0801	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0827	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0845	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_0853	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0860	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0901	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0922	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_0934	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0935	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0947	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_0973	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0983	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_0999	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_1000	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_1003	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1004	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1006	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1011	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_1014	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_1022	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_1024	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_1025	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_1031	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1034	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1035	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_1036	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1038	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1039	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1044	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1046	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1047	duplicate	与保留的图近重复（同一物体连拍）
+raw_tofu_1050	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1059	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1061	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1064	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1070	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1080	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_1109	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1118	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_1123	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1150	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1155	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1158	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_1169	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1178	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1187	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1197	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_1203	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1206	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_1210	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1234	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_1244	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1247	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1250	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1252	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1253	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1270	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1277	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1278	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1283	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1292	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1311	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1318	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_1321	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_1337	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1338	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1353	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_1364	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1368	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1374	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_1375	uncertain	看不清是否为目标食材
+raw_tofu_1403	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1405	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1471	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1498	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_1500	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1512	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1535	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1540	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1597	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1634	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1682	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1699	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_1703	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1727	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1731	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1739	uncertain	看不清是否为目标食材
+raw_tofu_1740	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_1751	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1754	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1755	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1760	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1776	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1778	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1781	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1785	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1788	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）

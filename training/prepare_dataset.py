@@ -53,12 +53,14 @@ DEFAULT_REPORTS = os.path.join(ROOT, "training", "reports", "dataset")
 # 默认排除清单，只对本次参与合并的来源生效；同一来源可有多份，取并集：
 #   lvis         含熟食场景的图片（training/lvis_processed_food.py 依据 COCO 标注生成）
 #   hyunahko     CLIP 判为熟的肉和菜肴（training/clip_filter.py 生成）、人工复核挑出的熟食（*_manual.txt，手写）
-#   web_raw_beef 人工逐张复核排除的图（熟肉、菜肴、非牛肉、无关图、框不准等）；CLIP 预筛在画框之前已经做过
+#   web_raw_beef、web_ginger、web_tofu
+#                人工逐张复核排除的图（熟食、菜肴、非目标食材、无关图、框不准、未复核等）；CLIP 预筛在画框之前已经做过
 # 人工清单单独存放，重跑 clip_filter.py 不会覆盖人工复核的结果
 DEFAULT_EXCLUDES = [(source, os.path.join(DEFAULT_REPORTS, name)) for source, name in (
     ("lvis", "lvis_processed_food.txt"),
     ("hyunahko", "hyunahko_cooked.txt"), ("hyunahko", "hyunahko_manual.txt"),
-    ("web_raw_beef", "web_raw_beef_manual.txt"))]
+    ("web_raw_beef", "web_raw_beef_manual.txt"),
+    ("web_ginger", "web_ginger_manual.txt"), ("web_tofu", "web_tofu_manual.txt"))]
 
 _RF_SUFFIX = re.compile(r"\.rf\.[0-9a-fA-F]+$")
 _VIDEO_FRAME = re.compile(r"^(.*_(?:mp4|mov|avi))-\d+(?:_jpe?g|_png)?$", re.IGNORECASE)

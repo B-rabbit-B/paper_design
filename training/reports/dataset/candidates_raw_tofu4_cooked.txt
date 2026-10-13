@@ -1,0 +1,26 @@
+# 由 training/clip_filter.py 生成，2026-10-13 12:39:08，模型 openai/clip-vit-base-patch16
+# 规则：整图或任一目标框'生'的概率低于该类阈值即整张排除；阈值 {'pork_belly': 0.8, 'chicken': 0.8, 'chicken_breast': 0.8, 'spinach': 0.8, 'raw_beef': 0.8, 'ginger': 0.8, 'tofu': 0.8}；共 27 张，排除 23 张
+# 每行：图片主干 [制表符] 该图最低的'生'概率（排除清单读取时只用第一列）
+raw_tofu4_0001	0.006
+raw_tofu4_0003	0.004
+raw_tofu4_0004	0.028
+raw_tofu4_0005	0.417
+raw_tofu4_0006	0.006
+raw_tofu4_0007	0.275
+raw_tofu4_0008	0.005
+raw_tofu4_0009	0.160
+raw_tofu4_0010	0.102
+raw_tofu4_0011	0.001
+raw_tofu4_0012	0.015
+raw_tofu4_0015	0.107
+raw_tofu4_0016	0.767
+raw_tofu4_0017	0.021
+raw_tofu4_0018	0.004
+raw_tofu4_0019	0.629
+raw_tofu4_0020	0.556
+raw_tofu4_0021	0.028
+raw_tofu4_0022	0.197
+raw_tofu4_0023	0.019
+raw_tofu4_0024	0.231
+raw_tofu4_0025	0.663
+raw_tofu4_0026	0.133

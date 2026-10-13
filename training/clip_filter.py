@@ -46,6 +46,16 @@ PROMPTS = {
     # 爬取的候选图里还有活牛、餐厅等无关图，负类加上"活牛"
     "raw_beef": (["a photo of raw uncooked beef", "a photo of fresh raw red meat", "a photo of raw beef at a butcher shop"],
                  ["a photo of cooked steak", "a photo of a cooked beef dish", "a photo of live cattle"]),
+    # 生姜、豆腐的爬取候选图里混有姜茶、姜饼、麻婆豆腐、汤、人物等，负类按这些写；
+    # 目标是整块、切块的食材本身，不是加工后的菜品或饮品
+    "ginger": (["a photo of fresh raw ginger root", "a photo of raw ginger pieces or slices on a table",
+                "a photo of ginger rhizome at a market"],
+               ["a photo of ginger tea or a ginger drink", "a photo of gingerbread cookies or candy",
+                "a photo of a cooked dish with ginger", "a photo of a person", "a photo of a flower or a plant in a garden"]),
+    "tofu": (["a photo of a block of white tofu", "a photo of raw uncooked tofu cubes or slices",
+              "a photo of packaged tofu"],
+             ["a photo of a cooked tofu dish in sauce", "a photo of fried tofu", "a photo of a bowl of soup with tofu",
+              "a photo of a person", "a photo of a restaurant meal"]),
 }
 
 

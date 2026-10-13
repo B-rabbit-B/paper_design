@@ -11,7 +11,7 @@
 | `sources/` | 数据源适配器：`yolo.py`、`voc.py`、`coco.py` | 是 |
 | `verify_dataset.py` | 输出数据集的独立校验（1.4、1.6 的检查命令） | 是 |
 | `download_*.py`、`convert_lvis_parquet.py`、`lvis_processed_food.py` | 各来源的下载与转换 | 是 |
-| `crawl_openverse.py`、`auto_label.py`、`clip_filter.py` | 爬取、自动画框、生熟筛选（自动结果必须人工复核） | 是 |
+| `crawl_openverse.py`、`crawl_commons.py`、`auto_label.py`、`clip_filter.py` | 爬取（Openverse 取 CC0、PDM、BY、BY-SA、BY-NC、BY-NC-SA；Wikimedia Commons 只取 CC0、公有领域、BY、BY-SA）、自动画框、生熟筛选（自动结果必须人工复核） | 是 |
 | `normalize_photos.py` | 自拍照片按 EXIF 转正、重命名，供标注 | 是 |
 | `check_env.py` | 训练机环境自检（阶段 0 的 0.8–0.13） | 是 |
 | `reports/dataset/` | 统计、来源记录、排除清单、署名清单、抽检样图 | 是 |
@@ -23,7 +23,7 @@
 
 ```bash
 python training/prepare_dataset.py --check-classes          # 类别与营养库对得上（1.2）
-python training/prepare_dataset.py --sources lvis zenodo mendeley openimages vvrh5 eggdet fishmarket hyunahko lvis_full web_raw_beef custom --out training/datasets/yolo   # 合并，约 26 分钟，放后台
+python training/prepare_dataset.py --sources lvis zenodo mendeley openimages vvrh5 eggdet fishmarket hyunahko lvis_full web_raw_beef web_ginger web_tofu --out training/datasets/yolo   # 合并，约 30 分钟，放后台；用户拍了照片再加 custom
 python training/verify_dataset.py training/datasets/yolo --against training/datasets/fridge_test   # 独立校验
 python training/prepare_dataset.py --preview 20 --out training/reports/dataset/samples            # 抽检样图
 ```
@@ -36,7 +36,7 @@ python training/prepare_dataset.py --preview 20 --out training/reports/dataset/s
 - **排除清单**在 `reports/dataset/`：`*_cooked.txt` 由 `clip_filter.py` 生成，`*_manual.txt` 是人工复核写的，**重跑 CLIP 不会覆盖人工清单**。每行第一列是图片主干，后面的列只给人看。合并时默认使用，`--no-filters` 可关闭用于对比实验。
 - 改了 `classes.yaml`（含只加映射）：重跑总纲 0.4、0.6、1.2，并重新合并；改了类别名、编号或顺序，数据集要重建、模型要重训。
 - `reports/dataset/fridge_split.json` 一经入库不得修改，`prepare_dataset.py` 检测到它已存在会拒绝重建测试集。
-- 所有网上爬取、图库来源的图片都要在 `sources.md` 记录地址、日期、许可；CC 许可的要逐张留署名清单。许可未声明的来源（`hyunahko`）只用于本毕设，论文中注明。
+- 所有网上爬取、图库来源的图片都要在 `sources.md` 记录地址、日期、许可；CC 许可的要逐张留署名清单（`web_*_attribution.csv`，必须与数据集里的图片逐一对应）。爬取脚本的许可过滤是版权相关的逻辑，必须有测试，不能放进 ND、未知许可。许可未声明的来源（`hyunahko`）只用于本毕设，论文中注明。
 - 测试集 AICook（`aicook`）**只作测试，不进训练集**。
 
 ## 已知的坑
