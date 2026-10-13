@@ -1,3 +1,4 @@
-ginger: 署名清单 207 行，数据集中 207 张，逐一对应=True，各子集 {'train': 167, 'val': 18, 'test': 22}
-tofu: 署名清单 79 行，数据集中 79 张，逐一对应=True，各子集 {'train': 64, 'val': 6, 'test': 9}
-web_ginger 训练图 167 web_tofu 训练图 64
+web_ginger: 署名清单 194 行，数据集中 194 张，逐一对应=True，ND 或空许可=0，含 NC=50
+web_tofu: 署名清单 111 行，数据集中 111 张，逐一对应=True，ND 或空许可=0，含 NC=49
+web_raw_beef: 署名清单 213 行，数据集中 213 张，逐一对应=True，ND 或空许可=0，含 NC=86
+全部满足： True

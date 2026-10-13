@@ -12,6 +12,7 @@
 | `verify_dataset.py` | 输出数据集的独立校验（1.4、1.6 的检查命令） | 是 |
 | `download_*.py`、`convert_lvis_parquet.py`、`lvis_processed_food.py` | 各来源的下载与转换 | 是 |
 | `crawl_openverse.py`、`crawl_commons.py`、`auto_label.py`、`clip_filter.py` | 爬取（Openverse 取 CC0、PDM、BY、BY-SA、BY-NC、BY-NC-SA；Wikimedia Commons 只取 CC0、公有领域、BY、BY-SA）、自动画框、生熟筛选（自动结果必须人工复核） | 是 |
+| `fix_nested_boxes.py` | 去掉自动画框结果里套在大框里的小框（原标注备份在 `labels_orig/`，改完必须重新看图） | 是 |
 | `normalize_photos.py` | 自拍照片按 EXIF 转正、重命名，供标注 | 是 |
 | `check_env.py` | 训练机环境自检（阶段 0 的 0.8–0.13） | 是 |
 | `reports/dataset/` | 统计、来源记录、排除清单、署名清单、抽检样图 | 是 |
@@ -38,6 +39,7 @@ python training/prepare_dataset.py --preview 20 --out training/reports/dataset/s
 - `reports/dataset/fridge_split.json` 一经入库不得修改，`prepare_dataset.py` 检测到它已存在会拒绝重建测试集。
 - 所有网上爬取、图库来源的图片都要在 `sources.md` 记录地址、日期、许可；CC 许可的要逐张留署名清单（`web_*_attribution.csv`，必须与数据集里的图片逐一对应）。爬取脚本的许可过滤是版权相关的逻辑，必须有测试，不能放进 ND、未知许可。许可未声明的来源（`hyunahko`）只用于本毕设，论文中注明。
 - 测试集 AICook（`aicook`）**只作测试，不进训练集**。
+- **自动画框的结果不能在缩略图上过一眼就算复核**：阶段 1 最终审查在原图上发现，我在 320 像素的拼图里漏看了干姜、姜苗、烤豆腐、熟牛肉。复核时放大看（每页 24 张左右），可疑的单独看原图，保留标准要具体写出来（鲜的、整块、框对齐、没有嵌套重叠）。
 
 ## 已知的坑
 

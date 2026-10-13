@@ -2,13 +2,13 @@
 
 对应总纲验收项 1.1。所有原始数据放在 `training/datasets/raw/<来源名>/`，该目录已被 git 忽略。来源名就是 `training/classes.yaml` 中 `sources` 下的键名。
 
-最后更新：2026-10-12。各类最终的框数以 `training/reports/dataset/yolo/summary.json` 为准。
+最后更新：2026-10-13。各类最终的框数以 `training/reports/dataset/yolo/summary.json` 为准。
 
 ## 总表
 
 | 来源名 | 数据集 | 下载日期 | 许可 | 原始规模 | 本项目用途 | 状态 |
 |---|---|---|---|---|---|---|
-| `lvis` | LVIS 果蔬子集（henningheyen） | 2026-10-12 | 代码 MIT；标注 CC BY 4.0（LVIS）；图片同 `lvis_full`，按 COCO（Flickr）原始许可 | 63 类；train 6721 / val 1500 / test 180 | 主数据集，可划入训练、验证、测试 | 已下载、已转换、已过滤 |
+| `lvis` | LVIS 果蔬子集（henningheyen） | 2026-10-12 | 代码 MIT；标注 CC BY 4.0（LVIS）；图片同 `lvis_full`，按 COCO（Flickr）原始许可（其中有 ND、NC 许可的图，论文里统一说明） | 63 类；train 6721 / val 1500 / test 180 | 主数据集，可划入训练、验证、测试 | 已下载、已转换、已过滤 |
 | `zenodo` | Multi-Class Fruit and Vegetable Detection Dataset | 2026-10-12 | CC BY 4.0 | 30 类，20216 张（train 15944 / valid 2582 / test 1690），1.0 GB | 主数据集 | 已下载、已解压、类名已映射 |
 | `mendeley` | Vegetable Object Detection Dataset from Bangladesh v3 | 2026-10-12 | CC BY 4.0 | 22 类，3534 张，VOC 格式 | **只进训练集**的补充源 | 已下载、已解压 |
 | `openimages` | Open Images V7 按类子集 | 2026-10-12 | 标注 CC BY 4.0；图片 CC BY 2.0 | 19 类，每类至多 600 张，共 7005 张 | 补充各类样本 | 已下载，0 张失败 |
@@ -17,10 +17,10 @@
 | `fishmarket` | RF100 fish-market | 2026-10-12 | CC BY 4.0 | 19 个鱼种，18498 张，COCO 格式 | 鱼 | 已下载、已解压 |
 | `hyunahko` | HYUNAHKO 韩国食材集（按类只取 4 个文件夹） | 2026-10-12 | **未声明** | 五花肉 860、鸡肉 558、鸡胸 1094、菠菜 970 张 | 猪肉、鸡肉、菠菜 | 已下载，已做生熟筛选 |
 | `lvis_full` | LVIS v1 全量标注中的牛奶 | 2026-10-12 | 标注 CC BY 4.0；图片按 COCO（Flickr）原始许可 | 129 张，牛奶 157 框（另有牛肉 335 框，不采用） | 牛奶 | 已下载 |
-| `web_raw_beef` | Openverse 爬取的生牛肉照片 | 2026-10-12 | CC0、PDM、CC BY、BY-SA、BY-NC、BY-NC-SA（逐张记录） | 两批下载 4700 张，人工复核后保留 218 张、271 框 | 牛肉 | 已下载、已画框、已人工复核 |
+| `web_raw_beef` | Openverse 爬取的生牛肉照片 | 2026-10-12 | CC0、PDM、CC BY、BY-SA、BY-NC、BY-NC-SA（逐张记录） | 两批下载 4700 张，人工复核后保留 213 张、265 框 | 牛肉 | 已下载、已画框、已人工复核 |
 | `aicook` | AICook 冰箱数据集（GitHub 副本） | 2026-10-12 | MIT | 30 类，513 张；能映射到本项目的 15 类 | **只作真实场景测试集**，不进训练集 | 已生成 `fridge_test` |
-| `web_ginger` | Openverse、Wikimedia Commons 爬取的生姜照片 | 2026-10-13 | CC0、公有领域、CC BY、BY-SA、BY-NC、BY-NC-SA（逐张记录） | 三批候选共约 3800 张，人工复核后保留 207 张、219 框 | 生姜 | 已下载、已画框、已人工复核 |
-| `web_tofu` | Openverse、Wikimedia Commons 爬取的豆腐照片 | 2026-10-13 | 同上 | 五批候选共约 3900 张，人工复核后保留 79 张、95 框 | 豆腐 | 已下载、已画框、已人工复核 |
+| `web_ginger` | Openverse、Wikimedia Commons 爬取的生姜照片 | 2026-10-13 | CC0、公有领域、CC BY、BY-SA、BY-NC、BY-NC-SA（逐张记录） | 三批候选共约 3800 张，人工复核后保留 194 张、204 框 | 生姜 | 已下载、已画框、已人工复核 |
+| `web_tofu` | Openverse、Wikimedia Commons 爬取的豆腐照片 | 2026-10-13 | 同上 | 五批候选共约 3900 张，人工复核后保留 111 张、125 框 | 豆腐 | 已下载、已画框、已人工复核 |
 | `custom` | 用户自拍的生姜、豆腐（可选） | 未拍摄 | 自有 | — | 用户 2026-10-13 让我先自己去网上爬取，不再要求自拍；用户之后拍了仍可加入 | 暂不需要 |
 
 ## 各来源说明
@@ -250,7 +250,7 @@ Roboflow 数据和自采照片到位之前，先用 lvis、zenodo、mendeley、o
    - 第 2 批，16 个关键词（ground beef、raw meat、chuck roast、porterhouse steak、beef shank 等），每词最多 120 条，跳过第 1 批已下载的图：结果 1671 条，下载 1542 张。
 3. **CLIP 整图预筛**（`clip_filter.py --candidates raw_beef`，负类加上"活牛"）：第 1 批保留 800 张，第 2 批保留 252 张；排除清单 `candidates_raw_beef_cooked.txt`、`candidates_raw_beef2_cooked.txt`。抽检中预筛也误删了少量生牛排，但它的作用是减少后面画框的图片数，保留下来的已经够用。
 4. **Grounding DINO 自动画框**（`training/auto_label.py`，模型 IDEA-Research/grounding-dino-tiny，提示词 "raw beef."，box_threshold 0.35，输入短边 512）：两批共 1016 张有检测结果。DINO 几乎在每张图上都能画出框，包括人物、街景和插画，所以它不能代替人工筛选。
-5. **人工逐张复核**：1016 张连同框一起看，保留标准是画面主体为生牛肉（整块、切块、肉馅、薄片、超市盒装），框与牛肉基本对齐。保留 218 张，共 271 个框；排除 798 张，写在 `web_raw_beef_manual.txt`（其中 1 张 3D 渲染图是中期审查指出后补排除的），原因如下：
+5. **人工逐张复核**：1016 张连同框一起看，保留标准是画面主体为生牛肉（整块、切块、肉馅、薄片、超市盒装），框与牛肉基本对齐。保留 213 张，共 265 个框；排除 803 张，写在 `web_raw_beef_manual.txt`（其中 1 张 3D 渲染图是中期审查指出后补排除的，5 张熟肉、疑似猪肉、牛肉末菜肴等是最终审查指出后补排除的），原因如下（下表是补排除之前的分类，原因代码以清单文件为准）：
 
    | 原因 | 张数 |
    |---|---|
@@ -263,7 +263,7 @@ Roboflow 数据和自采照片到位之前，先用 lvis、zenodo、mendeley、o
    | 近重复（同一块肉连拍） | 32 |
    | 图中有未标注的本项目类别（香蕉、胡萝卜、洋葱等） | 6 |
 
-- **署名**：保留的 218 张逐张列在 `web_raw_beef_attribution.csv`（标题、作者、许可、原始页面），论文附录引用。202 张来自 Flickr；许可分布为 CC BY 80、BY-NC-SA 57、BY-SA 37、BY-NC 31、CC0 12、PDM 1。含 NC 的图只用于本毕设的非商业学术研究。
+- **署名**：保留的 213 张逐张列在 `web_raw_beef_attribution.csv`（标题、作者、许可、原始页面），论文附录引用。202 张来自 Flickr；含 NC 的 86 张。含 NC 的图只用于本毕设的非商业学术研究。
 - **局限**：多是美食博客、超市、肉铺的照片，冰箱场景很少，只有几张是冰箱或展示冷柜里的生肉，另有一些超市盒装肉。框由模型画出、人工只做了取舍，没有逐个修正坐标。
 
 ### 网上爬取的生姜、豆腐（web_ginger、web_tofu）
@@ -276,52 +276,57 @@ Roboflow 数据和自采照片到位之前，先用 lvis、zenodo、mendeley、o
 1. **Openverse**（`crawl_openverse.py`）：许可只要 CC0、PDM、CC BY、BY-SA、BY-NC、BY-NC-SA。
    - 生姜：2 批，共 30 个关键词，下载约 2500 张。
    - 豆腐：4 批，共 60 个关键词，每批跳过前几批已下载的图；下载约 3200 张。第三批以后新增的图已经很少（第四批只有 27 张），说明 Openverse 上的豆腐照片基本爬完了。
-2. **Wikimedia Commons**（新增 `training/crawl_commons.py`，带离线测试）：Openverse 不够用，改从 Commons 的 `Category:Ginger`、`Category:Zingiber officinale`、`Category:Tofu` 向下取两层子分类，共约 1200、670 张。许可只要 CC0、公有领域、CC BY、CC BY-SA，脚本用正则过滤，测试里验证了 CC BY-ND、CC BY-NC 不会被放进来；请求之间停 1 秒，User-Agent 带联系方式，遇到 429 就停。
-   - **写脚本时发现并修掉的 bug**：第一版正则 `cc by(-sa)?` 会把 `CC BY-ND 4.0` 和 `CC BY-NC 2.0` 也当成合格许可。改成显式排除带 NC、ND 的写法，并补了测试。已下载的 Commons 图片许可分布里没有 ND、NC 的（已核对）。
+2. **Wikimedia Commons**（新增 `training/crawl_commons.py`，带离线测试）：Openverse 不够用，改从 Commons 的 `Category:Ginger`、`Category:Zingiber officinale`、`Category:Tofu` 向下取两层子分类，共约 1200、670 张。豆腐重新合并后训练框掉到 200 以下，又给脚本加了全文搜索模式（`--search`，只搜位图，`--skip-manifest` 跳过已下载的标题），用 10 个关键词搜到 754 个文件、下载 722 张；CLIP 预筛后只剩 47 张像豆腐的，其中保留 10 张，其余是粉丝、豆腐皮、腐竹、奶豆腐（乳制品）、菜肴。许可只要 CC0、公有领域、CC BY、CC BY-SA，脚本用正则过滤，测试里验证了 CC BY-ND、CC BY-NC 不会被放进来；请求之间停 1 秒，User-Agent 带联系方式，遇到 429 就停。
+   - **写脚本时发现并修掉的 bug**：第一版正则 `cc by(-sa)?\b` 会把 `CC BY-ND 4.0` 和 `CC BY-NC 2.0` 也当成合格许可。改成 `^(cc0|public domain|pd\b|cc[ -]by(-sa)?(?![-\w]))`：BY、BY-SA 后面不能再跟 `-` 或字母，所以 BY-ND、BY-NC、BY-NC-SA 都不匹配。补了测试。已下载的 Commons 图片许可分布里没有 ND、NC 的（已核对）。
 3. **CLIP 整图预筛**（`clip_filter.py --candidates`）：为生姜、豆腐新增了描述词。生姜的负类包括姜茶、姜饼、菜肴、人物、花草；豆腐的负类包括带酱汁的熟豆腐菜、炸豆腐、汤、人物、餐厅。阈值先用 0.5，抽检后发现 0.5 段混有不少无关图，后几批改用 0.8。
 4. **Grounding DINO 自动画框**：提示词 "ginger."、"tofu."。
 5. **人工逐张复核**：只复核 CLIP 整图得分不低于 0.8 的图（得分更低的抽样看过，几乎都是无关图，一律排除，原因记为"未复核"）。保留标准：画面主体是鲜的、整块或切块的食材本身，框与食材基本对齐，没有嵌套、重叠的多余框。
-   - **生姜**：不要干姜片、姜粉、腌姜（Commons 里有大量中药材和香料图）、姜苗、盆栽，也不要同一块姜的连拍。保留 207 张、219 框。
-   - **豆腐**：不要豆腐干、豆皮、腐竹、臭豆腐、豆腐乳、炸豆腐和各种菜肴；保留整块、切块、盒装的白豆腐。保留 79 张、95 框。
-   - 排除清单：`web_ginger_manual.txt`（744 张）、`web_tofu_manual.txt`（408 张），每行有原因代码。
-- **署名**：`web_ginger_attribution.csv`（207 行）、`web_tofu_attribution.csv`（79 行），与数据集中的图片逐一对应（`docs/acceptance/stage-1/1.11-web-ginger-tofu-attribution.txt`）。生姜 Wikimedia 106 张、Flickr 84 张；豆腐 Flickr 62 张、Wikimedia 17 张。含 NC 的图只用于本毕设的非商业学术研究。
+   - **生姜**：不要干姜片、姜粉、腌姜（Commons 里有大量中药材和香料图）、姜苗、盆栽，也不要同一块姜的连拍。保留 194 张、204 框。
+   - **豆腐**：不要豆腐干、豆皮、腐竹、臭豆腐、豆腐乳、炸豆腐、烤豆腐、冻豆腐、奶豆腐和各种菜肴；保留整块、切块、盒装的白豆腐。保留 111 张、125 框。
+   - 排除清单：`web_ginger_manual.txt`（757 张）、`web_tofu_manual.txt`（414 张），每行有原因代码。其中最终审查指出后，我逐张看原图又补排除了生姜 13 张（干姜、姜苗、土里的姜、疑似花生）、豆腐 4 张（烤豆腐、花生豆腐）。这些图原先通过了我的复核，说明我在 320 像素的缩略拼图上看干姜和姜苗、烤豆腐不够仔细。
+- **署名**：`web_ginger_attribution.csv`（194 行）、`web_tofu_attribution.csv`（111 行），与数据集中的图片逐一对应（`docs/acceptance/stage-1/1.11-web-ginger-tofu-attribution.txt`）。生姜 Wikimedia 101 张、Flickr 80 张；豆腐 Flickr 80 张、Wikimedia 31 张。**含 NC 许可的图：生姜 50 张、豆腐 49 张、生牛肉 86 张**（都来自 Openverse）。用户 2026-10-13 选择继续使用，论文的数据集一节要写明：这些图只用于非商业学术研究，用它们训练出的模型权重不得商用；Commons 的图只取 CC0、公有领域、BY、BY-SA，不含 NC。
 - **局限**：
-  - 豆腐图片少，进数据集的训练框 64 个，加上 LVIS 的 149 个才到 213，刚过 200；验证集、测试集里豆腐只有 44、9 个框，评估时很不稳定。
+  - 豆腐图片少，要靠 LVIS 的 140 多个训练框加上网图才过 200，余量很小；验证集、测试集里豆腐只有几十个和个位数框，评估时很不稳定。
+  - **嵌套框的处理**：豆腐的 DINO 结果里常在同一块上套好几层框，原先 125 张因此被排除。新增 `training/fix_nested_boxes.py`（带测试）：同类别的小框有 80% 以上面积落在大框里就去掉，原标注备份在 `raw/web_tofu/labels_orig/`；处理后 41 张有变化，我逐张重新看过，28 张通过后恢复，其余仍排除（清单见 `web_tofu_nested.txt`）。恢复的图里有整堆包装豆腐、托盘里的多块豆腐等，框住的是整堆而不是单块，这与生姜成堆的情况相同。
   - 生姜里很多是市场摊位上成堆的姜，框住整堆而不是单块；单块生姜的样本较少。
   - 这些来源多是美食博客、市场、百科类的照片，与冰箱场景差异大。
 
 ## 最终版构建结果（2026-10-13，十二个来源）
 
-命令：`python training/prepare_dataset.py --sources lvis zenodo mendeley openimages vvrh5 eggdet fishmarket hyunahko lvis_full web_raw_beef web_ginger web_tofu --out training/datasets/yolo --split 0.8 0.1 0.1 --seed 42`。默认使用 lvis、hyunahko、web_raw_beef、web_ginger、web_tofu 的排除清单（见上文），mendeley 只进训练集。用时约 30 分钟。
+命令：`python training/prepare_dataset.py --sources lvis zenodo mendeley openimages vvrh5 eggdet fishmarket hyunahko lvis_full web_raw_beef web_ginger web_tofu --out training/datasets/yolo --split 0.8 0.1 0.1 --seed 42`。默认使用 lvis（含 `lvis_manual.txt`）、hyunahko、web_raw_beef、web_ginger、web_tofu 的排除清单（见上文），mendeley 只进训练集。用时约 31 分钟。
 
-这是第四次合并：四来源过渡版 → 十来源版（571fa1e）→ 清理 Open Images 残留、去重复框 → 近义类并入、加入网上爬取的生姜和豆腐。**以这一次为准。**
+这是第六次合并：四来源过渡版 → 十来源版（571fa1e）→ 清理 Open Images 残留、去重复框 → 近义类并入、加入生姜和豆腐 → 最终审查后排除问题图 → 补爬豆腐、恢复去掉嵌套框后复核通过的豆腐图。**以这一次为准。**
 
 | 指标 | 结果 |
 |---|---|
-| 图片数 | 训练集 40900、验证集 4623、测试集 4649 |
-| 框数 | 训练集 253144、验证集 23046、测试集 23576 |
+| 图片数 | 训练集 40878、验证集 4622、测试集 4685 |
+| 框数 | 训练集 251735、验证集 22668、测试集 25371 |
 | md5 去重 | 3444 张 |
 | 映射后没有框而丢弃 | 6880 张 |
-| 排除清单 | lvis 3757、hyunahko 1665、web_raw_beef 798、web_ginger 744、web_tofu 408；另有 LVIS 密集小框 591 |
+| 排除清单 | lvis 3758、hyunahko 1665、web_raw_beef 803、web_ginger 757、web_tofu 423；另有 LVIS 密集小框 591 |
 | 同一张图里完全相同的框 | 去掉 57 个 |
 | 原始标注中被丢弃的坏框 | 5 个：lvis 1 个（框中心在图片右边缘，一半在图外）、mendeley 4 个（零宽或零高）。输出数据集中没有这些框 |
 | 独立校验 `training/verify_dataset.py` | `corrupt=0 unpaired=0 cross_split_md5=0 cross_split_ahash=0 against_md5=0 against_ahash=0`（与 AICook 测试集也没有相同的图片） |
-| 各来源训练图片数 | fishmarket 14662, zenodo 8881, openimages 5562, mendeley 3519, vvrh5 3245, lvis 3085, hyunahko 1449, web_raw_beef 174, web_ginger 167, web_tofu 64, lvis_full 50, eggdet 42 |
+| 各来源训练图片数 | fishmarket 14661, zenodo 8838, openimages 5567, mendeley 3519, vvrh5 3250, lvis 3090, hyunahko 1449, web_raw_beef 171, web_ginger 156, web_tofu 87, lvis_full 48, eggdet 42 |
 
-**训练框数低于 200 的类别：没有**（验收项 1.8 达标）。最少的是 豆腐 213、牛肉 219、生姜 223、猪肉 285、牛奶 292、大蒜 323；最多的是 橙子 53015、苹果 43512、西红柿 28181，最多与最少相差约 249 倍，阶段 2 需要处理类别不均衡。
+**训练框数低于 200 的类别：没有**（验收项 1.8 达标）。最少的是 生姜 214、牛肉 217、豆腐 250、猪肉 285、牛奶 297、大蒜 323，**生姜、牛肉的余量只有十几个框**；最多的是 橙子 52939、苹果 42395、西红柿 28196，最多与最少相差约 247 倍，阶段 2 需要处理类别不均衡。
 
-**验证集、测试集里的稀缺类别很少**，评估时不稳定：生姜 val 38、test 22 个框，豆腐 44、9，牛肉 28、24，猪肉 34、34，牛奶 37、35。论文里这几类的指标要注明样本数，或合并 val 与 test 一起报告。
+**验证集、测试集里的稀缺类别很少**，评估时不稳定：生姜 val 23、test 31 个框，豆腐 30、16，牛肉 26、22，猪肉 34、34，牛奶 32、35。论文里这几类的指标要注明样本数，或合并 val 与 test 一起报告。
 
 **过程中修掉的问题**：
 
 1. 第一次合并的坏框是 12 个，其中 LVIS 的 8 个其实是合法的框，只是坐标经浮点运算后超出 [0, 1] 约 0.000005，被过严的越界容差（1e-6）误删。容差改为 1e-3（约等于千像素宽图上的 1 个像素），越界部分随后裁剪，补了测试。
 2. Open Images 的 211 对残留文件（见上文 openimages 一节）。
 3. 同一张图里完全相同的框（mendeley、vvrh5、openimages 共 57 个）会让框数虚高，Ultralytics 加载时也会去重，现在合并时先去掉。
-4. 近义类并入（用户决定，2026-10-13）：青柠（lvis lime、zenodo Lime、vvrh5 lime）并入柠檬，橘子（lvis mandarin orange、clementine）并入橙子，青香蕉（mendeley Green Banana）并入香蕉。柠檬增加了青柠的标注框（lvis、zenodo、vvrh5 的 lime 共 1920 框，按划分分布在三个子集），训练框现在是 11668。
+4. 近义类并入（用户决定，2026-10-13）：青柠（lvis lime、zenodo Lime、vvrh5 lime）并入柠檬，橘子（lvis mandarin orange、clementine）并入橙子，青香蕉（mendeley Green Banana）并入香蕉。柠檬增加了青柠的标注框（lvis、zenodo、vvrh5 的 lime 共 1920 框，按划分分布在三个子集），训练框现在是 11665。
+5. 最终审查在原图上发现 8 张不符合保留标准的网图（干姜、姜苗、烤豆腐、熟牛肉），加上我逐张看原图后确认的疑似图，共补排除生姜 13 张、豆腐 4 张、牛肉 5 张；另有 LVIS 一张把电脑盒上的苹果标识标成 apple 的错标图。
+6. 豆腐重新合并后训练框掉到 173，通过两条路补回：Commons 全文搜索（保留 10 张）、去掉嵌套框后重新复核恢复 28 张。
 
 **已知的残留问题**：
 
 - **生熟筛选有残留**：CLIP 判为"生"的概率不低于 0.8 的五花肉里，随机看的 64 张有 2～3 张偏熟或腌制（红烧块、培根），约 4%；菠菜、鸡胸的残留比例没有逐一统计。
-- **漏标**：LVIS、Open Images、HYUNAHKO 本来就只标了部分类别，图里的其他食材会被当作背景。1.9 两次抽检共 40 张，漏标 3 张（都在第一次抽检里），见 `docs/acceptance/stage-1/1.9-preview-review.md`。用户决定（2026-10-13）：只统计错框，漏标写进论文。
-- **加工食材残留**：LVIS 中碗里的香蕉片、饮料里的柠檬片等没有被熟食场景规则排除。
+- **网图复核有漏网的可能**：最终审查在 504 张网图里找出约 8 张确认违规的图，我复核时在缩略图上漏看了它们；之后只复核了审查指出的和疑似的图，其余没有再逐张放大看，估计仍有 1%～3% 的残留。
+- **漏标**：LVIS、Open Images、HYUNAHKO 本来就只标了部分类别，图里的其他食材会被当作背景。1.9 我自己的三次抽检共 60 张，漏标 4 张，见 `docs/acceptance/stage-1/1.9-preview-review.md`。用户决定（2026-10-13）：只统计错框，漏标写进论文。
+- **加工食材残留**：LVIS 中碗里的香蕉片、饮料里的柠檬片，Open Images 中法式吐司上的草莓块等没有被排除。
+- **网图里成堆、成箱的目标**：框住的是整堆而不是单个（生姜、包装豆腐），与 LVIS、Zenodo 逐个标注的风格不同。
 - **lvis_full 的牛奶图**多是人物、厨房场景，牛奶只是画面角落的小物体，框很小。

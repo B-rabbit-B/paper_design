@@ -89,5 +89,34 @@ class CollectTest(unittest.TestCase):
         self.assertEqual(files, ["File:a.jpg", "File:b.png"])  # pdf 被过滤，Deep 没有展开
 
 
+class SearchTest(unittest.TestCase):
+    def setUp(self):
+        cc.time.sleep = lambda s: None
+
+    @staticmethod
+    def hits(titles, more=False):
+        data = {"query": {"search": [{"title": t} for t in titles]}}
+        if more:
+            data["continue"] = {"sroffset": 50}
+        return data
+
+    def test_search_collects_images_only_and_pages_until_limit(self):
+        session = FakeSession([self.hits(["File:a.jpg", "File:b.pdf"], more=True), self.hits(["File:c.png", "File:d.jpg"])])
+        files = cc.search_files(session, ["tofu block"], limit=100)
+        self.assertEqual(files, ["File:a.jpg", "File:c.png", "File:d.jpg"])
+        self.assertIn("filetype:bitmap", session.calls[0]["srsearch"])  # 只搜位图，不要 svg、pdf、视频
+        self.assertEqual(session.calls[1]["sroffset"], 50)
+
+    def test_search_stops_at_limit(self):
+        session = FakeSession([self.hits(["File:a.jpg", "File:b.jpg"], more=True), self.hits(["File:c.jpg"])])
+        self.assertEqual(cc.search_files(session, ["x"], limit=2), ["File:a.jpg", "File:b.jpg"])
+        self.assertEqual(len(session.calls), 1)
+
+    def test_known_titles_are_skipped(self):
+        session = FakeSession([self.hits(["File:a.jpg", "File:b.jpg"])])
+        files = cc.search_files(session, ["x"], limit=10, skip={"File:a.jpg"})
+        self.assertEqual(files, ["File:b.jpg"])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -3,6 +3,7 @@
 # 保留 207 张（219 框），排除 744 张
 # 保留标准：画面主体是该食材本身（整块、整根、切块、盒装），框与食材基本对齐，没有嵌套、重叠的多余框
 # 每行：图片主干 [制表符] 原因代码 [制表符] 说明（排除清单读取时只用第一列）
+# 2026-10-13 阶段 1 最终审查指出后，又补排除 13 张（干姜、姜苗、烤豆腐、熟牛肉、嵌套框等，我逐张看原图确认）；上面的保留数以数据集为准
 commons_ginger_0006	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0015	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0050	duplicate	与保留的图近重复（同一物体连拍）
@@ -747,3 +748,16 @@ raw_ginger_1965	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在�
 raw_ginger_1967	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1981	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1987	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1295	notbeef	干姜块，不是鲜姜
+commons_ginger_0459	notbeef	干姜，不是鲜姜
+commons_ginger_0555	notbeef	干姜块，不是鲜姜
+raw_ginger_1432	notbeef	带茎带根的姜苗标本，不是食材
+raw_ginger_1494	notbeef	土里生长的整丛姜苗，框是整张图
+raw_ginger_1578	notbeef	水培托盘里发芽的姜苗
+raw_ginger_0521	notbeef	带茎根的姜苗标本
+raw_ginger_1438	notbeef	发芽的姜苗带根须
+raw_ginger_1490	notbeef	土里的姜带杂草，采收现场
+raw_ginger_0655	notbeef	土里的姜带茎，采收现场，接近姜苗
+commons_ginger_0293	notbeef	带根须的整株姜
+commons_ginger_0271	unrelated	成堆的小块块根，更像花生或其他块茎，不是鲜姜
+commons_ginger_0770	uncertain	成袋的褐色小根茎，可能是干姜或姜黄

@@ -51,13 +51,13 @@ DEFAULT_RAW = os.path.join(ROOT, "training", "datasets", "raw")
 DEFAULT_OUT = os.path.join(ROOT, "training", "datasets", "yolo")
 DEFAULT_REPORTS = os.path.join(ROOT, "training", "reports", "dataset")
 # 默认排除清单，只对本次参与合并的来源生效；同一来源可有多份，取并集：
-#   lvis         含熟食场景的图片（training/lvis_processed_food.py 依据 COCO 标注生成）
+#   lvis         含熟食场景的图片（training/lvis_processed_food.py 依据 COCO 标注生成）、人工发现的错标图（lvis_manual.txt，手写）
 #   hyunahko     CLIP 判为熟的肉和菜肴（training/clip_filter.py 生成）、人工复核挑出的熟食（*_manual.txt，手写）
 #   web_raw_beef、web_ginger、web_tofu
 #                人工逐张复核排除的图（熟食、菜肴、非目标食材、无关图、框不准、未复核等）；CLIP 预筛在画框之前已经做过
 # 人工清单单独存放，重跑 clip_filter.py 不会覆盖人工复核的结果
 DEFAULT_EXCLUDES = [(source, os.path.join(DEFAULT_REPORTS, name)) for source, name in (
-    ("lvis", "lvis_processed_food.txt"),
+    ("lvis", "lvis_processed_food.txt"), ("lvis", "lvis_manual.txt"),
     ("hyunahko", "hyunahko_cooked.txt"), ("hyunahko", "hyunahko_manual.txt"),
     ("web_raw_beef", "web_raw_beef_manual.txt"),
     ("web_ginger", "web_ginger_manual.txt"), ("web_tofu", "web_tofu_manual.txt"))]
@@ -386,7 +386,7 @@ def build_dataset(sources, raw_root=DEFAULT_RAW, out=DEFAULT_OUT, classes_path=N
 
 # ---------------------------------------------------------------- 预览与类别校验
 def preview(dataset, n, out_dir, seed=0, classes_path=None):
-    """随机抽 n 张已生成的样本，画框后输出，用于人工抽检（总纲 1.9、1.11）。"""
+    """随机抽 n 张已生成的样本，画框后输出，用于人工抽检（总纲 1.9）。seed 相同则抽到同样的图。"""
     names = food_classes.load_classes(classes_path)["names"]
     labels = sorted(
         (split, f) for split in SPLITS if os.path.isdir(os.path.join(dataset, "labels", split))
@@ -444,6 +444,7 @@ def main():
     parser.add_argument("--no-filters", action="store_true", help="关闭密集小框过滤和排除清单（用于对比实验）")
     parser.add_argument("--preview", type=int, metavar="N", help="从 --dataset 抽 N 张画框，输出到 --out")
     parser.add_argument("--dataset", default=DEFAULT_OUT, help="--preview 读取的数据集目录")
+    parser.add_argument("--preview-seed", type=int, default=0, help="--preview 的随机种子（默认 0）；换一个种子可以复查另一批")
     args = parser.parse_args()
 
     if args.check_classes:
@@ -451,7 +452,7 @@ def main():
     if args.preview:
         if not args.out:
             parser.error("--preview 需要用 --out 指定抽检图输出目录")
-        preview(args.dataset, args.preview, args.out, classes_path=args.classes)
+        preview(args.dataset, args.preview, args.out, seed=args.preview_seed, classes_path=args.classes)
         return
     if not args.sources:
         parser.error("需要 --sources，或使用 --check-classes / --preview")

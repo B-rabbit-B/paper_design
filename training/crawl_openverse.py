@@ -114,9 +114,11 @@ def main():
             break
 
     seen_md5, seen_hash, rows = set(), set(), []
+    skipped = 0  # 下载失败、过小、无法解码的图（fetch 返回 None，没有区分原因）
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         for result in pool.map(fetch, items):
             if result is None:
+                skipped += 1
                 continue
             jpg, item = result
             md5, h = hashlib.md5(jpg).hexdigest(), ahash(jpg)
@@ -130,7 +132,7 @@ def main():
             rows.append((name, *(item.get(k) or "" for k in FIELDS), item["query"]))
     with open(os.path.join(out, "manifest.csv"), "w", encoding="utf-8", newline="") as f:
         csv.writer(f).writerows([("file", *FIELDS, "query"), *rows])
-    print(f"完成：结果 {len(items)} 条，保存 {len(rows)} 张（下载失败、过小、重复的已跳过），"
+    print(f"完成：结果 {len(items)} 条，保存 {len(rows)} 张（下载失败或过小 {skipped} 张，重复 {len(items) - len(rows) - skipped} 张），"
           f"用时 {time.time() - started:.0f} 秒，目录 {out}")
 
 

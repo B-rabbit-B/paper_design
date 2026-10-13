@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-"""从 Wikimedia Commons 的指定分类爬取开放许可图片（Openverse 的候选图不够用时的补充来源）。
+"""从 Wikimedia Commons 的指定分类或全文搜索爬取开放许可图片（Openverse 的候选图不够用时的补充来源）。
 
 背景：生姜、豆腐在 Openverse 上能爬到的新图已经很少（后几批的新增数量不到 100 张），
 而 Commons 的 Ginger、Zingiber officinale、Tofu 等分类里有几百张图，每张都有明确的作者和许可。
 
 做法：
 - 从 --categories 指定的分类出发，向下取子分类最多 --depth 层，收集其中的图片文件（jpg、png）；
+- 或用 --search 做全文搜索（只搜位图，每个关键词最多 --search-limit 条）：分类里没有收进来的图也能搜到，
+  但相关度参差，更需要后面的 CLIP 预筛和人工复核；--skip-manifest 跳过之前批次已下载过的标题；
 - 调用 MediaWiki API 取每张图的 1280 像素缩略图地址和 extmetadata（作者、许可、说明页）；
 - 许可只要 CC0、公有领域、CC BY、CC BY-SA；缺少许可信息的跳过；
 - 请求之间停 1 秒；API 或图片服务器返回 429 时停止，不绕过；User-Agent 带联系方式，符合 Wikimedia 的要求；
@@ -74,6 +76,30 @@ def collect_files(session, categories, depth):
     return sorted(set(files))
 
 
+def search_files(session, queries, limit=300, skip=()):
+    """全文搜索（File 命名空间、只要位图），返回图片文件标题；skip 里的标题不返回。每个关键词最多 limit 条。"""
+    titles, seen = [], set(skip)
+    for q in queries:
+        got, cont = 0, {}
+        while got < limit:
+            data = api(session, action="query", list="search", srsearch=f"{q} filetype:bitmap", srnamespace=6,
+                       srlimit=50, **cont)
+            for hit in data["query"]["search"]:
+                title = hit["title"]
+                if title in seen or not title.lower().endswith(EXTS):
+                    continue
+                seen.add(title)
+                titles.append(title)
+                got += 1
+                if got >= limit:
+                    break
+            if "continue" not in data:
+                break
+            cont = {"sroffset": data["continue"]["sroffset"]}
+        print(f"  [{q}] 累计 {len(titles)} 个", flush=True)
+    return titles
+
+
 def file_infos(session, titles):
     """每 50 个标题一批，返回 [(标题, 缩略图地址, 作者, 许可, 许可版本, 说明页)]（只含许可合格的）。"""
     rows = []
@@ -109,9 +135,14 @@ def main():
 
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--name", required=True, help="输出子目录名，如 commons_ginger")
-    parser.add_argument("--categories", nargs="+", required=True, help='如 "Category:Ginger"')
+    parser.add_argument("--categories", nargs="*", default=[], help='如 "Category:Ginger"')
+    parser.add_argument("--search", nargs="*", default=[], help="全文搜索关键词，如 \"tofu block\"")
+    parser.add_argument("--search-limit", type=int, default=300, help="每个搜索关键词最多取多少条（默认 300）")
+    parser.add_argument("--skip-manifest", nargs="*", default=[], help="之前批次的 manifest.csv；其中的标题不再下载")
     parser.add_argument("--depth", type=int, default=1, help="向下取几层子分类（默认 1）")
     args = parser.parse_args()
+    if not args.categories and not args.search:
+        parser.error("需要 --categories 或 --search")
     started = time.time()
     out = os.path.join(OUT_ROOT, args.name)
     os.makedirs(out, exist_ok=True)
@@ -119,7 +150,13 @@ def main():
     session = requests.Session()
     session.headers.update(UA)
     try:
-        titles = collect_files(session, args.categories, args.depth)
+        known = set()
+        for path in args.skip_manifest:
+            with open(path, encoding="utf-8") as f:
+                known |= {row["title"] for row in csv.DictReader(f)}
+        titles = collect_files(session, args.categories, args.depth) if args.categories else []
+        titles += search_files(session, args.search, args.search_limit, skip=known | set(titles))
+        titles = [t for t in titles if t not in known]
         infos = file_infos(session, titles)
     except RateLimited as e:
         raise SystemExit(f"{e}，停止（不绕过）")
