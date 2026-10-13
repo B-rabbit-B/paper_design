@@ -8,7 +8,7 @@
 
 | 来源名 | 数据集 | 下载日期 | 许可 | 原始规模 | 本项目用途 | 状态 |
 |---|---|---|---|---|---|---|
-| `lvis` | LVIS 果蔬子集（henningheyen） | 2026-10-12 | 代码 MIT；标注 CC BY 4.0（LVIS） | 63 类；train 6721 / val 1500 / test 180 | 主数据集，可划入训练、验证、测试 | 已下载、已转换、已过滤 |
+| `lvis` | LVIS 果蔬子集（henningheyen） | 2026-10-12 | 代码 MIT；标注 CC BY 4.0（LVIS）；图片同 `lvis_full`，按 COCO（Flickr）原始许可 | 63 类；train 6721 / val 1500 / test 180 | 主数据集，可划入训练、验证、测试 | 已下载、已转换、已过滤 |
 | `zenodo` | Multi-Class Fruit and Vegetable Detection Dataset | 2026-10-12 | CC BY 4.0 | 30 类，20216 张（train 15944 / valid 2582 / test 1690），1.0 GB | 主数据集 | 已下载、已解压、类名已映射 |
 | `mendeley` | Vegetable Object Detection Dataset from Bangladesh v3 | 2026-10-12 | CC BY 4.0 | 22 类，3534 张，VOC 格式 | **只进训练集**的补充源 | 已下载、已解压 |
 | `openimages` | Open Images V7 按类子集 | 2026-10-12 | 标注 CC BY 4.0；图片 CC BY 2.0 | 19 类，每类至多 600 张，共 7005 张 | 补充各类样本 | 已下载，0 张失败 |
@@ -17,7 +17,7 @@
 | `fishmarket` | RF100 fish-market | 2026-10-12 | CC BY 4.0 | 19 个鱼种，18498 张，COCO 格式 | 鱼 | 已下载、已解压 |
 | `hyunahko` | HYUNAHKO 韩国食材集（按类只取 4 个文件夹） | 2026-10-12 | **未声明** | 五花肉 860、鸡肉 558、鸡胸 1094、菠菜 970 张 | 猪肉、鸡肉、菠菜 | 已下载，已做生熟筛选 |
 | `lvis_full` | LVIS v1 全量标注中的牛奶 | 2026-10-12 | 标注 CC BY 4.0；图片按 COCO（Flickr）原始许可 | 129 张，牛奶 157 框（另有牛肉 335 框，不采用） | 牛奶 | 已下载 |
-| `web_raw_beef` | Openverse 爬取的生牛肉照片 | 2026-10-12 | CC0、PDM、CC BY、BY-SA、BY-NC、BY-NC-SA（逐张记录） | 两批下载 4700 张，人工复核后保留 219 张、272 框 | 牛肉 | 已下载、已画框、已人工复核 |
+| `web_raw_beef` | Openverse 爬取的生牛肉照片 | 2026-10-12 | CC0、PDM、CC BY、BY-SA、BY-NC、BY-NC-SA（逐张记录） | 两批下载 4700 张，人工复核后保留 218 张、271 框 | 牛肉 | 已下载、已画框、已人工复核 |
 | `aicook` | AICook 冰箱数据集（GitHub 副本） | 2026-10-12 | MIT | 30 类，513 张；能映射到本项目的 15 类 | **只作真实场景测试集**，不进训练集 | 已生成 `fridge_test` |
 | `custom` | 用户自拍的生姜、豆腐 | 待拍摄 | 自有 | 每类计划 60–80 张 | 补充生姜、豆腐，进训练集 | 待拍摄 |
 
@@ -66,13 +66,14 @@
   - `Fish`：4 张是水中的活鱼，只有 2 张是盘中或烤架上的鱼。
   - `Egg`：3 张是彩绘复活节蛋，另有沙拉里的蛋片和一盒生鸡蛋。
   
-  因此 Chicken 和 Fish 不采用，Egg 是否采用等用户决定。
-- **能映射的类别**：西红柿、黄瓜、土豆、胡萝卜、青椒、西兰花、南瓜、蘑菇、苹果、香蕉、橙子、梨、葡萄、草莓、柠檬、芒果、虾、牛奶，共 18 类。
-- **实际下载**：运行 `python training/download_openimages.py --per-class 600 --classes <上述 18 个类名>`，选中并下载 6872 张，0 张失败，长边超过 1280 的已缩小，共 1.9 GB，用时约 18 分钟。各类框数见 `raw/openimages/manifest.json`。只有芒果（230 框）和牛奶（242 框）偏少。
+  因此 Chicken、Fish、Egg 都不采用（Egg 改用 eggdet、vvrh5，用户决定）。
+- **能映射的类别**：西红柿、黄瓜、土豆、胡萝卜、青椒、西兰花、南瓜、蘑菇、苹果、香蕉、橙子、梨、葡萄、草莓、柠檬、芒果、虾、牛奶、卷心菜，共 19 类。
+- **实际下载**：运行 `python training/download_openimages.py --per-class 600 --classes <上述 19 个 Open Images 类名>`（类名顺序见 `raw/openimages/data.yaml`），选中并下载 7005 张，0 张失败，长边超过 1280 的已缩小，共约 1.9 GB，用时约 2 分钟（图片已在本地时跳过）。各类框数见 `raw/openimages/manifest.json`。只有芒果（230 框）和牛奶（242 框）偏少。
+- **残留文件的处理（2026-10-13）**：补卷心菜时重新下载过一次，选图结果随类别列表而变，第一次下载（18 类，不含卷心菜）的 211 张图和标注留在目录里，并进入了第一版合并结果，按记录的命令无法复现。这些标注是在没有卷心菜类时写的，图中如有卷心菜会漏标。阶段 1 中期审查发现后，已删除这 211 对文件，并让下载脚本先清理不在本次选图结果中的旧文件；目录现在是 7005 张图、7005 个标注，与 manifest 一致。
 
 ### vvrh5：Roboflow ingredient-vvrh5 的 GitHub 副本
 
-- **地址**：原集 https://universe.roboflow.com/ingredients-wzqqk/ingredient-vvrh5 （导出需登录）。实际下载的是 GitHub 仓库 `Vaisakh-M-DS/AI-Based-Food-Ingredient-Detection-and-Dish-Recommendation-System` 中的 `dataset/` 目录，用稀疏克隆只取该目录。
+- **地址**：原集 https://universe.roboflow.com/ingredients-wzqqk/ingredient-vvrh5/dataset/1 （导出需登录）。实际下载的是 GitHub 仓库 https://github.com/Vaisakh-M-DS/AI-Based-Food-Ingredient-Detection-and-Dish-Recommendation-System 中的 `dataset/` 目录，用稀疏克隆只取该目录。
 - **许可**：data.yaml 和 Roboflow 页面都写明 CC BY 4.0。
 - **规模**：40 类，4690 张（训练 3439 / 验证 463 / 测试 788），每张原图做了 2 倍增强（水平翻转），图片缩到 300×300 以内。增强副本由 `prepare_dataset.py` 按原名归为一组。
 - **能映射的类别**：鸡蛋、卷心菜，以及西红柿、黄瓜、茄子、土豆、胡萝卜、青椒、玉米、洋葱、大蒜、苹果、香蕉、橙子、梨、葡萄、草莓、柠檬、芒果等果蔬。场景是手机拍的家中台面，少量冰箱。
@@ -80,7 +81,7 @@
 ### eggdet：Egg-Detection
 
 - **地址**：https://huggingface.co/datasets/afshin-dini/Egg-Detection ，经 hf-mirror 下载。
-- **许可**：MIT。另一个副本 `industoai/Egg-Detection` 内容相同，却标 CC BY-NC 4.0，本项目采用 MIT 的这一份并在论文中注明。
+- **许可**：afshin-dini 的这一份标 MIT。另一个副本 https://huggingface.co/datasets/industoai/Egg-Detection 内容相同，却标 CC BY-NC 4.0，两处声明互相矛盾，不知哪一份是原始上传。**处理依据**：本毕设是非商业的学术用途，两种许可都允许（CC BY-NC 要求署名、禁止商用）；论文中同时注明两处声明和署名。如果导师或学院认为这个冲突不可接受，可以去掉 eggdet，鸡蛋仍有 vvrh5 的 1117 框（去掉增强副本后约 327 框）。
 - **规模**：51 张，white-egg 229 框、brown-egg 194 框，都映射为鸡蛋。场景是木桌上打开的蛋盒，全是生鸡蛋。
 - **注意**：标注文件带 UTF-8 BOM，`training/sources/yolo.py` 已改为按 utf-8-sig 读取，否则每个文件的首行会被当成坏框。
 
@@ -100,14 +101,15 @@
 
 ### lvis_full：LVIS v1 全量标注中的牛奶
 
+- **地址**：标注 https://dl.fbaipublicfiles.com/LVIS/lvis_v1_train.json.zip 和 https://dl.fbaipublicfiles.com/LVIS/lvis_v1_val.json.zip （LVIS v1，主页 https://www.lvisdataset.org/dataset ）；图片是 COCO 2017 的，地址取自标注里的 `coco_url` 字段，形如 http://images.cocodataset.org/train2017/{编号}.jpg。
 - **获取方式**：`training/download_lvis_full.py` 用 ijson 流式解析 LVIS v1 的训练、验证标注（本机可用内存约 1 GB，不能整个读入），挑出含 `milk` 或 `beef_(food)` 的图，排除熟食场景（披萨、汉堡、牛排、刀叉等）和这两类未标全的图，从 COCO 下载图片。保留 129 张。
 - **只映射牛奶**：牛奶 157 框，多为冰箱里的奶盒、奶桶。牛肉 335 框抽样 20 张，只有 2 张是生牛肉，其余是炖菜、牛排，不采用。
 
 ### aicook：真实场景测试集
 
-- **地址**：Roboflow 上的 AICook 数据集，实际下载的是 GitHub 仓库 `Leemone01/Recipe-Suggestion-over-Object-Detection-and-Word-Embeddings` 中的 `Ingredient_Detection/datasets/refined/`（稀疏克隆）。类名取自同仓库 `Ingredient_Detection/training/dataset_kfold/iter_0/data_iter_0.yaml`。
+- **地址**：Roboflow 上的 AICook 数据集（导出需登录），实际下载的是 GitHub 仓库 https://github.com/Leemone01/Recipe-Suggestion-over-Object-Detection-and-Word-Embeddings 中的 `Ingredient_Detection/datasets/refined/`（稀疏克隆）。类名取自同仓库 `Ingredient_Detection/training/dataset_kfold/iter_0/data_iter_0.yaml`。
 - **许可**：MIT（在 Roboflow 页面源码中确认）。
-- **规模**：30 类，513 张，6354 框。能映射到本项目的有 15 类，每类 182–356 框。
+- **规模**：30 类，513 张，6354 框。能映射到本项目的有 15 类。各类（图片数 / 框数）：西红柿 304 / 305、土豆 299 / 299、胡萝卜 202 / 226、洋葱 222 / 222、玉米 236 / 236、蘑菇 228 / 228、菠菜 207 / 207、苹果 172 / 182、香蕉 222 / 222、草莓 302 / 302、鸡蛋 220 / 220、鸡肉 305 / 356、牛肉 238 / 288、虾 237 / 237、牛奶 207 / 259（以 `fridge_test/summary.json` 的 `per_class_images.val` 为准；一张图可含多类，所以图片数之和大于 513）。
 - **用途**：用户决定（2026-10-12）把它当作真实场景测试集，**不进训练集**，代替开题报告中的"自采国内冰箱照片"，偏离之处在论文中说明。生成命令是 `python training/prepare_dataset.py --sources aicook --no-split --out training/datasets/fridge_test`，固定的 50/50 划分在 `fridge_split.json`（微调 256 张、评估 257 张），**不得重新生成**。
 - **局限**：同一台冰箱、固定机位，几盒肉和奶反复出现，多样性低；包装是欧洲超市的样式。
 
@@ -173,7 +175,9 @@ Roboflow 数据和自采照片到位之前，先用 lvis、zenodo、mendeley、o
 2. **LVIS 标注了切碎和加工后的食材**。抽检中看到热狗上的洋葱碎、沙拉里的胡萝卜丝、烤番茄片都被当作整类标注。本项目要识别的是完整的生鲜食材，这类样本是噪声，也是胡萝卜、洋葱框数虚高的原因之一。可以考虑过滤极小的框，或单图同类框数过多的图。是否过滤由用户决定。
 3. **LVIS 是联合标注数据集**，每张图只保证部分类别标全，存在漏标，训练时漏标的物体会被当作背景。
 4. **拍摄场景与冰箱差异大**。Zenodo 多是田间和果树上的果蔬，Mendeley 是孟加拉的街边菜摊，Open Images 是各种生活照。这正是实验 E4（域偏移）要量化的内容。
-5. **`training/data.yaml` 中的 `path` 是开发机上的绝对路径**。数据集拷到训练机后，需要把它改成训练机上的路径。
+5. **`training/data.yaml` 中的 `path` 是开发机上的绝对路径**。数据集拷到训练机后，需要把它改成训练机上的路径。在训练机上重新生成 fridge_test 会被"`fridge_split.json` 已存在"的保护拦下，所以交付时直接拷贝 `training/datasets/fridge_test/`，不要重新生成。
+6. **`data_fridge.yaml` 的 `train`、`val`、`test` 都指向 `images/val`**，用它评估没有问题；阶段 5 的 E5 微调必须另建一个只含 `fridge_split.json` 里 ft 半集的 yaml，避免把 eval 半集带进训练。
+7. **HYUNAHKO 没有按 EXIF 转正**：`download_hyunahko.py` 重新编码时去掉了 EXIF，但没有转正。输出数据集里所有图片都没有 Orientation≠1 的标记，不能排除原图有旋转标记而标注按显示方向画的情况；抽检的 20 张里有 1 张 hyunahko 图，框是对齐的。图库照片通常已经转正，风险较低，论文中不展开。
 
 ## LVIS 过滤（2026-10-12，按用户要求去掉加工食材和密集小框）
 
@@ -245,11 +249,11 @@ Roboflow 数据和自采照片到位之前，先用 lvis、zenodo、mendeley、o
    - 第 2 批，16 个关键词（ground beef、raw meat、chuck roast、porterhouse steak、beef shank 等），每词最多 120 条，跳过第 1 批已下载的图：结果 1671 条，下载 1542 张。
 3. **CLIP 整图预筛**（`clip_filter.py --candidates raw_beef`，负类加上"活牛"）：第 1 批保留 800 张，第 2 批保留 252 张；排除清单 `candidates_raw_beef_cooked.txt`、`candidates_raw_beef2_cooked.txt`。抽检中预筛也误删了少量生牛排，但它的作用是减少后面画框的图片数，保留下来的已经够用。
 4. **Grounding DINO 自动画框**（`training/auto_label.py`，模型 IDEA-Research/grounding-dino-tiny，提示词 "raw beef."，box_threshold 0.35，输入短边 512）：两批共 1016 张有检测结果。DINO 几乎在每张图上都能画出框，包括人物、街景和插画，所以它不能代替人工筛选。
-5. **人工逐张复核**：1016 张连同框一起看，保留标准是画面主体为生牛肉（整块、切块、肉馅、薄片、超市盒装），框与牛肉基本对齐。保留 219 张，共 272 个框；排除 797 张，写在 `web_raw_beef_manual.txt`，原因如下：
+5. **人工逐张复核**：1016 张连同框一起看，保留标准是画面主体为生牛肉（整块、切块、肉馅、薄片、超市盒装），框与牛肉基本对齐。保留 218 张，共 271 个框；排除 798 张，写在 `web_raw_beef_manual.txt`（其中 1 张 3D 渲染图是中期审查指出后补排除的），原因如下：
 
    | 原因 | 张数 |
    |---|---|
-   | 无关（人物、街景、插画、海报、包装） | 277 |
+   | 无关（人物、街景、插画、海报、包装、3D 渲染图） | 278 |
    | 框不准（重叠、嵌套、漏框、框住整个柜台） | 212 |
    | 不是牛肉（鱼、猪肉、禽肉、羊肉、火腿、香肠） | 88 |
    | 看不清是否为生牛肉 | 96 |
@@ -258,33 +262,41 @@ Roboflow 数据和自采照片到位之前，先用 lvis、zenodo、mendeley、o
    | 近重复（同一块肉连拍） | 32 |
    | 图中有未标注的本项目类别（香蕉、胡萝卜、洋葱等） | 6 |
 
-- **署名**：保留的 219 张逐张列在 `web_raw_beef_attribution.csv`（标题、作者、许可、原始页面），论文附录引用。202 张来自 Flickr；许可分布为 CC BY 80、BY-NC-SA 57、BY-SA 37、BY-NC 32、CC0 12、PDM 1。含 NC 的图只用于本毕设的非商业学术研究。
+- **署名**：保留的 218 张逐张列在 `web_raw_beef_attribution.csv`（标题、作者、许可、原始页面），论文附录引用。202 张来自 Flickr；许可分布为 CC BY 80、BY-NC-SA 57、BY-SA 37、BY-NC 31、CC0 12、PDM 1。含 NC 的图只用于本毕设的非商业学术研究。
 - **局限**：多是美食博客、超市、肉铺的照片，冰箱场景很少，只有几张是冰箱或展示冷柜里的生肉，另有一些超市盒装肉。框由模型画出、人工只做了取舍，没有逐个修正坐标。
 
-## 正式版构建结果（2026-10-12，十个来源，尚未加入自拍照片）
+## 十来源版构建结果（2026-10-13，尚未加入自拍照片）
 
-命令：`python training/prepare_dataset.py --sources lvis zenodo mendeley openimages vvrh5 eggdet fishmarket hyunahko lvis_full web_raw_beef --out training/datasets/yolo --split 0.8 0.1 0.1 --seed 42`。默认使用三个来源的排除清单（见上文），mendeley 只进训练集。用时约 16 分钟。
+命令：`python training/prepare_dataset.py --sources lvis zenodo mendeley openimages vvrh5 eggdet fishmarket hyunahko lvis_full web_raw_beef --out training/datasets/yolo --split 0.8 0.1 0.1 --seed 42`。默认使用 lvis、hyunahko、web_raw_beef 的排除清单（见上文），mendeley 只进训练集。用时约 26 分钟。
+
+这是第三次合并：第一次是四来源过渡版；第二次（571fa1e）是十来源，后来发现 Open Images 目录里混有 211 对第一次下载的残留文件，并有 1 张 3D 渲染图混进了生牛肉，所以清理后重新合并，同时去掉了同一张图里完全相同的重复框。加入生姜、豆腐照片后还会再合并一次，以最后一次为准。
 
 | 指标 | 结果 |
 |---|---|
-| 图片数 | 训练集 40489、验证集 4568、测试集 4618 |
-| 框数 | 训练集 251490、验证集 22734、测试集 23712 |
+| 图片数 | 训练集 40249、验证集 4667、测试集 4547 |
+| 框数 | 训练集 246593、验证集 24562、测试集 25577 |
 | md5 去重 | 3442 张 |
 | 映射后没有框而丢弃 | 7305 张 |
-| 排除清单 | lvis 3757、hyunahko 1665、web_raw_beef 797；另有 LVIS 密集小框 591 |
-| 原始标注中的坏框（已丢弃） | 5 个：lvis 1 个（框中心在图片右边缘，一半在图外）、mendeley 4 个（零宽或零高） |
-| 跨子集的重复、近重复 | 0、0 |
-| Ultralytics 标注扫描 | 三个子集均为 0 损坏、0 无框图 |
-| 各来源训练图片数 | fishmarket 14668、zenodo 8629、openimages 5719、mendeley 3501、vvrh5 3190、lvis 3076、hyunahko 1449、web_raw_beef 175、eggdet 41、lvis_full 41 |
+| 排除清单 | lvis 3757、hyunahko 1665、web_raw_beef 798；另有 LVIS 密集小框 591 |
+| 同一张图里完全相同的框 | 去掉 57 个 |
+| 原始标注中被丢弃的坏框 | 5 个：lvis 1 个（框中心在图片右边缘，一半在图外）、mendeley 4 个（零宽或零高）。输出数据集中没有这些框 |
+| 独立校验 `training/verify_dataset.py` | `corrupt=0 unpaired=0 cross_split_md5=0 cross_split_ahash=0 against_md5=0 against_ahash=0`（与 AICook 测试集也没有相同的图片） |
+| 各来源训练图片数 | fishmarket 14642、zenodo 8520、openimages 5584、mendeley 3501、vvrh5 3238、lvis 3057、hyunahko 1449、web_raw_beef 174、lvis_full 43、eggdet 41 |
 
-**修复**：第一次合并时坏框是 12 个，其中 LVIS 的 8 个其实是合法的框，只是坐标经浮点运算后超出 [0, 1] 约 0.000005，被过严的越界容差（1e-6）误删。容差改为 1e-3（约等于千像素宽图上的 1 个像素），越界部分随后裁剪；补了对应测试后重新合并。
+**过程中修掉的问题**：
 
-**训练框数最少的类别**：生姜 55、豆腐 118（都低于 200，等用户自拍照片补充）、牛肉 219、猪肉 284、大蒜 296、牛奶 298。**最多的**：橙子 52135、苹果 44718、西红柿 29187。非零类别之间最多相差约 950 倍，阶段 2 需要处理类别不均衡。
+1. 第一次合并的坏框是 12 个，其中 LVIS 的 8 个其实是合法的框，只是坐标经浮点运算后超出 [0, 1] 约 0.000005，被过严的越界容差（1e-6）误删。容差改为 1e-3（约等于千像素宽图上的 1 个像素），越界部分随后裁剪，补了测试。
+2. Open Images 的 211 对残留文件（见上文 openimages 一节）。
+3. 同一张图里完全相同的框（mendeley、vvrh5、openimages 共 57 个）会让框数虚高，Ultralytics 加载时也会去重，现在合并时先去掉。
 
-**抽检（验收项 1.9）**：`--preview 20` 随机抽 20 张，没有发现画错的框，但有 3 张明显漏标：
+**训练框数最少的类别**：生姜 51、豆腐 124（都低于 200，等用户自拍照片补充）、牛肉 213、猪肉 284、牛奶 285、大蒜 323、玉米 329。**最多的**：橙子 51245、苹果 42612、西红柿 28074。非零类别之间最多相差约 1000 倍，阶段 2 需要处理类别不均衡。验证集、测试集里生姜只有 11、2 个框，豆腐 33、14 个，评估时不稳定，照片加入后要关注它们在 val、test 里的分配。
+
+**抽检（验收项 1.9）**：对第二次合并的结果 `--preview 20` 随机抽了 20 张（样图在 `samples/`，其中大多数图片仍在当前版本中），错框 0 张，**漏标** 3 张：
 
 1. hyunahko 的鸡胸图里有蒜瓣，没标大蒜（该来源每张图只标一个类别）；
 2. mendeley 的西红柿堆，约 15 个只标了 6 个左右；
 3. openimages 的西红柿图里有红甜椒，没有标注（Open Images 只标该图核实过的类别）。
 
-错误率 3/20，超过 1.9 要求的 1/20。漏标来自多个来源"只标部分类别"的标注方式（LVIS、Open Images、HYUNAHKO 都是如此），训练时漏标的物体会被当作背景。处理方式待用户决定。
+漏标来自多个来源"只标部分类别"的标注方式（LVIS、Open Images、HYUNAHKO 都是如此），训练时漏标的物体会被当作背景。用户决定（2026-10-13）：1.9 只统计画错的框，漏标作为已知局限写进论文。加入自拍照片后的最终版要重新抽检。
+
+**近义类别的标注矛盾（待用户决定）**：中期审查指出，有些外观相近的物体，在不同来源里标法不一致。例如 mendeley 的 `Lemon` 是绿色小青柠，被映射成了 lemon，而 lvis 的 `lime`（401 框）、zenodo 的 `Lime`（1301 框）、vvrh5 的 `lime`（218 框）都没有映射，成了背景；lvis 的 `mandarin orange`（196 框）、`clementine`（26 框）也没有归入橙子，mendeley 的 `Green Banana`（583 框）没有归入香蕉。

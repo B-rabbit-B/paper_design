@@ -118,7 +118,8 @@ def _collect(sources, raw_root, classes, train_only, dense=None, excludes=None):
     dense = dense or {"sources": set()}
     excludes = excludes or {}
     records = []
-    stats = {"corrupt": 0, "corrupt_by_source": Counter(), "dropped_no_boxes": 0, "unmapped_boxes": defaultdict(Counter),
+    stats = {"corrupt": 0, "corrupt_by_source": Counter(), "duplicate_boxes_removed": 0,
+             "dropped_no_boxes": 0, "unmapped_boxes": defaultdict(Counter),
              "filtered_dense": Counter(), "filtered_excluded": Counter()}
     for source in sources:
         src_dir = os.path.join(raw_root, source)
@@ -146,6 +147,9 @@ def _collect(sources, raw_root, classes, train_only, dense=None, excludes=None):
                     boxes.append((smap[name], x1, y1, x2, y2))
                 else:
                     stats["unmapped_boxes"][source][name] += 1
+            unique = list(dict.fromkeys(boxes))  # 同一张图里完全相同的框只留一个
+            stats["duplicate_boxes_removed"] += len(boxes) - len(unique)
+            boxes = unique
             if not boxes:
                 stats["dropped_no_boxes"] += 1
                 continue
@@ -257,28 +261,33 @@ def _write_record(record, split, out):
 
 
 def _plot_distribution(per_class, names, title, path):
+    """每类画 train、val、test 三根并列的条，对数横轴，条旁标出框数（训练集低于 200 的标红）。"""
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    fig, ax = plt.subplots(figsize=(10, max(4, len(names) * 0.32)))
-    left = [0] * len(names)
-    for split, color in zip(SPLITS, ("#4C78A8", "#F58518", "#54A24B")):
+    height = 0.27
+    fig, ax = plt.subplots(figsize=(10, max(4, len(names) * 0.62)))
+    top = 1
+    for k, (split, color) in enumerate(zip(SPLITS, ("#4C78A8", "#F58518", "#54A24B"))):
         values = [per_class[split].get(n, 0) for n in names]
-        ax.barh(names, values, left=left, color=color, label=split)
-        left = [a + b for a, b in zip(left, values)]
-    for y, (name, total) in enumerate(zip(names, left)):  # 标出训练集框数，0 框类别标红
-        train = per_class["train"].get(name, 0)
-        ax.text(max(total, 1) * 1.05, y, str(train), va="center", fontsize=7,
-                color="#D62728" if train < 200 else "#333333")
+        ys = [i + (k - 1) * height for i in range(len(names))]
+        ax.barh(ys, [max(v - 1, 0) for v in values], left=1, height=height, color=color, label=split)  # 对数轴从 1 起画
+        for y, v in zip(ys, values):
+            ax.text(max(v, 1) * 1.08, y, str(v), va="center", fontsize=6,
+                    color="#D62728" if split == "train" and v < 200 else "#333333")
+        top = max(top, *values)
     ax.axvline(200, color="#D62728", linestyle="--", linewidth=1, label="200 (train threshold)")
-    ax.set_xscale("symlog", linthresh=10)  # 对数刻度：类别间相差几百倍时，少数类也看得清
-    ax.invert_yaxis()
-    ax.set_xlabel("boxes (symlog scale; number = train boxes)")
+    ax.set_xscale("log")
+    ax.set_xlim(1, top * 3)
+    ax.set_yticks(range(len(names)))
+    ax.set_yticklabels(names)
+    ax.set_ylim(len(names) - 0.5, -0.5)  # 第一类在最上面
+    ax.set_xlabel("boxes (log scale)")
     ax.set_title(title)
     ax.legend(loc="lower right")
     fig.tight_layout()
-    fig.savefig(path, dpi=120)
+    fig.savefig(path, dpi=110)
     plt.close(fig)
 
 
@@ -336,6 +345,7 @@ def build_dataset(sources, raw_root=DEFAULT_RAW, out=DEFAULT_OUT, classes_path=N
         "sources": {s: dict(by_source[s]) for s in SPLITS},
         "corrupt": stats["corrupt"],  # 原始标注中被丢弃的坏框数（零面积、越界、类别越界、格式错误），输出中不含这些框
         "corrupt_by_source": {s: c for s, c in stats["corrupt_by_source"].items() if c},
+        "duplicate_boxes_removed": stats["duplicate_boxes_removed"],
         "duplicates_removed": duplicates_removed,
         "dropped_no_boxes": stats["dropped_no_boxes"],
         "filtered": {"dense": dict(stats["filtered_dense"]), "excluded_list": dict(stats["filtered_excluded"])},
@@ -464,7 +474,7 @@ def main():
                             train_only=args.train_only, dense_sources=dense_sources,
                             dense_min_boxes=args.dense_min_boxes, dense_max_median_area=args.dense_max_median_area,
                             exclude_lists=exclude_lists)
-    print(json.dumps({k: summary[k] for k in ("images", "corrupt", "corrupt_by_source", "duplicates_removed", "dropped_no_boxes", "filtered",
+    print(json.dumps({k: summary[k] for k in ("images", "corrupt", "corrupt_by_source", "duplicate_boxes_removed", "duplicates_removed", "dropped_no_boxes", "filtered",
                                              "cross_split_duplicates", "cross_split_near_duplicates", "groups",
                                              "elapsed_seconds")}, ensure_ascii=False, indent=2))
     if args.no_split:  # 测试集不进训练，200 框门槛不适用，只报告各类框数

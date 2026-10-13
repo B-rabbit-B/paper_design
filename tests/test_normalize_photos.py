@@ -34,7 +34,7 @@ class NormalizeTest(unittest.TestCase):
 
     def test_rotates_by_exif_and_strips_orientation(self):
         npz.normalize(self.src, self.out, max_side=1920)
-        out = os.path.join(self.out, "images", "all", "fridge_0001.jpg")
+        out = os.path.join(self.out, "images", "all", "custom_0001.jpg")
         with Image.open(out) as im:
             self.assertEqual(im.size, (300, 400))
             self.assertNotIn(ORIENTATION, im.getexif())
@@ -42,7 +42,7 @@ class NormalizeTest(unittest.TestCase):
     def test_resizes_long_side_and_skips_non_images(self):
         mapping = npz.normalize(self.src, self.out, max_side=1920)
         self.assertEqual(len(mapping), 2)
-        with Image.open(os.path.join(self.out, "images", "all", "fridge_0002.jpg")) as im:
+        with Image.open(os.path.join(self.out, "images", "all", "custom_0002.jpg")) as im:
             self.assertEqual(max(im.size), 1920)
 
     def test_writes_classes_txt_in_label_dir(self):
@@ -51,6 +51,15 @@ class NormalizeTest(unittest.TestCase):
             names = f.read().split()
         self.assertEqual(len(names), 33)
         self.assertEqual(names[0], "tomato")
+
+    def test_heic_files_stop_the_run_before_anything_is_written(self):
+        # 项目 venv 里没有 HEIC 插件，PIL 打不开 iPhone 原图；处理到一半才报错会留下半份输出，所以一开始就拒绝
+        with open(os.path.join(self.src, "IMG_0002.HEIC"), "wb") as f:
+            f.write(b"not really heic")
+        with self.assertRaises(SystemExit) as ctx:
+            npz.normalize(self.src, self.out, max_side=1920)
+        self.assertIn("HEIC", str(ctx.exception))
+        self.assertFalse(os.path.exists(os.path.join(self.out, "images", "all")))
 
     def test_refuses_to_overwrite_existing_output(self):
         npz.normalize(self.src, self.out, max_side=1920)

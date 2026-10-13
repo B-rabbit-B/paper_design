@@ -84,6 +84,24 @@ def select_images(meta, names, per_class, seed):
     return {i: images[i] for i in sorted(chosen)}
 
 
+def remove_stale(out, chosen):
+    """删除输出目录里不在本次选图结果中的图片和标注，返回删除的文件数。
+
+    换类别列表重新下载时，选图结果会变；旧文件不清掉就会混进合并结果，输出目录也无法由命令复现。
+    """
+    removed = 0
+    for kind in ("images", "labels"):
+        kind_dir = os.path.join(out, kind)
+        if not os.path.isdir(kind_dir):
+            continue
+        for split in os.listdir(kind_dir):
+            for name in os.listdir(os.path.join(kind_dir, split)):
+                if os.path.splitext(name)[0] not in chosen:
+                    os.remove(os.path.join(kind_dir, split, name))
+                    removed += 1
+    return removed
+
+
 def yolo_lines(boxes, names):
     index = {n: i for i, n in enumerate(names)}
     lines = []
@@ -141,6 +159,9 @@ def main():
     if args.dry_run:
         return
 
+    removed = remove_stale(args.out, chosen)
+    if removed:
+        print(f"清理上一次下载留下的 {removed} 个文件（不在本次选图结果中）")
     jobs = []
     for image_id, entry in chosen.items():
         for kind in ("images", "labels"):

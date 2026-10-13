@@ -257,6 +257,37 @@ class BuildTest(Fixture):
         files = {f for fs in summary["split_files"].values() for f in fs}
         self.assertIn("src_yolo_dense.jpg", files)
 
+    def test_identical_boxes_in_one_image_are_written_once(self):
+        # 有的来源（mendeley、vvrh5、openimages）一张图里有完全相同的框，Ultralytics 加载时会去重，
+        # 这里先去掉，统计里的框数才不会虚高
+        _write(os.path.join(self.raw, "src_yolo", "labels", "train", "y2.txt"),
+               "0 0.5 0.5 0.2 0.2\n0 0.5 0.5 0.2 0.2\n1 0.3 0.3 0.1 0.1\n0 0.5 0.5 0.2 0.2\n")
+        summary = self.build()
+        split = next(s for s, files in summary["split_files"].items() if "src_yolo_y2.jpg" in files)
+        with open(os.path.join(self.out, "labels", split, "src_yolo_y2.txt"), encoding="utf-8") as f:
+            self.assertEqual(len(f.read().splitlines()), 2)  # tomato 一个、carrot 一个
+        self.assertEqual(summary["duplicate_boxes_removed"], 2)
+
+    def test_preview_draws_requested_number_of_samples(self):
+        self.build()
+        out_dir = os.path.join(self.tmp, "preview")
+        pd.preview(self.out, 5, out_dir, classes_path=self.classes_path)
+        files = os.listdir(out_dir)
+        self.assertEqual(len(files), 5)
+        self.assertTrue(all(f.split("_")[0] in pd.SPLITS and f.endswith(".jpg") for f in files))
+        self.assertEqual(sorted(files), sorted(os.listdir(self._preview_again())))  # 固定种子，两次抽到同样的图
+
+    def _preview_again(self):
+        out_dir = os.path.join(self.tmp, "preview2")
+        pd.preview(self.out, 5, out_dir, classes_path=self.classes_path)
+        return out_dir
+
+    def test_preview_of_empty_dataset_is_an_error(self):
+        empty = os.path.join(self.tmp, "empty")
+        os.makedirs(os.path.join(empty, "labels", "train"))
+        with self.assertRaises(SystemExit):
+            pd.preview(empty, 3, os.path.join(self.tmp, "p"), classes_path=self.classes_path)
+
     def test_exclude_list_drops_listed_images(self):
         listing = os.path.join(self.tmp, "exclude.txt")
         _write(listing, "# 注释行\ny1\ny2\n\n")

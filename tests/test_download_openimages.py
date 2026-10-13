@@ -65,5 +65,23 @@ class SelectTest(unittest.TestCase):
         self.assertTrue(lines[1].startswith("1 0.750000 0.250000"))
 
 
+class StaleFilesTest(unittest.TestCase):
+    def test_removes_files_of_images_that_are_no_longer_selected(self):
+        # 第二次下载换了类别列表，选图结果变了；上一次留下的图和标注必须清掉，否则输出目录无法由命令复现
+        out = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, out, ignore_errors=True)
+        for kind, ext in (("images", ".jpg"), ("labels", ".txt")):
+            os.makedirs(os.path.join(out, kind, "train"))
+            for image_id in ("keep", "old"):
+                open(os.path.join(out, kind, "train", image_id + ext), "w").close()
+        removed = oi.remove_stale(out, {"keep": {"split": "train"}})
+        self.assertEqual(removed, 2)
+        self.assertEqual(os.listdir(os.path.join(out, "images", "train")), ["keep.jpg"])
+        self.assertEqual(os.listdir(os.path.join(out, "labels", "train")), ["keep.txt"])
+
+    def test_missing_output_directory_is_fine(self):
+        self.assertEqual(oi.remove_stale(os.path.join(tempfile.gettempdir(), "no-such-dir-oi"), {}), 0)
+
+
 if __name__ == "__main__":
     unittest.main()

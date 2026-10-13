@@ -39,6 +39,7 @@ scripts/ppt_content.json
 # ---- 训练工程运行时产物（体积大，不入库；training/reports 例外，见下）----
 training/datasets/
 training/runs/
+runs/
 
 # ---- 识别上传原图/结果图（体积大，不入库）----
 static/uploads/
