@@ -268,6 +268,11 @@ class BuildTest(Fixture):
             self.assertEqual(len(f.read().splitlines()), 2)  # tomato 一个、carrot 一个
         self.assertEqual(summary["duplicate_boxes_removed"], 2)
 
+    def test_low_classes_uses_the_shared_threshold(self):
+        # 1.8 的门槛只定义在一处（MIN_TRAIN_BOXES），统计输出、分布图的虚线、验收命令都用它
+        per_class = {"train": {"a": pd.MIN_TRAIN_BOXES - 1, "b": pd.MIN_TRAIN_BOXES, "c": 0}}
+        self.assertEqual(pd.low_classes(per_class), {"a": pd.MIN_TRAIN_BOXES - 1, "c": 0})
+
     def test_preview_draws_requested_number_of_samples(self):
         self.build()
         out_dir = os.path.join(self.tmp, "preview")

@@ -46,6 +46,9 @@ ADAPTERS = {"yolo": yolo.iter_samples, "voc": voc.iter_samples, "coco": coco.ite
 SPLITS = ("train", "val", "test")
 MARKER = ".prepare_dataset"  # 本脚本生成的目录里才有这个文件；没有它的非空目录拒绝清空
 DEGENERATE_HASHES = {0, (1 << 64) - 1}  # 纯色图的平均哈希，不能用来判定近重复
+# 每类训练框数的最低要求（总纲 1.8），统计输出、分布图的虚线、验收命令都用它。
+# 用户 2026-10-14 决定由 200 降为 150：严格清理网图中的违规图后，生姜只有 187 框，再补爬补不动
+MIN_TRAIN_BOXES = 150
 
 DEFAULT_RAW = os.path.join(ROOT, "training", "datasets", "raw")
 DEFAULT_OUT = os.path.join(ROOT, "training", "datasets", "yolo")
@@ -262,8 +265,13 @@ def _write_record(record, split, out):
         f.write("\n".join(lines) + "\n")
 
 
+def low_classes(per_class):
+    """训练框数低于 MIN_TRAIN_BOXES 的类别，返回 {类名: 框数}。"""
+    return {n: c for n, c in per_class["train"].items() if c < MIN_TRAIN_BOXES}
+
+
 def _plot_distribution(per_class, names, title, path):
-    """每类画 train、val、test 三根并列的条，对数横轴，条旁标出框数（训练集低于 200 的标红）。"""
+    """每类画 train、val、test 三根并列的条，对数横轴，条旁标出框数（训练集低于最低要求的标红）。"""
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -277,9 +285,9 @@ def _plot_distribution(per_class, names, title, path):
         ax.barh(ys, [max(v - 1, 0) for v in values], left=1, height=height, color=color, label=split)  # 对数轴从 1 起画
         for y, v in zip(ys, values):
             ax.text(max(v, 1) * 1.08, y, str(v), va="center", fontsize=6,
-                    color="#D62728" if split == "train" and v < 200 else "#333333")
+                    color="#D62728" if split == "train" and v < MIN_TRAIN_BOXES else "#333333")
         top = max(top, *values)
-    ax.axvline(200, color="#D62728", linestyle="--", linewidth=1, label="200 (train threshold)")
+    ax.axvline(MIN_TRAIN_BOXES, color="#D62728", linestyle="--", linewidth=1, label=f"{MIN_TRAIN_BOXES} (train threshold)")
     ax.set_xscale("log")
     ax.set_xlim(1, top * 3)
     ax.set_yticks(range(len(names)))
@@ -480,11 +488,11 @@ def main():
     print(json.dumps({k: summary[k] for k in ("images", "corrupt", "corrupt_by_source", "duplicate_boxes_removed", "duplicates_removed", "dropped_no_boxes", "filtered",
                                              "cross_split_duplicates", "cross_split_near_duplicates", "groups",
                                              "elapsed_seconds")}, ensure_ascii=False, indent=2))
-    if args.no_split:  # 测试集不进训练，200 框门槛不适用，只报告各类框数
+    if args.no_split:  # 测试集不进训练，最低框数要求不适用，只报告各类框数
         print(f"各类框数：{ {n: c for n, c in summary['per_class']['val'].items() if c} }")
     else:
-        low = {n: c for n, c in summary["per_class"]["train"].items() if c < 200}
-        print(f"train 框数 < 200 的类别（{len(low)} 个）：{low}")
+        low = low_classes(summary["per_class"])
+        print(f"train 框数 < {MIN_TRAIN_BOXES} 的类别（{len(low)} 个）：{low}")
 
 
 if __name__ == "__main__":

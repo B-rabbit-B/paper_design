@@ -4,6 +4,9 @@
 # 原因代码 unreviewed 表示 CLIP 整图得分偏低、没有逐张复核（抽样看过几乎都是无关图）；其余原因代码见各行说明
 # 每行：图片主干 [制表符] 原因代码 [制表符] 说明（排除清单读取时只用第一列，# 开头的行是注释）
 # 2026-10-13 复审后又补排除 1 张（审查员指出的、以及我对保留的图重新放大复核发现的）
+# 2026-10-13 复审后又补排除 19 张（审查员指出的、以及我对保留的图重新放大复核发现的）
+# 2026-10-13 复审后又补排除 3 张（审查员指出的、以及我对保留的图重新放大复核发现的）
+# 2026-10-13 复审后又补排除 23 张（审查员指出的、以及我对保留的图重新放大复核发现的）
 commons_ginger2_0000	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
 commons_ginger2_0001	notbeef	干姜
 commons_ginger2_0011	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
@@ -867,3 +870,48 @@ raw_ginger_1965	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在�
 raw_ginger_1967	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1981	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1987	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0262	notbeef	带叶茎的嫩姜、姜植株（审查员指出）
+raw_ginger_0323	notbeef	带叶茎的嫩姜、姜植株（审查员指出）
+raw_ginger_1233	notbeef	带叶茎的嫩姜、姜植株（审查员指出）
+raw_ginger_0279	notbeef	市场捆扎的带茎叶的嫩姜（审查员指出）
+commons_ginger_1112	notbeef	刚拔出的带泥整丛姜（审查员指出）
+commons_ginger_0418	notbeef	田里的采收现场，姜装在筐里放在泥地上，与已排除的采收现场图同类
+raw_ginger_0523	notbeef	带绿芽的姜块
+raw_ginger_0652	notbeef	带红色假茎的嫩姜
+commons_ginger_0609	uncertain	表面干皱，像干姜，不能确定是鲜姜
+commons_ginger_0945	uncertain	筐里深褐色的小根茎带芽，不能确定是姜
+commons_ginger2_0212	notbeef	带粉红色长茎的嫩姜
+raw_ginger_0230	notbeef	带粉红色长茎的嫩姜（与 commons_ginger2_0212 是同一张照片）
+commons_ginger_1118	notbeef	带粉红色茎基的嫩姜
+commons_ginger_1119	notbeef	带粉红色茎基的嫩姜
+commons_ginger_1191	notbeef	带绿色茎的刚挖出的姜
+raw_ginger_1219	notbeef	带绿色长茎的嫩姜
+commons_ginger_1169	notbeef	带长芽的姜
+raw_ginger_0440	notbeef	带芽的姜
+raw_ginger_0494	notbeef	旁边带绿色嫩芽的姜块
+raw_ginger_0489	notbeef	粉红色的腌姜（标题 confit），不是鲜姜
+raw_ginger_0451	badbox	姜和大葱混在同一个筐里，一个框把大葱也框进去了
+raw_ginger_0458	notbeef	姜块上带绿色嫩芽，与已排除的带芽姜同类
+commons_ginger_0076	notbeef	带细长须根的整株巨姜，不是常见的姜块
+commons_ginger_0270	notbeef	带粉红色和绿色茎的嫩姜（中国红爪姜）
+commons_ginger_0447	notbeef	带绿色长芽的姜
+commons_ginger_0656	notbeef	带粉红色茎的嫩姜（红爪姜）
+commons_ginger_0691	notbeef	带粉红色茎的嫩姜（红爪姜）
+commons_ginger_0792	notbeef	带粉红色茎的嫩姜（红爪姜）
+commons_ginger_0465	notbeef	姜与带叶的葱同框，一个大框把两样都框进去了
+commons_ginger_0521	uncertain	深色橙褐色的小根茎成堆，像姜黄，不能确定是姜
+commons_ginger_0727	uncertain	铁盆里深褐色带泥的小根茎，像姜黄或高良姜，不能确定是姜
+commons_ginger_0940	uncertain	红筐里深褐色的小根茎，像姜黄，不能确定是姜
+commons_ginger_0446	uncertain	深褐色带泥的小根茎，像姜黄，不能确定是姜
+commons_ginger_0510	uncertain	姜与别的根茎混杂，难以确定
+raw_ginger_0244	notbeef	带粉红色茎的嫩姜
+raw_ginger_0280	notbeef	带粉红色茎的嫩姜
+raw_ginger_0303	notbeef	带粉红色茎的嫩姜
+raw_ginger_0272	notbeef	成束的红爪姜（带粉红色茎的嫩姜）
+raw_ginger_0284	notbeef	带泥、带芽的姜，标题 from my garden，采收现场
+raw_ginger_0444	notbeef	带泥和绿芽的姜，采收现场
+raw_ginger_0482	notbeef	手里拿着带泥的新挖姜，采收现场
+raw_ginger_1706	unrelated	画面主体是微笑的人物，框只框住手里的一小团姜
+raw_ginger_0889	badbox	切姜过程，画面主体是手和刀，框很小
+raw_ginger_1059	badbox	去皮过程，画面主体是手和勺子，框很小
+raw_ginger_1385	badbox	切姜过程，画面主体是手和刀
