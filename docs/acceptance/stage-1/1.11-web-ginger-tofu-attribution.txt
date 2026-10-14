@@ -1,5 +1,5 @@
-web_ginger: 署名清单 169 行，数据集中 169 张，逐一对应=True，ND 或空许可=0，含 NC=38
-web_tofu: 署名清单 97 行，数据集中 97 张，逐一对应=True，ND 或空许可=0，含 NC=42
-web_raw_beef: 署名清单 214 行，数据集中 214 张，逐一对应=True，ND 或空许可=0，含 NC=62
+web_ginger: 署名清单 157 行，数据集中 157 张，逐一对应=True，ND 或空许可=0，含 NC=33
+web_tofu: 署名清单 89 行，数据集中 89 张，逐一对应=True，ND 或空许可=0，含 NC=38
+web_raw_beef: 署名清单 174 行，数据集中 174 张，逐一对应=True，ND 或空许可=0，含 NC=55
 全部满足： True
 署名清单由 training/make_attribution.py 以数据集为准生成（候选图合并时因内容相同被去重的不列入）

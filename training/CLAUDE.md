@@ -47,5 +47,5 @@ python training/prepare_dataset.py --preview 20 --out training/reports/dataset/s
 
 - 数据集很大（合并后约 5 万张图、近 30 万个框），不要整体读入内存；本机可用内存只有约 1–3 GB。
 - Windows 路径长度有限：Zenodo 的长文件名在解压时被截断，对照表在 `raw/zenodo/extracted/long_name_map.csv`。
-- 同一来源的 Roboflow 增强副本、视频帧、近重复图会被归为一组，保证同组只进同一个子集；新增来源时先看 `group_key`。
-- 单个脚本不超过 800 行；`prepare_dataset.py` 现在约 490 行，再往里加功能前先想是否该拆。
+- 同一来源的 Roboflow 增强副本、视频帧、近重复图会被归为一组，保证同组只进同一个子集；新增来源时先看 `group_key`。近重复指平均哈希相同，或 256 位差异哈希汉明距离不超过 `NEAR_DUP_DISTANCE`（12，跨来源也算）；`verify_dataset.py` 的 `cross_split_dhash`、`against_dhash` 用同一个阈值检查。
+- 单个脚本不超过 800 行；`prepare_dataset.py` 现在约 540 行，再往里加功能前先想是否该拆。

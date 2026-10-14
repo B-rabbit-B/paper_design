@@ -1,5 +1,6 @@
-# 生牛肉人工复核排除清单（逐张放大看原图，历经多轮，最后更新 2026-10-14）。auto_label.py 画出框的共 1348 张，保留 250 张（306 框），排除 1098 张
+# 生牛肉人工复核排除清单（逐张放大看原图，历经多轮，最后更新 2026-10-14）。auto_label.py 画出框的共 1348 张，保留 174 张（207 框），排除 1174 张
 # 保留标准：整块、切块、肉末、薄片、超市盒装的生牛肉。不要熟肉、猪肉羊肉、肉末菜肴、屠宰场景、人物店铺插图，不要嵌套重叠的框；框与目标基本对齐
+# 调味与物种口径（2026-10-14 第四次复审后统一）：表面撒满胡椒、香草或香料、用线捆扎成型、包馅、拌入配料的一律排除；只有零星几粒胡椒的整块生肉保留。标题或外观显示是猪、羊、马肉，或物种不明（只有 Raw meat 一类标题且颜色形态像别的肉）的一律排除；标题扫描覆盖拉丁字母外语词（cheval、caballo、cavallo、Pferd、ternera、porc、cerdo、agneau、lamb 等）。灰色保留：raw_beef_0361（零星胡椒粒）、raw_beef_2867（标题 Spanish Meat，深色带骨大块，外观是牛肉）、commons_beef_0798（标题 U.S. premium beef teriyaki，成片薄切）、commons_beef_1042 与 raw_beef_0119（标题 Фарш、Hackfleisch，只写了肉末，颜色是牛肉末的红色）
 # 复核经过：Openverse、Wikimedia Commons 爬取 → CLIP 整图预筛 → Grounding DINO 画框 → 逐张复核 → 中期审查、最终审查、复审各指出一批违规图后补排除 → 对仍保留的图重新放大复核 → 因框数不足对'框不准'的图去嵌套后重新复核；详见 sources.md
 # 原因代码 unreviewed 表示 CLIP 整图得分偏低、没有逐张复核（抽样看过几乎都是无关图）；其余原因代码见各行说明
 # 每行：图片主干 [制表符] 原因代码 [制表符] 说明（排除清单读取时只用第一列，# 开头的行是注释）
@@ -7,6 +8,8 @@
 # 2026-10-13 复审后又补排除 11 张（审查员指出的、以及我对保留的图重新放大复核发现的）
 # 2026-10-13 复审后又补排除 6 张（审查员指出的、以及我对保留的图重新放大复核发现的）
 # 2026-10-13 复审后又补排除 19 张（审查员指出的、以及我对保留的图重新放大复核发现的）
+# 2026-10-14 第四次复审（r4）后又补排除 35 张（审查员指出的、拉丁字母外语标题扫描和换种子抽查发现的）
+# 2026-10-14 换新种子（20261015，各抽 60 张）自查并把没看过的图全部放大看完后又补排除 5 张
 commons_beef_0000	notbeef	不是生牛肉（人物、店铺、插图、鱼、猪肉、熟食、肉末菜肴、包装、屠宰场景等）或框不准
 commons_beef_0002	notbeef	不是生牛肉（人物、店铺、插图、鱼、猪肉、熟食、肉末菜肴、包装、屠宰场景等）或框不准
 commons_beef_0024	notbeef	不是生牛肉（人物、店铺、插图、鱼、猪肉、熟食、肉末菜肴、包装、屠宰场景等）或框不准
@@ -1141,3 +1144,43 @@ raw_beef_2111	unrelated	画面主体是真空封口机，肉只是机器口里�
 raw_beef_2229	dish	已用线捆扎好、准备烤的牛腩（标题 tied and ready），已加工的半成品
 raw_beef_2355	dish	表面撒满盐和胡椒的牛排，已调味
 raw_beef_2531	uncertain	水池边塑料盒里的小块碎肉，看不清，框很小
+commons_beef_1355	notbeef	马肉（标题 contrefilet de cheval，法语"马里脊"），不是牛肉（r4 审查员指出）
+raw_beef2_0313	cooked	牛肉块正在热油锅里翻炒，已是烹饪过程
+commons_beef_0407	dish	手在水里搅散肉末，是备料过程，框到手
+commons_beef_0400	uncertain	冷冻的成型肉饼（Kirkland 牛肉饼），不是整块或散的生牛肉
+commons_beef_0401	uncertain	冷冻的成型肉饼（Kirkland 牛肉饼），与 commons_beef_0400 同类
+raw_beef_0414	cooked	长霉的干式熟成肉（aged meat），不是常见的鲜生牛肉
+raw_beef_0946	dish	做低碳肉末食谱的食材摆台，肉末盘与蔬菜、罐头同框，与已排除的同类图一致
+commons_beef_1238	badbox	和牛片的框上方多出一个细条小框，与大框重叠
+raw_beef_0691	dish	肉末堆在香菜上，备菜状态
+raw_beef_2680	dish	手里正在给肉塞馅，已是加工中的菜肴半成品
+raw_beef_0086	dish	肉块上摆满迷迭香、粉红胡椒粒，摆拍的调味图
+raw_beef_0161	dish	迷迭香、黑胡椒，且用线捆扎成型，已加工的半成品
+raw_beef_0406	dish	已用线捆扎好的牛肉卷（Chuck Roast-Tied），已加工的半成品，与已排除的捆扎图一致
+raw_beef2_1189	dish	已用线捆扎成塔状的牛肉（Tugboat Roast），已加工的半成品
+raw_beef_2688	dish	用线捆扎的肉卷（标题 Lomo de Ternera，ternera 是小牛肉），已加工
+raw_beef2_0782	dish	表面撒满黑胡椒的牛排，已调味，与已排除的同类一致
+raw_beef2_0877	dish	表面撒满黑胡椒的牛排，已调味，与 raw_beef2_0782 同一块肉
+raw_beef2_0836	dish	表面撒满黑胡椒的牛排，已调味，与 raw_beef2_0782 同一块肉
+raw_beef_0347	dish	切面上撒了一层胡椒的牛排（标题 Sirloins, before），已调味
+raw_beef2_0756	dish	盘里的 T 骨牛排，撒满黑胡椒并淋了油，已调味
+raw_beef_0158	dish	表面涂满香料的牛排，已调味
+raw_beef_0177	dish	几块牛排撒满胡椒，已调味，框还被图边切断
+raw_beef_0326	dish	表面裹着一层香草的牛排（标题 Raw），已调味
+commons_beef_0803	dish	超市托盘里裹着一层黑胡椒的牛排（PEPPER STEAK），已调味，且贴着标签
+raw_beef2_0189	uncertain	标题只有 Raw meat，成片薄切的肉，没有证据证明是牛肉
+raw_beef_0310	dish	标题 drunked，左边一块已泛棕色，疑似酒腌过，两个框重叠
+raw_beef_2630	uncertain	颜色很深的肉，标题 žalia（立陶宛语"生的"），没有证据证明是牛肉
+raw_beef_1034	dish	火锅或寿喜烧的摆盘，薄切肉片与蔬菜、蘸料同框，没有证据证明是牛肉
+raw_beef_0862	uncertain	粉红色的肉末，没有标题，看不出是什么肉
+raw_beef2_0184	uncertain	橙粉色的肉末，标题只有 Raw meat，像猪肉或禽肉
+commons_beef_0813	uncertain	标题 Diced meat，带白色脂肪块的肉丁，与洋葱同在碗里，没有证据证明是牛肉
+raw_beef2_0109	uncertain	标题只有 Raw meat，颜色发紫的一堆碎块，看不出是什么肉
+commons_beef_0775	uncertain	颜色浅粉、脂肪多，更像猪肉，标题说是 beef 但图上没有证据
+commons_beef_0405	badbox	包在蓝纸里的一包肉末（只看得到包装），看不到肉本身
+raw_beef2_0832	dish	正在往肉面上撒盐的特写（标题 Salting a Strip Steak），已调味，手在画面里
+commons_beef_1528	uncertain	浅粉色的薄肉片（Philippines 系列，标题 beef tenderloin），颜色偏淡像猪肉，没有证据证明是牛肉，与已排除的 commons_beef_0775 一致
+commons_beef_1532	uncertain	浅粉色的肉片摆盘（同一系列），颜色偏淡像猪肉，没有证据证明是牛肉
+commons_beef_1610	uncertain	手里的浅粉色肉片（同一系列），颜色偏淡像猪肉，没有证据证明是牛肉
+commons_beef_0840	cooked	标题 WheyPoachedStripLoin（乳清里煮的牛里脊），图上是发白的整条肉，不能确定是未加工的生肉
+raw_beef_0339	dish	牛排表面撒了一层香菜叶，已加配料，与已排除的撒香草的牛排一致

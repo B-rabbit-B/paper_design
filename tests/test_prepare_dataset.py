@@ -19,7 +19,7 @@ sys.path.insert(0, ROOT)
 sys.path.insert(0, os.path.join(ROOT, "training"))
 
 import yaml  # noqa: E402
-from PIL import Image, ImageDraw  # noqa: E402
+from PIL import Image, ImageDraw, ImageFilter  # noqa: E402
 
 import prepare_dataset as pd  # noqa: E402
 from sources import coco as coco_adapter  # noqa: E402
@@ -332,6 +332,73 @@ class BuildTest(Fixture):
         for split in ("val", "test"):
             self.assertFalse(any(f.startswith("src_voc_") for f in summary["split_files"][split]))
         self.assertEqual(summary["sources"]["train"].get("src_voc"), 2)
+
+
+def _smooth_image(path, seed, size=(256, 192)):
+    """渐变背景加几个模糊的大色块：像照片一样平滑，差异哈希稳定（_image 的硬边小图经 JPEG 压缩后哈希会抖动）。"""
+    rng = random.Random(seed)
+    w, h = size
+    img = Image.new("RGB", size)
+    px = img.load()
+    c0, c1 = ([rng.randint(0, 255) for _ in range(3)] for _ in range(2))
+    for y in range(h):
+        for x in range(w):
+            t = (x / w + y / h) / 2
+            px[x, y] = tuple(int(c0[k] * (1 - t) + c1[k] * t) for k in range(3))
+    draw = ImageDraw.Draw(img)
+    for _ in range(5):
+        x, y = rng.randint(0, w - 60), rng.randint(0, h - 50)
+        draw.ellipse([x, y, x + rng.randint(30, 100), y + rng.randint(25, 80)],
+                     fill=tuple(rng.randint(0, 255) for _ in range(3)))
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    img.filter(ImageFilter.GaussianBlur(5)).save(path, quality=95)
+
+
+def _cropped_copy(src, dst):
+    """同一张照片裁掉边缘再放大回原尺寸：md5 和平均哈希都变了，差异哈希仍在近重复范围内（增强副本的典型情形）。"""
+    img = Image.open(src)
+    w, h = img.size
+    img.crop((8, 6, w - 8, h - 6)).resize((w, h)).save(dst, quality=85)
+
+
+class NearDuplicateTest(Fixture):
+    def test_near_pairs_finds_every_pair_within_the_distance(self):
+        rng = random.Random(7)
+        a = rng.getrandbits(pd.NEAR_DUP_BITS)
+        spread = [1 << (20 * k + 3) for k in range(pd.NEAR_DUP_DISTANCE)]  # 每个翻转位落在不同的段里，最难查到的情形
+        b = a ^ sum(spread)
+        c = b ^ (1 << 255)  # 与 a 相差 13 位，与 b 相差 1 位
+        d = rng.getrandbits(pd.NEAR_DUP_BITS)
+        pairs = pd.near_pairs([a, b, c, d])
+        self.assertIn((0, 1), pairs)
+        self.assertIn((1, 2), pairs)
+        self.assertNotIn((0, 2), pairs)
+        self.assertFalse(any(3 in pair for pair in pairs))
+
+    def test_dhash_survives_cropping_but_not_a_different_image(self):
+        _smooth_image(os.path.join(self.tmp, "a.jpg"), seed=1)
+        _smooth_image(os.path.join(self.tmp, "b.jpg"), seed=2)
+        _cropped_copy(os.path.join(self.tmp, "a.jpg"), os.path.join(self.tmp, "a_crop.jpg"))
+        hashes = {n: pd._hashes(os.path.join(self.tmp, n + ".jpg")) for n in ("a", "b", "a_crop")}
+        self.assertNotEqual(hashes["a"][:2], hashes["a_crop"][:2])  # 前提：md5 和平均哈希都变了
+        self.assertLessEqual((hashes["a"][2] ^ hashes["a_crop"][2]).bit_count(), pd.NEAR_DUP_DISTANCE)
+        self.assertGreater((hashes["a"][2] ^ hashes["b"][2]).bit_count(), pd.NEAR_DUP_DISTANCE)
+
+    def test_groups_merge_cropped_copies(self):
+        _smooth_image(os.path.join(self.tmp, "a.jpg"), seed=1)
+        _smooth_image(os.path.join(self.tmp, "c.jpg"), seed=2)
+        _cropped_copy(os.path.join(self.tmp, "a.jpg"), os.path.join(self.tmp, "b.jpg"))
+        records = []
+        for name in ("a", "b", "c"):
+            md5, ahash, dhash = pd._hashes(os.path.join(self.tmp, name + ".jpg"))
+            records.append({"name": name, "group": f"src:{name}", "md5": md5, "ahash": ahash, "dhash": dhash})
+        groups = sorted(sorted(r["name"] for r in g) for g in pd._groups(records))
+        self.assertEqual(groups, [["a", "b"], ["c"]])
+
+    def test_low_information_hashes_are_not_compared(self):
+        self.assertTrue(pd._low_information(0))
+        self.assertTrue(pd._low_information((1 << pd.NEAR_DUP_BITS) - 1))
+        self.assertFalse(pd._low_information(random.Random(1).getrandbits(pd.NEAR_DUP_BITS)))
 
 
 class GroupKeyTest(unittest.TestCase):

@@ -12,7 +12,8 @@
 它的类名在 training/classes.yaml 各类的 sources.<子目录名> 中声明。
 
 防止数据泄漏的做法：
-- 同一张原图的 Roboflow 增强副本、同一段视频抽出的帧、平均哈希相同的近重复图，归为一组，同组只进同一个子集；
+- 同一张原图的 Roboflow 增强副本、同一段视频抽出的帧、平均哈希相同或差异哈希近重复（亮度、裁剪不同的同一张照片）的图，
+  归为一组，同组只进同一个子集；
 - --train-only 指定的来源（默认 mendeley：3534 张图只来自 10 段视频）全部放入训练集，不参与验证和测试。
 
 过滤（--no-filters 可全部关闭，用于对比实验）：LVIS 的密集小框规则，以及 DEFAULT_EXCLUDES 中各来源的排除清单
@@ -46,6 +47,11 @@ ADAPTERS = {"yolo": yolo.iter_samples, "voc": voc.iter_samples, "coco": coco.ite
 SPLITS = ("train", "val", "test")
 MARKER = ".prepare_dataset"  # 本脚本生成的目录里才有这个文件；没有它的非空目录拒绝清空
 DEGENERATE_HASHES = {0, (1 << 64) - 1}  # 纯色图的平均哈希，不能用来判定近重复
+# 近重复：16x16 差异哈希（256 位）汉明距离不超过 NEAR_DUP_DISTANCE，视为同一张照片的增强副本（亮度、裁剪、缩放不同）。
+# 平均哈希要求 64 位完全相等，抓不住这类副本：阶段 1 第四次复审用同一阈值在跨集图片里查出 411 对
+NEAR_DUP_BITS = 256
+NEAR_DUP_DISTANCE = 12
+_LOW_INFORMATION_BITS = 16  # 差异哈希里置位的位数不足它（或不足 256 减它）的图几乎没有纹理，哈希不可靠，不参与比较
 # 每类训练框数的最低要求（总纲 1.8），统计输出、分布图的虚线、验收命令都用它。
 # 用户 2026-10-14 决定由 200 降为 150：严格清理网图中的违规图后，生姜只有 187 框，再补爬补不动
 MIN_TRAIN_BOXES = 150
@@ -79,14 +85,45 @@ def group_key(source, filename):
 
 
 def _hashes(path):
-    """返回 (md5, 64 位平均哈希)。JPEG 用 draft 按比例解码，大图也很快。"""
+    """返回 (md5, 64 位平均哈希, 256 位差异哈希)。JPEG 用 draft 按比例解码，大图也很快。"""
     with open(path, "rb") as f:
         md5 = hashlib.md5(f.read()).hexdigest()
     with Image.open(path) as im:
         im.draft("RGB", (64, 64))
-        pixels = list(im.convert("L").resize((8, 8), Image.BILINEAR).tobytes())
+        gray = im.convert("L")
+        pixels = list(gray.resize((8, 8), Image.BILINEAR).tobytes())
+        wide = gray.resize((17, 16), Image.BILINEAR).tobytes()  # 17 列 16 行，每行相邻两列比较，共 256 位
     mean = sum(pixels) / len(pixels)
-    return md5, sum(1 << i for i, p in enumerate(pixels) if p > mean)
+    ahash = sum(1 << i for i, p in enumerate(pixels) if p > mean)
+    dhash = sum(1 << (y * 16 + x) for y in range(16) for x in range(16) if wide[y * 17 + x] > wide[y * 17 + x + 1])
+    return md5, ahash, dhash
+
+
+def _low_information(dhash):
+    ones = dhash.bit_count()
+    return ones < _LOW_INFORMATION_BITS or ones > NEAR_DUP_BITS - _LOW_INFORMATION_BITS
+
+
+def near_pairs(hashes, distance=NEAR_DUP_DISTANCE):
+    """返回 {(i, j)}（i < j）：汉明距离不超过 distance 的哈希下标对。
+
+    把哈希分成 distance + 1 段，距离不超过 distance 的两个哈希至少有一段完全相同（抽屉原理），
+    所以只需在"某一段取值相同"的桶里两两比较，不必比较全部 n² 对。
+    """
+    bands = distance + 1
+    width = -(-NEAR_DUP_BITS // bands)
+    mask = (1 << width) - 1
+    found = set()
+    for band in range(bands):
+        buckets = defaultdict(list)
+        for i, h in enumerate(hashes):
+            buckets[(h >> (band * width)) & mask].append(i)
+        for members in buckets.values():
+            for x, i in enumerate(members):
+                for j in members[x + 1:]:
+                    if (hashes[i] ^ hashes[j]).bit_count() <= distance:
+                        found.add((i, j))
+    return found
 
 
 # ---------------------------------------------------------------- 收集与映射
@@ -173,17 +210,17 @@ def _dedupe(records):
     with ThreadPoolExecutor(max_workers=8) as pool:
         hashes = list(pool.map(_hashes, [r["image"] for r in records]))
     seen, kept = set(), []
-    for record, (md5, ahash) in zip(records, hashes):
+    for record, (md5, ahash, dhash) in zip(records, hashes):
         if md5 in seen:
             continue
         seen.add(md5)
-        record["md5"], record["ahash"] = md5, ahash
+        record["md5"], record["ahash"], record["dhash"] = md5, ahash, dhash
         kept.append(record)
     return kept, len(records) - len(kept)
 
 
 def _groups(records):
-    """并查集：共享分组键或（非纯色的）平均哈希的图片归为同一组。"""
+    """并查集：共享分组键、（非纯色的）平均哈希，或差异哈希近重复（见 NEAR_DUP_DISTANCE）的图片归为同一组。"""
     parent = list(range(len(records)))
 
     def find(i):
@@ -200,6 +237,9 @@ def _groups(records):
                 parent[find(i)] = find(first[key])
             else:
                 first[key] = i
+    candidates = [i for i, r in enumerate(records) if not _low_information(r["dhash"])]
+    for a, b in near_pairs([records[i]["dhash"] for i in candidates]):
+        parent[find(candidates[a])] = find(candidates[b])
     groups = defaultdict(list)
     for i, r in enumerate(records):
         groups[find(i)].append(r)
@@ -342,6 +382,9 @@ def build_dataset(sources, raw_root=DEFAULT_RAW, out=DEFAULT_OUT, classes_path=N
             split_of_ahash[r["ahash"]].add(s)
 
     images = Counter(assign.values())
+    candidates = [r for r in records if not _low_information(r["dhash"])]
+    cross_split_dhash = sum(assign[candidates[a]["name"]] != assign[candidates[b]["name"]]
+                            for a, b in near_pairs([r["dhash"] for r in candidates]))
     summary = {
         "generated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
         "sources_used": list(sources),
@@ -364,7 +407,9 @@ def build_dataset(sources, raw_root=DEFAULT_RAW, out=DEFAULT_OUT, classes_path=N
                           "exclude_lists": {s: [_display_path(p) for p in ps] for s, ps in (exclude_lists or {}).items()}},
         "cross_split_duplicates": sum(1 for v in split_of_md5.values() if len(v) > 1),
         "cross_split_near_duplicates": sum(1 for v in split_of_ahash.values() if len(v) > 1),
+        "cross_split_dhash_pairs": cross_split_dhash,
         "groups": len(groups),
+        "largest_group": max((len(g) for g in groups), default=0),
         "unmapped_boxes": {src: dict(c.most_common()) for src, c in stats["unmapped_boxes"].items()},
         "elapsed_seconds": round(time.time() - started, 1),
         "split_files": {s: sorted(n for n, sp in assign.items() if sp == s) for s in SPLITS},

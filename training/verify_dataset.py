@@ -4,8 +4,9 @@
 检查三件事：
 1. 图片与标注一一对应；
 2. 标注行合法：恰好 5 个字段、类别号在 0..n-1、中心与宽高都在 [0, 1]、宽高大于 0、框不超出图片；
-3. 各 split 之间（以及与 --against 指定的另一个数据集之间）没有重复图片：md5 相同，或 64 位平均哈希相同。
-   平均哈希按 prepare_dataset.py 的规则计算，纯色图（哈希全 0 或全 1）不参与比较。
+3. 各 split 之间（以及与 --against 指定的另一个数据集之间）没有重复图片：md5 相同，或 64 位平均哈希相同，
+   或 256 位差异哈希的汉明距离不超过 NEAR_DUP_DISTANCE（同一张照片调过亮度、裁剪过的副本）。
+   哈希按 prepare_dataset.py 的规则计算，纯色图、几乎没有纹理的图不参与比较。
 
 总纲验收项 1.4、1.6 的检查命令；有任何一项不为 0 时退出码为 1。
 用法（项目根目录、venv 中）：
@@ -69,14 +70,18 @@ def _hash_all(paths):
 
 
 def _collisions(groups):
-    """groups: {标签: [(md5, ahash)]}；返回 (跨标签 md5 相同的值数, 跨标签平均哈希相同的值数)。"""
-    md5_labels, hash_labels = defaultdict(set), defaultdict(set)
+    """groups: {标签: [(md5, ahash, dhash)]}；返回 (跨标签 md5 相同的值数, 跨标签平均哈希相同的值数,
+    跨标签差异哈希近重复的图片对数)。"""
+    md5_labels, hash_labels, tagged = defaultdict(set), defaultdict(set), []
     for label, hashes in groups.items():
-        for md5, ahash in hashes:
+        for md5, ahash, dhash in hashes:
             md5_labels[md5].add(label)
             if ahash not in pd.DEGENERATE_HASHES:
                 hash_labels[ahash].add(label)
-    return (sum(len(v) > 1 for v in md5_labels.values()), sum(len(v) > 1 for v in hash_labels.values()))
+            if not pd._low_information(dhash):
+                tagged.append((label, dhash))
+    near = sum(tagged[i][0] != tagged[j][0] for i, j in pd.near_pairs([d for _, d in tagged]))
+    return (sum(len(v) > 1 for v in md5_labels.values()), sum(len(v) > 1 for v in hash_labels.values()), near)
 
 
 def verify(dataset, against=None, num_classes=None):
@@ -85,13 +90,13 @@ def verify(dataset, against=None, num_classes=None):
         num_classes = len(food_classes.load_classes()["names"])
     images, unpaired, bad = _scan(dataset, num_classes)
     groups = {split: _hash_all(paths) for split, paths in images.items()}
-    md5_dup, hash_dup = _collisions(groups)
+    md5_dup, hash_dup, near_dup = _collisions(groups)
     result = {"images": {s: len(p) for s, p in images.items()}, "unpaired_files": unpaired, "bad_label_lines": bad,
-              "cross_split_md5": md5_dup, "cross_split_ahash": hash_dup}
+              "cross_split_md5": md5_dup, "cross_split_ahash": hash_dup, "cross_split_dhash": near_dup}
     if against:
         other, _, _ = _scan(against, num_classes)
         other_hashes = _hash_all([p for paths in other.values() for p in paths])
-        result["against_md5"], result["against_ahash"] = _collisions(
+        result["against_md5"], result["against_ahash"], result["against_dhash"] = _collisions(
             {"main": [h for hs in groups.values() for h in hs], "against": other_hashes})
     return result
 
@@ -103,9 +108,11 @@ def main():
     args = parser.parse_args()
     result = verify(args.dataset, args.against)
     print(json.dumps(result, ensure_ascii=False))
-    print("corrupt={} unpaired={} cross_split_md5={} cross_split_ahash={}".format(
-        result["bad_label_lines"], result["unpaired_files"], result["cross_split_md5"], result["cross_split_ahash"])
-        + (" against_md5={} against_ahash={}".format(result["against_md5"], result["against_ahash"]) if args.against else ""))
+    print("corrupt={} unpaired={} cross_split_md5={} cross_split_ahash={} cross_split_dhash={}".format(
+        result["bad_label_lines"], result["unpaired_files"], result["cross_split_md5"], result["cross_split_ahash"],
+        result["cross_split_dhash"])
+        + (" against_md5={} against_ahash={} against_dhash={}".format(
+            result["against_md5"], result["against_ahash"], result["against_dhash"]) if args.against else ""))
     problems = [v for k, v in result.items() if k != "images"]
     sys.exit(1 if any(problems) else 0)
 
