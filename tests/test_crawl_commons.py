@@ -89,6 +89,25 @@ class CollectTest(unittest.TestCase):
         self.assertEqual(files, ["File:a.jpg", "File:b.png"])  # pdf 被过滤，Deep 没有展开
 
 
+class BatchTest(unittest.TestCase):
+    def test_batches_stay_within_the_url_length_budget(self):
+        # 全文搜索得到的文件名可能很长，50 个标题拼进 URL 会超过服务器的上限（实测返回 414），要按总长度分批
+        titles = [f"File:{'x' * 180}{i}.jpg" for i in range(30)]
+        batches = cc.batch_titles(titles, budget=2000)
+        self.assertEqual([t for b in batches for t in b], titles)  # 不丢、不重、不乱序
+        self.assertGreater(len(batches), 1)
+        self.assertTrue(all(len("|".join(b)) <= 2000 for b in batches))
+        self.assertTrue(all(len(b) <= 50 for b in batches))
+
+    def test_many_short_titles_are_capped_at_50_per_batch(self):
+        batches = cc.batch_titles([f"File:{i}.jpg" for i in range(120)], budget=100000)
+        self.assertEqual([len(b) for b in batches], [50, 50, 20])
+
+    def test_single_oversized_title_still_gets_its_own_batch(self):
+        batches = cc.batch_titles(["File:" + "y" * 3000 + ".jpg", "File:a.jpg"], budget=2000)
+        self.assertEqual(len(batches), 2)
+
+
 class SearchTest(unittest.TestCase):
     def setUp(self):
         cc.time.sleep = lambda s: None

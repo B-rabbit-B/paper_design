@@ -1,9 +1,124 @@
-# 人工复核排除清单（2026-10-13），与 CLIP 预筛清单 candidates_raw_ginger*_cooked.txt 配合使用
-# 复核对象：auto_label.py 画出框的 951 张。CLIP 整图'生'得分 >= 0.8 的逐张连同框一起检查；得分更低的在抽样中几乎都是无关图，不逐张复核，一律排除（原因写'未复核'）
-# 保留 207 张（219 框），排除 744 张
-# 保留标准：画面主体是该食材本身（整块、整根、切块、盒装），框与食材基本对齐，没有嵌套、重叠的多余框
-# 每行：图片主干 [制表符] 原因代码 [制表符] 说明（排除清单读取时只用第一列）
-# 2026-10-13 阶段 1 最终审查指出后，又补排除 13 张（干姜、姜苗、烤豆腐、熟牛肉、嵌套框等，我逐张看原图确认）；上面的保留数以数据集为准
+# 生姜人工复核排除清单（逐张放大看原图，历经多轮，最后更新 2026-10-14）。auto_label.py 画出框的共 1079 张，保留 216 张（223 框），排除 863 张
+# 保留标准：整块、整根、切块的鲜姜（含成堆的）。不要干姜、姜黄、姜苗、植株、采收现场、盆栽、病害样本图、插图，不要框到别的东西或嵌套重叠的框；框与目标基本对齐
+# 复核经过：Openverse、Wikimedia Commons 爬取 → CLIP 整图预筛 → Grounding DINO 画框 → 逐张复核 → 中期审查、最终审查、复审各指出一批违规图后补排除 → 对仍保留的图重新放大复核 → 因框数不足对'框不准'的图去嵌套后重新复核；详见 sources.md
+# 原因代码 unreviewed 表示 CLIP 整图得分偏低、没有逐张复核（抽样看过几乎都是无关图）；其余原因代码见各行说明
+# 每行：图片主干 [制表符] 原因代码 [制表符] 说明（排除清单读取时只用第一列，# 开头的行是注释）
+# 2026-10-13 复审后又补排除 1 张（审查员指出的、以及我对保留的图重新放大复核发现的）
+commons_ginger2_0000	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0001	notbeef	干姜
+commons_ginger2_0011	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0012	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0015	uncertain	看起来偏干，不确定是不是鲜姜
+commons_ginger2_0017	duplicate	与 0016 是同一盘姜的同一张照片
+commons_ginger2_0019	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0021	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0023	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0029	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0032	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0035	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0036	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0040	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0041	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0079	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0080	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0083	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0088	notbeef	干姜
+commons_ginger2_0091	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0119	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0123	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0124	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0149	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0178	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0196	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0197	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0200	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0231	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0283	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0307	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0333	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0334	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0335	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0353	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0366	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0368	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0369	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0370	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0371	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0372	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0376	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0378	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0379	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0382	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0383	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0384	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0387	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0388	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0390	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0392	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0394	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0397	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0400	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0401	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0403	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0423	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0437	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0441	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0448	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0451	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0467	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0469	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0471	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0552	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0553	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0554	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0558	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0562	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0563	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0569	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0571	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0572	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0573	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0574	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0575	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0576	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0584	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0589	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0596	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0598	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0599	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0603	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0608	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0609	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0610	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0617	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0619	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0620	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0665	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0698	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0714	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0718	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0719	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0725	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0726	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0727	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0735	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0737	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0740	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0743	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0744	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0762	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0765	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0766	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0791	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0843	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0884	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0977	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_0987	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_1012	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_1077	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_1086	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
+commons_ginger2_1087	uncertain	颜色灰褐、表面粗糙，疑似南姜或姜黄，不确定是鲜姜
+commons_ginger2_1088	notbeef	不是鲜姜（姜黄、花、寿司、鱼、集市、土豆、芒果、贝壳、插图等）或框不准
 commons_ginger_0006	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0015	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0050	duplicate	与保留的图近重复（同一物体连拍）
@@ -22,6 +137,7 @@ commons_ginger_0224	unrelated	无关（人物、动物、植物、街景、插�
 commons_ginger_0228	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0255	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0265	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0271	unrelated	成堆的小块块根，更像花生或其他块茎，不是鲜姜
 commons_ginger_0272	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0274	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0275	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -31,6 +147,7 @@ commons_ginger_0280	unrelated	无关（人物、动物、植物、街景、插�
 commons_ginger_0288	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0289	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0292	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0293	notbeef	带根须的整株姜
 commons_ginger_0294	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0296	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_0297	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -47,6 +164,7 @@ commons_ginger_0318	notbeef	不是目标食材（腌制品、制品、近似物�
 commons_ginger_0319	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 commons_ginger_0320	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 commons_ginger_0321	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0322	notbeef	干姜，不是鲜姜（标题 Dry Ginger）
 commons_ginger_0323	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 commons_ginger_0325	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 commons_ginger_0326	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
@@ -61,17 +179,15 @@ commons_ginger_0342	badbox	框不准（嵌套、重叠、漏框、框住整个�
 commons_ginger_0343	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0346	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0348	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
-commons_ginger_0362	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0365	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_0366	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0367	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0370	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0372	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_0373	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0382	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0407	duplicate	与 #18 同一堆姜（水壶旁）的另一角度，近重复
 commons_ginger_0408	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0409	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_0412	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0413	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0434	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0435	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -79,14 +195,13 @@ commons_ginger_0436	badbox	框不准（嵌套、重叠、漏框、框住整个�
 commons_ginger_0438	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_0439	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_0440	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0442	badbox	框占满整张图，把上方的牛油果和红薯也框进去了
 commons_ginger_0444	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0445	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_0447	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0449	uncertain	看不清是否为目标食材
 commons_ginger_0453	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_0456	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0457	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_0458	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0459	notbeef	干姜，不是鲜姜
 commons_ginger_0462	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0466	uncertain	看不清是否为目标食材
 commons_ginger_0468	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -99,6 +214,7 @@ commons_ginger_0518	uncertain	看不清是否为目标食材
 commons_ginger_0519	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 commons_ginger_0520	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 commons_ginger_0522	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+commons_ginger_0524	notbeef	姜青枯病样本图，腐烂发黑的根茎
 commons_ginger_0525	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_0526	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0527	duplicate	与保留的图近重复（同一物体连拍）
@@ -109,25 +225,22 @@ commons_ginger_0531	unrelated	无关（人物、动物、植物、街景、插�
 commons_ginger_0532	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_0533	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 commons_ginger_0535	uncertain	看不清是否为目标食材
-commons_ginger_0551	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0552	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 commons_ginger_0553	duplicate	与保留的图近重复（同一物体连拍）
+commons_ginger_0555	notbeef	干姜块，不是鲜姜
 commons_ginger_0559	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0563	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0565	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0568	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0569	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_0571	badbox	两个重叠的框（两堆姜相互重叠）
 commons_ginger_0576	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_0582	duplicate	与保留的图近重复（同一物体连拍）
-commons_ginger_0583	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_0584	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0585	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
-commons_ginger_0586	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0587	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_0591	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0592	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 commons_ginger_0593	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
-commons_ginger_0600	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0602	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0605	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0622	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -165,7 +278,6 @@ commons_ginger_0707	unrelated	无关（人物、动物、植物、街景、插�
 commons_ginger_0711	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0712	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0719	unrelated	无关（人物、动物、植物、街景、插画、包装等）
-commons_ginger_0724	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0725	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0726	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0737	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -181,6 +293,7 @@ commons_ginger_0752	badbox	框不准（嵌套、重叠、漏框、框住整个�
 commons_ginger_0753	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0767	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0769	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0770	uncertain	成袋的褐色小根茎，可能是干姜或姜黄
 commons_ginger_0771	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_0786	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0788	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -188,8 +301,6 @@ commons_ginger_0793	unrelated	无关（人物、动物、植物、街景、插�
 commons_ginger_0803	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0809	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0812	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_0818	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_0819	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0826	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0829	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0830	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -197,7 +308,7 @@ commons_ginger_0836	unrelated	无关（人物、动物、植物、街景、插�
 commons_ginger_0851	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0852	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0853	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_0862	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+commons_ginger_0858	notbeef	姜青枯病样本图，腐烂发黑的根茎
 commons_ginger_0867	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_0873	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_0875	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -225,10 +336,10 @@ commons_ginger_0995	unrelated	无关（人物、动物、植物、街景、插�
 commons_ginger_1007	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 commons_ginger_1013	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_1014	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_1016	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_1038	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_1039	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_1043	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_ginger_1051	notbeef	高良姜（南姜），不是姜
 commons_ginger_1062	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_1082	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_1088	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -237,7 +348,6 @@ commons_ginger_1090	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_1091	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_1092	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_1093	duplicate	与保留的图近重复（同一物体连拍）
-commons_ginger_1094	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_1095	duplicate	与保留的图近重复（同一物体连拍）
 commons_ginger_1098	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_1103	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -259,8 +369,6 @@ commons_ginger_1164	badbox	框不准（嵌套、重叠、漏框、框住整个�
 commons_ginger_1166	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_1167	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_ginger_1168	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_1169	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-commons_ginger_1171	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_1194	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_1206	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_ginger_1211	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -269,7 +377,6 @@ commons_ginger_1213	badbox	框不准（嵌套、重叠、漏框、框住整个�
 raw_ginger2_0002	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_ginger2_0003	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_ginger2_0005	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-raw_ginger2_0026	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger2_0028	uncertain	看不清是否为目标食材
 raw_ginger2_0029	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger2_0030	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -282,7 +389,6 @@ raw_ginger2_0132	notbeef	不是目标食材（腌制品、制品、近似物或�
 raw_ginger2_0137	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_ginger2_0142	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger2_0145	unrelated	无关（人物、动物、植物、街景、插画、包装等）
-raw_ginger2_0146	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger2_0160	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger2_0169	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger2_0172	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -297,7 +403,6 @@ raw_ginger2_0322	unrelated	无关（人物、动物、植物、街景、插画�
 raw_ginger2_0325	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger2_0328	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger2_0352	unrelated	无关（人物、动物、植物、街景、插画、包装等）
-raw_ginger2_0361	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger2_0363	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger2_0365	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger2_0366	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -348,6 +453,7 @@ raw_ginger_0250	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在�
 raw_ginger_0252	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0254	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0257	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0261	notbeef	韩国市场里长锥形的根，疑似沙参类，不是姜块
 raw_ginger_0263	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0266	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0267	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -358,10 +464,7 @@ raw_ginger_0288	unrelated	无关（人物、动物、植物、街景、插画、
 raw_ginger_0290	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_ginger_0294	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0316	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
-raw_ginger_0317	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0318	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
-raw_ginger_0319	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-raw_ginger_0322	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0325	uncertain	看不清是否为目标食材
 raw_ginger_0337	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0340	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -375,9 +478,7 @@ raw_ginger_0415	unrelated	无关（人物、动物、植物、街景、插画、
 raw_ginger_0425	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0430	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0436	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
-raw_ginger_0437	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-raw_ginger_0438	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
-raw_ginger_0440	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0439	notbeef	土里带枯叶和须根的姜，采收现场
 raw_ginger_0442	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0446	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0447	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -386,15 +487,12 @@ raw_ginger_0450	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在�
 raw_ginger_0452	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0455	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0456	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
-raw_ginger_0461	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0463	uncertain	看不清是否为目标食材
-raw_ginger_0466	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0467	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0468	duplicate	与保留的图近重复（同一物体连拍）
 raw_ginger_0469	duplicate	与保留的图近重复（同一物体连拍）
 raw_ginger_0471	duplicate	与保留的图近重复（同一物体连拍）
 raw_ginger_0473	unrelated	无关（人物、动物、植物、街景、插画、包装等）
-raw_ginger_0474	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0475	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0476	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0480	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -403,14 +501,22 @@ raw_ginger_0485	unrelated	无关（人物、动物、植物、街景、插画、
 raw_ginger_0498	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0503	duplicate	与保留的图近重复（同一物体连拍）
 raw_ginger_0504	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0505	notbeef	姜青枯病样本图，腐烂发黑的根茎
 raw_ginger_0516	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0517	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0518	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0520	notbeef	姜青枯病样本图，腐烂发黑的根茎
+raw_ginger_0521	notbeef	带茎根的姜苗标本
 raw_ginger_0522	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0524	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0528	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0529	notbeef	姜青枯病样本图，腐烂发黑的根茎
 raw_ginger_0530	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0531	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0532	notbeef	姜青枯病样本图，腐烂发黑的横切面
+raw_ginger_0533	notbeef	姜青枯病样本图，腐烂发黑的根茎
+raw_ginger_0534	notbeef	姜青枯病样本图，腐烂发黑的根茎
+raw_ginger_0535	notbeef	姜青枯病样本图，腐烂发黑的根茎
 raw_ginger_0536	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0537	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0540	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -418,8 +524,10 @@ raw_ginger_0542	badbox	框不准（嵌套、重叠、漏框、框住整个货架
 raw_ginger_0544	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0550	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0553	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0555	notbeef	姜青枯病样本图，腐烂发黑的根茎
 raw_ginger_0560	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0561	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0563	notbeef	土里的姜芽（Ginger Buds），园艺场景，三个框
 raw_ginger_0564	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0565	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0581	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
@@ -440,10 +548,12 @@ raw_ginger_0627	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在�
 raw_ginger_0630	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0631	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0633	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0634	notbeef	姜青枯病样本图，腐烂发黑的根茎
 raw_ginger_0635	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0645	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0653	duplicate	与保留的图近重复（同一物体连拍）
 raw_ginger_0654	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_0655	notbeef	土里的姜带茎，采收现场，接近姜苗
 raw_ginger_0656	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0664	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0670	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -458,14 +568,15 @@ raw_ginger_0708	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在�
 raw_ginger_0711	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0719	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0734	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_0744	notbeef	带长茎的姜苗，采收后整株，不是食用的姜块
 raw_ginger_0757	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0783	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0784	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0785	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_0793	notbeef	地里长着的姜株，根茎在土里，采收现场
 raw_ginger_0798	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0799	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0810	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
-raw_ginger_0820	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0822	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0830	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0839	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
@@ -476,7 +587,6 @@ raw_ginger_0862	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在�
 raw_ginger_0882	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_0890	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0894	uncertain	看不清是否为目标食材
-raw_ginger_0897	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_0901	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0907	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_0908	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -513,7 +623,6 @@ raw_ginger_1036	unrelated	无关（人物、动物、植物、街景、插画、
 raw_ginger_1038	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_ginger_1040	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_ginger_1056	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
-raw_ginger_1058	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_1060	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_ginger_1061	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1062	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -554,6 +663,7 @@ raw_ginger_1251	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在�
 raw_ginger_1256	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1286	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1291	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_ginger_1295	notbeef	干姜块，不是鲜姜
 raw_ginger_1323	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1333	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1339	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -577,6 +687,8 @@ raw_ginger_1426	unrelated	无关（人物、动物、植物、街景、插画、
 raw_ginger_1427	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1430	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1431	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1432	notbeef	带茎带根的姜苗标本，不是食材
+raw_ginger_1438	notbeef	发芽的姜苗带根须
 raw_ginger_1442	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1446	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1447	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -584,6 +696,7 @@ raw_ginger_1450	unrelated	无关（人物、动物、植物、街景、插画、
 raw_ginger_1451	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1456	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1460	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1461	duplicate	与 #164 是同一批姜在木板上的另一角度，近重复
 raw_ginger_1462	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1463	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1466	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
@@ -594,9 +707,11 @@ raw_ginger_1477	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在�
 raw_ginger_1483	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1487	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1489	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1490	notbeef	土里的姜带杂草，采收现场
 raw_ginger_1491	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1492	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1493	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1494	notbeef	土里生长的整丛姜苗，框是整张图
 raw_ginger_1497	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1507	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1512	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
@@ -620,19 +735,23 @@ raw_ginger_1560	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在�
 raw_ginger_1561	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1564	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1566	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1567	notbeef	泥地上带绿芽的姜，采收现场
 raw_ginger_1568	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1569	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1572	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1573	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1574	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1575	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1578	notbeef	水培托盘里发芽的姜苗
 raw_ginger_1584	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1586	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_ginger_1587	duplicate	与 raw_ginger_1515 是同一只手拿着的同一块姜
 raw_ginger_1600	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1603	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1604	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1605	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1607	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_ginger_1611	notbeef	泥土里的一丛根茎和须根，采收现场，框是整张图
 raw_ginger_1614	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1615	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_ginger_1618	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
@@ -748,16 +867,3 @@ raw_ginger_1965	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在�
 raw_ginger_1967	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1981	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_ginger_1987	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
-raw_ginger_1295	notbeef	干姜块，不是鲜姜
-commons_ginger_0459	notbeef	干姜，不是鲜姜
-commons_ginger_0555	notbeef	干姜块，不是鲜姜
-raw_ginger_1432	notbeef	带茎带根的姜苗标本，不是食材
-raw_ginger_1494	notbeef	土里生长的整丛姜苗，框是整张图
-raw_ginger_1578	notbeef	水培托盘里发芽的姜苗
-raw_ginger_0521	notbeef	带茎根的姜苗标本
-raw_ginger_1438	notbeef	发芽的姜苗带根须
-raw_ginger_1490	notbeef	土里的姜带杂草，采收现场
-raw_ginger_0655	notbeef	土里的姜带茎，采收现场，接近姜苗
-commons_ginger_0293	notbeef	带根须的整株姜
-commons_ginger_0271	unrelated	成堆的小块块根，更像花生或其他块茎，不是鲜姜
-commons_ginger_0770	uncertain	成袋的褐色小根茎，可能是干姜或姜黄

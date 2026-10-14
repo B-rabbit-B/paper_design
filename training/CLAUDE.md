@@ -12,6 +12,7 @@
 | `verify_dataset.py` | 输出数据集的独立校验（1.4、1.6 的检查命令） | 是 |
 | `download_*.py`、`convert_lvis_parquet.py`、`lvis_processed_food.py` | 各来源的下载与转换 | 是 |
 | `crawl_openverse.py`、`crawl_commons.py`、`auto_label.py`、`clip_filter.py` | 爬取（Openverse 取 CC0、PDM、BY、BY-SA、BY-NC、BY-NC-SA；Wikimedia Commons 只取 CC0、公有领域、BY、BY-SA）、自动画框、生熟筛选（自动结果必须人工复核） | 是 |
+| `make_attribution.py` | 以合并后的数据集为准生成网图来源的署名清单（被去重的图不列入，找不到来源记录就报错） | 是 |
 | `fix_nested_boxes.py` | 去掉自动画框结果里套在大框里的小框（原标注备份在 `labels_orig/`，改完必须重新看图） | 是 |
 | `normalize_photos.py` | 自拍照片按 EXIF 转正、重命名，供标注 | 是 |
 | `check_env.py` | 训练机环境自检（阶段 0 的 0.8–0.13） | 是 |
@@ -38,8 +39,9 @@ python training/prepare_dataset.py --preview 20 --out training/reports/dataset/s
 - 改了 `classes.yaml`（含只加映射）：重跑总纲 0.4、0.6、1.2，并重新合并；改了类别名、编号或顺序，数据集要重建、模型要重训。
 - `reports/dataset/fridge_split.json` 一经入库不得修改，`prepare_dataset.py` 检测到它已存在会拒绝重建测试集。
 - 所有网上爬取、图库来源的图片都要在 `sources.md` 记录地址、日期、许可；CC 许可的要逐张留署名清单（`web_*_attribution.csv`，必须与数据集里的图片逐一对应）。爬取脚本的许可过滤是版权相关的逻辑，必须有测试，不能放进 ND、未知许可。许可未声明的来源（`hyunahko`）只用于本毕设，论文中注明。
+- 署名清单用 `make_attribution.py` 重新生成，不要手工改；每次合并后都要重新生成并确认与数据集逐一对应。
 - 测试集 AICook（`aicook`）**只作测试，不进训练集**。
-- **自动画框的结果不能在缩略图上过一眼就算复核**：阶段 1 最终审查在原图上发现，我在 320 像素的拼图里漏看了干姜、姜苗、烤豆腐、熟牛肉。复核时放大看（每页 24 张左右），可疑的单独看原图，保留标准要具体写出来（鲜的、整块、框对齐、没有嵌套重叠）。
+- **自动画框的结果不能在缩略图上过一眼就算复核**：阶段 1 最终审查在原图上发现，我在 320 像素的拼图里漏看了干姜、姜苗、烤豆腐、熟牛肉。复核时放大看（每页 18 张、格子 320 像素以上、带署名清单里的标题），可疑的单独看原图，保留标准要具体写出来（鲜的、整块、框对齐、没有嵌套重叠）；复核完再对数据集里的图随机抽 30 张独立验证一遍。这个来源做了三轮审查才清干净，不要指望一轮复核就够。
 
 ## 已知的坑
 

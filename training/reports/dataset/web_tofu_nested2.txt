@@ -1,0 +1,11 @@
+# 第二轮：第一轮之后又因框不准被排除的豆腐图，用 fix_nested_boxes.py 去掉嵌套小框后重新复核
+commons_tofu2_0092
+commons_tofu2_0292
+commons_tofu2_0293
+commons_tofu2_0294
+commons_tofu2_0660
+commons_tofu2_0591
+raw_tofu2_0374
+raw_tofu3_0154
+raw_tofu3_0170
+raw_tofu_1067

@@ -100,11 +100,27 @@ def search_files(session, queries, limit=300, skip=()):
     return titles
 
 
+def batch_titles(titles, budget=3500, max_count=50):
+    """把标题分成若干批：每批最多 max_count 个，用 | 连起来的总长度不超过 budget（标题放在 URL 里，太长服务器返回 414）。
+    单个标题本身超过 budget 时独占一批。"""
+    batches, cur, length = [], [], 0
+    for title in titles:
+        extra = len(title) + (1 if cur else 0)
+        if cur and (len(cur) >= max_count or length + extra > budget):
+            batches.append(cur)
+            cur, length, extra = [], 0, len(title)
+        cur.append(title)
+        length += extra
+    if cur:
+        batches.append(cur)
+    return batches
+
+
 def file_infos(session, titles):
-    """每 50 个标题一批，返回 [(标题, 缩略图地址, 作者, 许可, 许可版本, 说明页)]（只含许可合格的）。"""
+    """分批查询，返回 [(标题, 缩略图地址, 作者, 许可, 许可版本, 说明页)]（只含许可合格的）。"""
     rows = []
-    for i in range(0, len(titles), 50):
-        data = api(session, action="query", prop="imageinfo", titles="|".join(titles[i:i + 50]),
+    for batch in batch_titles(titles):
+        data = api(session, action="query", prop="imageinfo", titles="|".join(batch),
                    iiprop="url|extmetadata", iiurlwidth=1280)
         for page in data["query"]["pages"].values():
             info = (page.get("imageinfo") or [None])[0]

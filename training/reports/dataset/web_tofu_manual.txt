@@ -1,11 +1,9 @@
-# 人工复核排除清单（2026-10-13），与 CLIP 预筛清单 candidates_raw_tofu*_cooked.txt 配合使用
-# 复核对象：auto_label.py 画出框的 487 张。CLIP 整图'生'得分 >= 0.8 的逐张连同框一起检查；得分更低的在抽样中几乎都是无关图，不逐张复核，一律排除（原因写'未复核'）
-# 保留 79 张（95 框），排除 408 张
-# 保留标准：画面主体是该食材本身（整块、整根、切块、盒装），框与食材基本对齐，没有嵌套、重叠的多余框
-# 每行：图片主干 [制表符] 原因代码 [制表符] 说明（排除清单读取时只用第一列）
-# 2026-10-13 阶段 1 最终审查指出后，又补排除 6 张（干姜、姜苗、烤豆腐、熟牛肉、嵌套框等，我逐张看原图确认）；上面的保留数以数据集为准
-# 2026-10-13 豆腐不够 200 框，补充：① Commons 全文搜索又爬了 722 张，预筛后画框 47 张，保留 10 张；② 把原先因嵌套、重叠的框被排除的 125 张用 training/fix_nested_boxes.py 去掉被大框包住的小框（41 张有变化，清单见 web_tofu_nested.txt，原标注备份在 raw/web_tofu/labels_orig/），逐张重新复核，28 张通过后从本清单移除
-# 现在保留 111 张（125 框），排除 423 张；上面的保留数以数据集为准
+# 豆腐人工复核排除清单（逐张放大看原图，历经多轮，最后更新 2026-10-14）。auto_label.py 画出框的共 601 张，保留 104 张（114 框），排除 497 张
+# 保留标准：整块、切块、盒装的白豆腐。不要豆腐干、豆皮、腐竹、臭豆腐、炸豆腐、烤豆腐、冻豆腐、奶豆腐、鱼豆腐、蛋豆腐、豆腐脑和各种菜肴，不要嵌套重叠的框；框与目标基本对齐
+# 复核经过：Openverse、Wikimedia Commons 爬取 → CLIP 整图预筛 → Grounding DINO 画框 → 逐张复核 → 中期审查、最终审查、复审各指出一批违规图后补排除 → 对仍保留的图重新放大复核 → 因框数不足对'框不准'的图去嵌套后重新复核；详见 sources.md
+# 原因代码 unreviewed 表示 CLIP 整图得分偏低、没有逐张复核（抽样看过几乎都是无关图）；其余原因代码见各行说明
+# 每行：图片主干 [制表符] 原因代码 [制表符] 说明（排除清单读取时只用第一列，# 开头的行是注释）
+# 2026-10-13 复审后又补排除 2 张（审查员指出的、以及我对保留的图重新放大复核发现的）
 commons_tofu2_0017	unrelated	面条类，不是豆腐
 commons_tofu2_0025	dish	浇汁的凉拌豆腐，是菜肴
 commons_tofu2_0033	notbeef	奶豆腐（乳制品），不是大豆豆腐
@@ -21,8 +19,6 @@ commons_tofu2_0254	notbeef	粉丝或米线，不是豆腐
 commons_tofu2_0255	notbeef	粉丝或米线，不是豆腐
 commons_tofu2_0256	notbeef	粉丝或米线，不是豆腐
 commons_tofu2_0257	notbeef	粉丝或米线，不是豆腐
-commons_tofu2_0292	badbox	多个重叠的框
-commons_tofu2_0293	badbox	六个相互重叠的框
 commons_tofu2_0294	badbox	五个相互重叠的框
 commons_tofu2_0299	notbeef	粉丝或米线，不是豆腐
 commons_tofu2_0300	notbeef	粉丝或米线，不是豆腐
@@ -42,7 +38,32 @@ commons_tofu2_0436	notbeef	腐竹，不是鲜豆腐
 commons_tofu2_0437	notbeef	腐竹，不是鲜豆腐
 commons_tofu2_0520	unrelated	包装标签图片
 commons_tofu2_0521	unrelated	包装标签图片
+commons_tofu2_0591	badbox	货架上多种商品，框只框一部分，且混有豆腐以外的食品
 commons_tofu2_0660	badbox	货架上的多种商品，框不准
+commons_tofu2_0663	notbeef	封装的韩国嫩豆腐（순두부），内容物是豆花，不是成块的豆腐
+commons_tofu3_0025	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0029	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0035	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0102	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0147	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0278	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0314	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0322	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0354	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0358	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0365	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0410	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0577	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0621	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0625	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0698	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0726	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0783	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0794	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0816	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0847	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0855	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+commons_tofu3_0858	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
 commons_tofu_0001	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_tofu_0004	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_tofu_0006	cooked	熟食（炸、烤、卤、煎）
@@ -74,6 +95,7 @@ commons_tofu_0122	cooked	熟食（炸、烤、卤、煎）
 commons_tofu_0123	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 commons_tofu_0134	cooked	熟食（炸、烤、卤、煎）
 commons_tofu_0135	cooked	熟食（炸、烤、卤、煎）
+commons_tofu_0136	notbeef	鱼豆腐（鱼糜制品），不是大豆豆腐（标题 Fish tofu slices）
 commons_tofu_0137	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_tofu_0161	cooked	熟食（炸、烤、卤、煎）
 commons_tofu_0170	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -102,6 +124,7 @@ commons_tofu_0255	unrelated	无关（人物、动物、植物、街景、插画�
 commons_tofu_0256	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_tofu_0270	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_tofu_0273	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+commons_tofu_0276	notbeef	制作过程中的豆腐脑（正在压制的凝乳），还不是成块的豆腐
 commons_tofu_0277	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 commons_tofu_0317	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 commons_tofu_0318	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -182,9 +205,11 @@ raw_tofu2_0352	cooked	熟食（炸、烤、卤、煎）
 raw_tofu2_0361	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_tofu2_0371	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu2_0373	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu2_0374	badbox	框只框住一块，旁边的豆腐没有框，画面主体不清
 raw_tofu2_0386	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_tofu2_0388	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_tofu2_0393	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu2_0415	dish	麻婆豆腐料理包的包装，框住的是包装里的豆腐，画面是调料包
 raw_tofu2_0417	duplicate	与保留的图近重复（同一物体连拍）
 raw_tofu2_0420	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu2_0454	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -192,6 +217,7 @@ raw_tofu2_0470	unrelated	无关（人物、动物、植物、街景、插画、�
 raw_tofu2_0478	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu2_0479	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_tofu2_0497	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu2_0613	dish	碗里的一小块豆腐上放着山葵，是菜肴摆盘
 raw_tofu2_0649	cooked	熟食（炸、烤、卤、煎）
 raw_tofu2_0656	cooked	熟食（炸、烤、卤、煎）
 raw_tofu2_0684	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
@@ -207,8 +233,10 @@ raw_tofu3_0012	badbox	框不准（嵌套、重叠、漏框、框住整个货架�
 raw_tofu3_0013	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu3_0020	cooked	熟食（炸、烤、卤、煎）
 raw_tofu3_0070	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu3_0154	badbox	框只框住袋装豆腐，画面主体是一排调料瓶
 raw_tofu3_0167	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu3_0168	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu3_0170	badbox	框只框住前面一排豆腐，后面的豆腐没有框，且混有鸡汤罐头等
 raw_tofu3_0171	uncertain	看不清是否为目标食材
 raw_tofu3_0172	uncertain	看不清是否为目标食材
 raw_tofu3_0290	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -238,6 +266,7 @@ raw_tofu3_0444	unrelated	无关（人物、动物、植物、街景、插画、�
 raw_tofu3_0448	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_tofu3_0449	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_tofu3_0458	cooked	熟食（炸、烤、卤、煎）
+raw_tofu3_0459	cooked	金黄色的豆腐块，疑似煎或炸过
 raw_tofu3_0467	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_tofu3_0472	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu3_0480	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -245,10 +274,45 @@ raw_tofu3_0505	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体
 raw_tofu3_0510	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_tofu3_0590	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_tofu3_0651	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu4_0002	uncertain	袋装的豆腐花（豆花），不是成块的豆腐
 raw_tofu4_0013	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu5_0184	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0250	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0251	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0252	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0258	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0259	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0260	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0278	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0316	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0357	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0358	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0361	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0392	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0405	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0409	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0413	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0414	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0428	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0435	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0446	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0479	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0484	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0508	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0526	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0531	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0548	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0583	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0587	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0588	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0589	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0590	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0609	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
+raw_tofu5_0613	notbeef	不是整块或切块的鲜豆腐（炸豆腐、豆腐制品、包装、菜肴、无关图）或框不准
 raw_tofu_0000	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_tofu_0004	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_tofu_0012	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_0014	dish	豆腐上放着叶子，是装饰摆盘
 raw_tofu_0015	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_tofu_0021	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu_0024	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -332,6 +396,7 @@ raw_tofu_0657	badbox	框不准（嵌套、重叠、漏框、框住整个货架�
 raw_tofu_0665	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_0689	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_0707	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
+raw_tofu_0731	cooked	边缘焦黄、撒黑胡椒，疑似煎烤过的豆腐
 raw_tofu_0738	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_0753	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_0754	unrelated	无关（人物、动物、植物、街景、插画、包装等）
@@ -367,11 +432,16 @@ raw_tofu_1036	badbox	框不准（嵌套、重叠、漏框、框住整个货架�
 raw_tofu_1038	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu_1039	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu_1044	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1045	notbeef	豆腐脑压制过程，是凝乳而不是成块的豆腐
+raw_tofu_1046	notbeef	豆腐脑压制过程，是凝乳而不是成块的豆腐
 raw_tofu_1047	duplicate	与保留的图近重复（同一物体连拍）
 raw_tofu_1050	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1061	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1067	badbox	两个框，其中一个框住的是手里拿着的豆腐块，重叠
 raw_tofu_1070	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1073	uncertain	模糊的灰色布状物，看不出是豆腐
 raw_tofu_1080	unrelated	无关（人物、动物、植物、街景、插画、包装等）
+raw_tofu_1081	dish	豆腐上放酸橘片和山葵，是菜肴
 raw_tofu_1109	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1118	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_tofu_1123	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
@@ -384,18 +454,21 @@ raw_tofu_1187	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复�
 raw_tofu_1197	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_tofu_1203	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1206	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
+raw_tofu_1207	notbeef	玉子豆腐（蛋豆腐），不是大豆豆腐
 raw_tofu_1210	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu_1234	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_tofu_1244	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1247	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu_1250	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu_1252	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1255	dish	豆腐上撒芝麻，是加工后的菜肴
 raw_tofu_1270	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1277	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1278	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1283	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1292	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1311	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
+raw_tofu_1317	dish	餐厅摆盘，芝麻豆腐丁放在碎冰上，是菜肴
 raw_tofu_1318	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
 raw_tofu_1321	notbeef	不是目标食材（腌制品、制品、近似物或其他食材）
 raw_tofu_1337	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
@@ -411,8 +484,8 @@ raw_tofu_1471	badbox	框不准（嵌套、重叠、漏框、框住整个货架�
 raw_tofu_1498	unrelated	无关（人物、动物、植物、街景、插画、包装等）
 raw_tofu_1500	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu_1512	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
-raw_tofu_1535	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1540	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
+raw_tofu_1580	uncertain	黄色纸包的豆腐块，不确定是普通鲜豆腐
 raw_tofu_1597	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
 raw_tofu_1634	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1682	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
@@ -423,7 +496,6 @@ raw_tofu_1731	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复�
 raw_tofu_1739	uncertain	看不清是否为目标食材
 raw_tofu_1740	dish	菜肴（沙拉、卷、点缀等，目标食材不是主体）
 raw_tofu_1751	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
-raw_tofu_1754	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1755	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1778	unreviewed	未复核（CLIP 整图得分低于 0.8，或不在复核页内）
 raw_tofu_1781	badbox	框不准（嵌套、重叠、漏框、框住整个货架或多余小框）
