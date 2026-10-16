@@ -365,7 +365,7 @@ class NearDuplicateTest(Fixture):
     def test_near_pairs_finds_every_pair_within_the_distance(self):
         rng = random.Random(7)
         a = rng.getrandbits(pd.NEAR_DUP_BITS)
-        spread = [1 << (20 * k + 3) for k in range(pd.NEAR_DUP_DISTANCE)]  # 每个翻转位落在不同的段里，最难查到的情形
+        spread = [1 << (12 * k + 3) for k in range(pd.NEAR_DUP_DISTANCE)]  # 翻转位尽量分散在不同的段里，最难查到的情形
         b = a ^ sum(spread)
         c = b ^ (1 << 255)  # 与 a 相差 13 位，与 b 相差 1 位
         d = rng.getrandbits(pd.NEAR_DUP_BITS)
@@ -413,6 +413,13 @@ class GroupKeyTest(unittest.TestCase):
         b = pd.group_key("src", "VID_20250228_124329_mp4-0057_jpg.rf.97a9.jpg")
         self.assertEqual(a, b)
         self.assertNotEqual(a, pd.group_key("src", "VID_20250301_090000_mp4-0010_jpg.rf.eefb.jpg"))
+
+    def test_open_images_id_groups_across_sources(self):
+        # Zenodo 里混有 Open Images 的图，文件名以 16 位十六进制 ID 开头：同一个 ID 无论来源都是同一张照片
+        a = pd.group_key("openimages", "dd2de25c19be05a8.jpg")
+        b = pd.group_key("zenodo", "dd2de25c19be05a8_jpg.rf.0a1b2c.jpg")
+        self.assertEqual(a, b)
+        self.assertNotEqual(a, pd.group_key("openimages", "dd2de25c19be05a9.jpg"))
 
     def test_groups_are_per_source(self):
         self.assertNotEqual(pd.group_key("a", "x.jpg"), pd.group_key("b", "x.jpg"))

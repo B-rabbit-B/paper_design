@@ -47,10 +47,10 @@ ADAPTERS = {"yolo": yolo.iter_samples, "voc": voc.iter_samples, "coco": coco.ite
 SPLITS = ("train", "val", "test")
 MARKER = ".prepare_dataset"  # 本脚本生成的目录里才有这个文件；没有它的非空目录拒绝清空
 DEGENERATE_HASHES = {0, (1 << 64) - 1}  # 纯色图的平均哈希，不能用来判定近重复
-# 近重复：16x16 差异哈希（256 位）汉明距离不超过 NEAR_DUP_DISTANCE，视为同一张照片的增强副本（亮度、裁剪、缩放不同）。
+# 近重复：16x16 差异哈希（256 位）汉明距离不超过 NEAR_DUP_DISTANCE（20），视为同一张照片的增强副本（亮度、裁剪、缩放不同）。
 # 平均哈希要求 64 位完全相等，抓不住这类副本：阶段 1 第四次复审用同一阈值在跨集图片里查出 411 对
 NEAR_DUP_BITS = 256
-NEAR_DUP_DISTANCE = 12
+NEAR_DUP_DISTANCE = 20
 _LOW_INFORMATION_BITS = 16  # 差异哈希里置位的位数不足它（或不足 256 减它）的图几乎没有纹理，哈希不可靠，不参与比较
 # 每类训练框数的最低要求（总纲 1.8），统计输出、分布图的虚线、验收命令都用它。
 # 用户 2026-10-14 决定由 200 降为 150：严格清理网图中的违规图后，生姜只有 187 框，再补爬补不动
@@ -72,12 +72,18 @@ DEFAULT_EXCLUDES = [(source, os.path.join(DEFAULT_REPORTS, name)) for source, na
     ("web_ginger", "web_ginger_manual.txt"), ("web_tofu", "web_tofu_manual.txt"))]
 
 _RF_SUFFIX = re.compile(r"\.rf\.[0-9a-fA-F]+$")
+_OPEN_IMAGES_ID = re.compile(r"^([0-9a-f]{16})(?:_|$)")
 _VIDEO_FRAME = re.compile(r"^(.*_(?:mp4|mov|avi))-\d+(?:_jpe?g|_png)?$", re.IGNORECASE)
 
 
 def group_key(source, filename):
-    """近重复分组键：去掉 Roboflow 增强后缀 .rf.<hash>，视频帧只保留视频名。分组按来源隔离。"""
+    """近重复分组键：去掉 Roboflow 增强后缀 .rf.<hash>，视频帧只保留视频名。分组按来源隔离；
+    只有 Open Images 的 16 位 ID 例外：Zenodo 里混有 Open Images 的图，同一个 ID 不论来源都是同一张照片。"""
     stem = _RF_SUFFIX.sub("", os.path.splitext(filename)[0])
+    stem = re.sub(r"_(?:jpe?g|png)$", "", stem, flags=re.IGNORECASE)
+    oid = _OPEN_IMAGES_ID.match(stem)
+    if oid:
+        return f"oid:{oid.group(1)}"
     match = _VIDEO_FRAME.match(stem)
     if match:
         stem = match.group(1)
